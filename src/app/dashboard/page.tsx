@@ -1,8 +1,10 @@
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { fakePatients } from '@/data/patients';
+'use client';
 import Link from 'next/link';
 
-export default function Dashboard() {
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { fakePatients } from '@/data/patients';
+
+function Dashboard() {
   return (
     <main className="py-5 px-8">
       <h1 className="text-4xl font-semibold">Dashboard</h1>
@@ -43,3 +45,5 @@ export default function Dashboard() {
     </main>
   );
 }
+
+export default Dashboard;

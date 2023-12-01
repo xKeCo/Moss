@@ -1,3 +1,4 @@
+'use client';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '../../ui/avatar';
 import {
@@ -10,8 +11,13 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { signOut, useSession } from 'next-auth/react';
+import { useAuthStore } from '@/hooks';
 
 export default function UserNav() {
+  const { data: session } = useSession();
+  const { startLogout } = useAuthStore();
+
   const dropdownMenuItems = [
     {
       label: 'Profile',
@@ -35,20 +41,19 @@ export default function UserNav() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar>
-            <AvatarImage
-              src="https://source.boringavatars.com/beam/120/kevcollazos?colors=0A0310,49007E"
-              alt="@kevcollazos"
-            />
-            <AvatarFallback>KC</AvatarFallback>
+            <AvatarImage src={session?.user?.user?.photoURL} alt="@kevcollazos" />
+            <AvatarFallback>{session?.user?.user?.username}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">Dr. Kevin Collazos</p>
+            <p className="text-sm font-medium leading-none">
+              {session?.user?.user?.name || session?.user?.user?.username}
+            </p>
             <p className="text-xs leading-none text-muted-foreground">
-              kevcollazos@gmail.com
+              {session?.user?.user?.email}
             </p>
           </div>
         </DropdownMenuLabel>
@@ -62,7 +67,7 @@ export default function UserNav() {
           ))}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={startLogout}>
           Log out
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
