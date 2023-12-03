@@ -1,5 +1,6 @@
 export * from './store';
 export * from './auth/authSlice';
+export * from './patients/patientsSlice';
 // export * from './activities/activitiesSlice';
 // export * from './profiles/profilesSlice';
 // export * from './search/searchSlice';

@@ -1,11 +1,12 @@
 'use client';
 import { HTMLAttributes, useEffect, useState } from 'react';
-import { signIn, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useAuthStore } from '@/hooks';
 import { useForm } from 'react-hook-form';
 import { cn } from '@/lib/utils';
 import {
@@ -19,7 +20,6 @@ import {
   FormMessage,
 } from '../ui';
 import { Icons } from '..';
-import { useAuthStore } from '@/hooks';
 
 interface UserAuthFormProps extends HTMLAttributes<HTMLDivElement> {
   isRegister?: boolean;
