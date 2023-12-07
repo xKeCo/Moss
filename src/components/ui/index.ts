@@ -8,3 +8,5 @@ export * from './label';
 export * from './calendar';
 export * from './popover';
 export * from './switch';
+export * from './dialog';
+export * from './checkbox';

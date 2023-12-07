@@ -1,11 +1,19 @@
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 import { MossApi } from '@/api';
-import { onLoadPatients, onSetActivePatient, onSetLoadingPatients } from '@/redux';
+import {
+  onAddNewPatient,
+  onLoadPatients,
+  onSetActivePatient,
+  onSetLoadingPatients,
+} from '@/redux';
 import { useAppDispatch, useAppSelector } from '@/redux/app/hooks';
-import { useEffect, useState } from 'react';
+import { IPatient } from '@/utils/interfaces';
 
 export const usePatientsStore = () => {
   // Router
-  // const router = useRouter();
+  const router = useRouter();
 
   // Use selector
   const { patients, activePatient, loading } = useAppSelector((state) => state.patients);
@@ -28,12 +36,93 @@ export const usePatientsStore = () => {
       const { data } = await MossApi.get('/patients');
 
       dispatch(onLoadPatients(data.patients));
-    } catch (error) {
+    } catch (error: any) {
+      const errorMessage = error.response.data.msg;
       dispatch(onSetLoadingPatients(false));
-      console.log('Error cargando los pacientes');
-      console.log(error);
+      toast.error(errorMessage);
     }
   };
+
+  // Create patient
+  const startSavingPatient = async (patient: IPatient) => {
+    try {
+      const { data } = await MossApi.post('/patients/', patient);
+
+      dispatch(onAddNewPatient(data.patients));
+
+      toast.success('Patient created successfully');
+      router.push('/dashboard');
+    } catch (error: any) {
+      const errorMessage = error.response.data.msg;
+      toast.error(errorMessage);
+    }
+  };
+
+  // Saving activities
+  // const startSavingActivity = async (activityForm: TActivity) => {
+  //   const newActivityForm = formatMembersAndOwner(activityForm);
+
+  //   try {
+  //     if (newActivityForm.id) {
+  //       // Update activity
+  //       await projectApi.put(`/activities/${newActivityForm.id}`, newActivityForm);
+  //       dispatch(onUpdateActivity(activityForm));
+
+  //       const members = newActivityForm?.members.filter(
+  //         (member) =>
+  //           member.userInfo !== newActivityForm.owner && member.status !== 'aceptado'
+  //       );
+
+  //       members.forEach((member) => {
+  //         projectApi.post(`/notifications`, {
+  //           from: newActivityForm?.owner,
+  //           to: member.userInfo,
+  //           activity: newActivityForm.id,
+  //           read: false,
+  //           type: 'invitacion',
+  //         });
+  //       });
+
+  //       // Update activity notification
+  //       toast.success('Actividad actualizada con éxito');
+  //     } else {
+  //       // Add new activity
+  //       const { data } = await projectApi.post('/activities', newActivityForm);
+  //       dispatch(
+  //         onAddNewActivity({
+  //           ...activityForm,
+  //           id: data.activity.id,
+  //         })
+  //       );
+
+  //       // Send notification to members except the owner
+  //       const members = newActivityForm?.members.filter(
+  //         (member) => member.userInfo !== newActivityForm.owner
+  //       );
+
+  //       members.forEach((member) => {
+  //         projectApi.post(`/notifications`, {
+  //           from: data.activity.owner,
+  //           to: member.userInfo,
+  //           activity: data.activity.id,
+  //           read: false,
+  //           type: 'invitacion',
+  //         });
+  //       });
+
+  //       // New activity notification
+  //       toast.success('Actividad creada con éxito');
+  //     }
+
+  //     activeActivity ? router.back() : router.replace('/actividades');
+  //   } catch (error: any) {
+  //     dispatch(onSetLoadingActivities(false));
+
+  //     toast.error(`Error guardando actividad - ${error.response.data.msg}`);
+
+  //     console.log(error.response.data.msg);
+  //   }
+  // };
 
   return {
     // Properties
@@ -45,5 +134,6 @@ export const usePatientsStore = () => {
     // Methods
     unsetActivePatient,
     startLoadingPatients,
+    startSavingPatient,
   };
 };

@@ -23,101 +23,189 @@ import {
   PopoverContent,
   PopoverTrigger,
   Switch,
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  Label,
+  DialogFooter,
+  FormDescription,
+  Checkbox,
+  DialogClose,
 } from '../ui';
+import { usePatientsStore } from '@/hooks';
 
 const formSchema = z.object({
   name: z.string().min(5, {
     message: 'Name must be at least 5 characters.',
   }),
-  gender: z.string().min(1, {
-    message: 'Gender is required',
-  }),
-  bloodType: z.string().min(1, {
-    message: 'Blood type is required.',
-  }),
-  age: z.string(),
-  dniType: z.string().min(1, {
-    message: 'DNI type is required.',
-  }),
+  dniType: z
+    .enum(['', 'CC', 'TI', 'O'])
+    .refine((val) => val !== '', 'DNI type is required'),
   dniNumber: z.string().min(8, {
     message: 'DNI number must be at least 8 characters.',
-  }),
-  birthDate: z.date({
-    required_error: 'Birth date is required.',
-  }),
-  birthPlace: z.string().min(5, {
-    message: 'Birth place must be at least 5 characters.',
   }),
   email: z.string().email({
     message: 'Email must be a valid email.',
   }),
-  address: z.string().min(5, {
-    message: 'Address must be at least 5 characters.',
-  }),
-  phone: z
-    .string()
-    .min(10, {
-      message: 'Phone must be 10 characters.',
-    })
-    .max(10, {
-      message: 'Phone must be 10 characters.',
-    }),
-  phone2: z.union([
-    z.string().min(10, {
-      message: 'Phone must be 10 characters.',
-    }),
-    z.literal(''),
-  ]),
-  height: z.string().min(1, {
-    message: 'Height is required.',
-  }),
-  weight: z.string().min(1, {
-    message: 'Weight is required.',
-  }),
-  civilStatus: z.string().min(1, {
-    message: 'Civil status is required.',
-  }),
-  occupation: z.string().min(5, {
-    message: 'Occupation must be at least 5 characters.',
-  }),
-  EPSActive: z.boolean(),
-  EPSName: z.string().optional(),
-  visitedDoctor: z.boolean(),
-  doctorType: z.string().optional(),
-  inTreatment: z.boolean(),
-  treatment: z.string().optional(),
-  boneScan: z.boolean(),
-  boneScanType: z.string().optional(),
-});
 
+  basicInformation: z.object({
+    gender: z.enum(['', 'M', 'F', 'O']).refine((val) => val !== '', 'Gender is required'),
+    bloodType: z
+      .enum(['', 'O+', 'O-', 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-'])
+      .refine((val) => val !== '', 'Blood type is required'),
+    birthDate: z
+      .date({
+        required_error: 'Birth date is required.',
+      })
+      .refine((val) => format(val, 'P') !== format(new Date(), 'P'), {
+        message: 'Birth date cannot be today.',
+      }),
+    age: z.string(),
+    birthPlace: z.string().min(5, {
+      message: 'Birth place must be at least 5 characters.',
+    }),
+    height: z.string().min(1, {
+      message: 'Height is required.',
+    }),
+    weight: z.string().min(1, {
+      message: 'Weight is required.',
+    }),
+    civilStatus: z
+      .enum(['S', 'C', 'V', 'D', 'M', ''])
+      .refine((val) => val !== '', 'Civil status is required'),
+    occupation: z.string().min(5, {
+      message: 'Occupation must be at least 5 characters.',
+    }),
+  }),
+
+  contactInformation: z
+    .object({
+      address: z.string().min(5, {
+        message: 'Address must be at least 5 characters.',
+      }),
+      phone1: z.string().min(10, {
+        message: 'Phone must be 10 characters.',
+      }),
+      phone2: z.union([
+        z.string().min(10, {
+          message: 'Phone must be 10 characters.',
+        }),
+        z.literal(''),
+      ]),
+    })
+    .refine((data) => data.phone1 !== data.phone2, {
+      message: 'Phone 2 cannot be equal to phone 1.',
+      path: ['phone2'],
+    }),
+
+  medicalInformation: z
+    .object({
+      EPSActive: z.boolean(),
+      EPSName: z.string().optional(),
+      visitedDoctor: z.boolean(),
+      doctorType: z.enum(['', 'G', 'E']).optional(),
+      inTreatment: z.boolean(),
+      treatment: z.string().optional(),
+      boneScan: z.boolean(),
+      boneScanType: z.string().optional(),
+    })
+    .refine(
+      (data) => {
+        if (data.EPSActive && data.EPSName === '') {
+          return false;
+        }
+        return true;
+      },
+      {
+        message: 'EPS name is required if EPS is active.',
+        path: ['EPSName'],
+      }
+    )
+    .refine(
+      (data) => {
+        if (data.visitedDoctor && data.doctorType === '') {
+          return false;
+        }
+        return true;
+      },
+      {
+        message: 'Doctor type is required if visited doctor is true.',
+        path: ['doctorType'],
+      }
+    )
+    .refine(
+      (data) => {
+        if (data.inTreatment && data.treatment === '') {
+          return false;
+        }
+        return true;
+      },
+      {
+        message: 'Treatment is required if in treatment is true.',
+        path: ['treatment'],
+      }
+    )
+    .refine(
+      (data) => {
+        if (data.boneScan && data.boneScanType === '') {
+          return false;
+        }
+        return true;
+      },
+      {
+        message: 'Bone scan type is required if bone scan is true.',
+        path: ['boneScanType'],
+      }
+    ),
+
+  termsAndConditions: z.boolean().refine((val) => val === true, {
+    message: 'You must accept the terms and conditions.',
+  }),
+});
 export const PatientForm = () => {
+  const { startSavingPatient } = usePatientsStore();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
-      gender: '',
-      bloodType: '',
-      birthDate: '' as any,
-      age: '',
-      birthPlace: '',
       dniType: '',
       dniNumber: '',
-      civilStatus: '',
       email: '',
-      address: '',
-      phone: '',
-      phone2: '',
-      height: '',
-      weight: '',
-      occupation: '',
-      EPSActive: true,
-      EPSName: '',
-      visitedDoctor: true,
-      doctorType: '',
-      inTreatment: true,
-      treatment: '',
-      boneScan: true,
-      boneScanType: '',
+
+      basicInformation: {
+        gender: '',
+        bloodType: '',
+        birthDate: new Date(),
+        age: '',
+        birthPlace: '',
+        civilStatus: '',
+        height: '',
+        weight: '',
+        occupation: '',
+      },
+
+      contactInformation: {
+        address: '',
+        phone1: '',
+        phone2: '',
+      },
+
+      medicalInformation: {
+        EPSActive: true,
+        EPSName: '',
+        visitedDoctor: true,
+        doctorType: '',
+        inTreatment: true,
+        treatment: '',
+        boneScan: true,
+        boneScanType: '',
+      },
+
+      termsAndConditions: false,
     },
   });
 
@@ -126,56 +214,46 @@ export const PatientForm = () => {
     // ✅ This will be type-safe and validated.
 
     // Phone 2 cannot be equal to phone
-    if (values.phone === values.phone2) {
-      form.setError('phone2', {
-        type: 'manual',
-        message: 'Phone 2 cannot be equal to phone 1.',
-      });
-      return;
-    }
-
-    // EPS name is required if EPS is active
-    if (values.EPSActive && !values.EPSName) {
-      form.setError('EPSName', {
-        type: 'manual',
-        message: 'EPS name is required.',
-      });
-      return;
-    }
-
-    // Doctor type is required if visited doctor is true
-    if (values.visitedDoctor && !values.doctorType) {
-      form.setError('doctorType', {
-        type: 'manual',
-        message: 'Doctor type is required.',
-      });
-      return;
-    }
-
-    // Treatment is required if in treatment is true
-    if (values.inTreatment && !values.treatment) {
-      form.setError('treatment', {
-        type: 'manual',
-        message: 'Treatment is required.',
-      });
-      return;
-    }
-
-    // Bone scan type is required if bone scan is true
-    if (values.boneScan && !values.boneScanType) {
-      form.setError('boneScanType', {
-        type: 'manual',
-        message: 'Bone scan type is required.',
-      });
-      return;
-    }
+    // if (values.phone === values.phone2) {
+    //   form.setError('phone2', {
+    //     type: 'manual',
+    //     message: 'Phone 2 cannot be equal to phone 1.',
+    //   });
+    //   return;
+    // }
 
     console.log(values);
+
+    startSavingPatient(values);
   }
 
   const setAgeValue = (selectedDate: Date) => {
     const age = new Date().getFullYear() - selectedDate.getFullYear();
-    form.setValue('age', age.toString());
+    form.setValue('basicInformation.age', age.toString());
+  };
+
+  const clearEPSNameValue = (EPSActive: boolean) => {
+    if (!EPSActive) {
+      form.setValue('medicalInformation.EPSName', '');
+    }
+  };
+
+  const clearDoctorTypeValue = (visitedDoctor: boolean) => {
+    if (!visitedDoctor) {
+      form.setValue('medicalInformation.doctorType', '');
+    }
+  };
+
+  const clearTreatmentValue = (inTreatment: boolean) => {
+    if (!inTreatment) {
+      form.setValue('medicalInformation.treatment', '');
+    }
+  };
+
+  const clearBoneScanTypeValue = (boneScan: boolean) => {
+    if (!boneScan) {
+      form.setValue('medicalInformation.boneScanType', '');
+    }
   };
 
   return (
@@ -198,7 +276,7 @@ export const PatientForm = () => {
             />
             <FormField
               control={form.control}
-              name="gender"
+              name="basicInformation.gender"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Gender</FormLabel>
@@ -220,7 +298,7 @@ export const PatientForm = () => {
             />
             <FormField
               control={form.control}
-              name="bloodType"
+              name="basicInformation.bloodType"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Blood type</FormLabel>
@@ -250,7 +328,7 @@ export const PatientForm = () => {
           <div className="gap-4 grid sm:grid-cols-4 lg:grid-cols-8">
             <FormField
               control={form.control}
-              name="birthDate"
+              name="basicInformation.birthDate"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
                   <FormLabel className="h-[17px] mt-[6px]">Date of birth</FormLabel>
@@ -270,6 +348,7 @@ export const PatientForm = () => {
                     <PopoverContent className="w-auto p-0" align="start">
                       <Calendar
                         mode="single"
+                        required
                         selected={field.value}
                         onSelect={(date) => {
                           field.onChange(date);
@@ -291,7 +370,7 @@ export const PatientForm = () => {
             />
             <FormField
               control={form.control}
-              name="age"
+              name="basicInformation.age"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Age</FormLabel>
@@ -304,7 +383,7 @@ export const PatientForm = () => {
             />
             <FormField
               control={form.control}
-              name="birthPlace"
+              name="basicInformation.birthPlace"
               render={({ field }) => (
                 <FormItem className="sm:col-span-2">
                   <FormLabel>Place of birth</FormLabel>
@@ -352,7 +431,7 @@ export const PatientForm = () => {
             />
             <FormField
               control={form.control}
-              name="civilStatus"
+              name="basicInformation.civilStatus"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Civil Status</FormLabel>
@@ -392,7 +471,7 @@ export const PatientForm = () => {
             />
             <FormField
               control={form.control}
-              name="address"
+              name="contactInformation.address"
               render={({ field }) => (
                 <FormItem className="sm:col-span-2">
                   <FormLabel>Address</FormLabel>
@@ -405,7 +484,7 @@ export const PatientForm = () => {
             />
             <FormField
               control={form.control}
-              name="phone"
+              name="contactInformation.phone1"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Phone</FormLabel>
@@ -418,7 +497,7 @@ export const PatientForm = () => {
             />
             <FormField
               control={form.control}
-              name="phone2"
+              name="contactInformation.phone2"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Phone 2</FormLabel>
@@ -431,7 +510,7 @@ export const PatientForm = () => {
             />
             <FormField
               control={form.control}
-              name="height"
+              name="basicInformation.height"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Height</FormLabel>
@@ -449,7 +528,7 @@ export const PatientForm = () => {
             />
             <FormField
               control={form.control}
-              name="weight"
+              name="basicInformation.weight"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Weight</FormLabel>
@@ -469,7 +548,7 @@ export const PatientForm = () => {
 
           <FormField
             control={form.control}
-            name="occupation"
+            name="basicInformation.occupation"
             render={({ field }) => (
               <FormItem className="sm:col-span-2">
                 <FormLabel>Occupation</FormLabel>
@@ -484,13 +563,16 @@ export const PatientForm = () => {
           <div className="gap-4 grid sm:grid-cols-6 lg:grid-cols-6">
             <FormField
               control={form.control}
-              name="EPSActive"
+              name="medicalInformation.EPSActive"
               render={({ field }) => (
                 <FormItem className="flex flex-col justify-around">
                   <FormLabel className="h-[17px]">EPS Active</FormLabel>
                   <Switch
                     checked={field.value}
-                    onCheckedChange={field.onChange}
+                    onCheckedChange={(value: boolean) => {
+                      field.onChange(value);
+                      clearEPSNameValue(value);
+                    }}
                     className="mt-2 flex items-end"
                   />
                   <FormMessage />
@@ -498,10 +580,10 @@ export const PatientForm = () => {
               )}
             />
 
-            {form.watch('EPSActive') && (
+            {form.watch('medicalInformation.EPSActive') && (
               <FormField
                 control={form.control}
-                name="EPSName"
+                name="medicalInformation.EPSName"
                 render={({ field }) => (
                   <FormItem className="sm:col-span-5 lg:col-span-2">
                     <FormLabel>EPS Name</FormLabel>
@@ -516,13 +598,16 @@ export const PatientForm = () => {
 
             <FormField
               control={form.control}
-              name="visitedDoctor"
+              name="medicalInformation.visitedDoctor"
               render={({ field }) => (
                 <FormItem className="flex flex-col justify-around">
                   <FormLabel className="h-[17px]">Visited a doctor</FormLabel>
                   <Switch
                     checked={field.value}
-                    onCheckedChange={field.onChange}
+                    onCheckedChange={(doctorType: boolean) => {
+                      field.onChange(doctorType);
+                      clearDoctorTypeValue(doctorType);
+                    }}
                     className="mt-2 flex items-end"
                   />
                   <FormMessage />
@@ -530,10 +615,10 @@ export const PatientForm = () => {
               )}
             />
 
-            {form.watch('visitedDoctor') && (
+            {form.watch('medicalInformation.visitedDoctor') && (
               <FormField
                 control={form.control}
-                name="doctorType"
+                name="medicalInformation.doctorType"
                 render={({ field }) => (
                   <FormItem className="sm:col-span-5 lg:col-span-2">
                     <FormLabel>Doctor type</FormLabel>
@@ -558,13 +643,16 @@ export const PatientForm = () => {
           <div className="gap-4 grid sm:grid-cols-6 lg:grid-cols-6">
             <FormField
               control={form.control}
-              name="inTreatment"
+              name="medicalInformation.inTreatment"
               render={({ field }) => (
                 <FormItem className="flex flex-col justify-around">
                   <FormLabel className="h-[17px]">In treatment</FormLabel>
                   <Switch
                     checked={field.value}
-                    onCheckedChange={field.onChange}
+                    onCheckedChange={(inTreatment: boolean) => {
+                      field.onChange(inTreatment);
+                      clearTreatmentValue(inTreatment);
+                    }}
                     className="mt-2 flex items-end"
                   />
                   <FormMessage />
@@ -572,10 +660,10 @@ export const PatientForm = () => {
               )}
             />
 
-            {form.watch('inTreatment') && (
+            {form.watch('medicalInformation.inTreatment') && (
               <FormField
                 control={form.control}
-                name="treatment"
+                name="medicalInformation.treatment"
                 render={({ field }) => (
                   <FormItem className="sm:col-span-5 lg:col-span-2">
                     <FormLabel>Treatment</FormLabel>
@@ -590,13 +678,16 @@ export const PatientForm = () => {
 
             <FormField
               control={form.control}
-              name="boneScan"
+              name="medicalInformation.boneScan"
               render={({ field }) => (
                 <FormItem className="flex flex-col justify-around">
                   <FormLabel className="h-[17px]">Bone scan</FormLabel>
                   <Switch
                     checked={field.value}
-                    onCheckedChange={field.onChange}
+                    onCheckedChange={(boneScan: boolean) => {
+                      field.onChange(boneScan);
+                      clearBoneScanTypeValue(boneScan);
+                    }}
                     className="mt-2 flex items-end"
                   />
                   <FormMessage />
@@ -604,10 +695,10 @@ export const PatientForm = () => {
               )}
             />
 
-            {form.watch('boneScan') && (
+            {form.watch('medicalInformation.boneScan') && (
               <FormField
                 control={form.control}
-                name="boneScanType"
+                name="medicalInformation.boneScanType"
                 render={({ field }) => (
                   <FormItem className="sm:col-span-5 lg:col-span-2">
                     <FormLabel>Bone scan type</FormLabel>
@@ -620,6 +711,130 @@ export const PatientForm = () => {
               />
             )}
           </div>
+
+          <FormField
+            control={form.control}
+            name="termsAndConditions"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                    id="termsAndConditions"
+                  />
+                </FormControl>
+                <Dialog>
+                  <div className="grid gap-1.5 leading-none">
+                    <Label
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                      htmlFor="termsAndConditions"
+                    >
+                      Accept terms and conditions
+                    </Label>
+                    <p className="text-sm text-muted-foreground">
+                      You agree to our{' '}
+                      <DialogTrigger asChild>
+                        <span className="font-semibold cursor-pointer hover:text-muted-foreground/80">
+                          Terms of Service and Privacy Policy.
+                        </span>
+                      </DialogTrigger>
+                    </p>
+                    <FormMessage />
+                  </div>
+                  <DialogContent className="mb-4">
+                    <DialogHeader>
+                      <DialogTitle>
+                        CONSENTIMIENTO INFORMADO PARA LA PRACTICA DE INTERVENCIONES Y
+                        PROCEDIMIENTOS CLINICOS ODONTOLOGICOS
+                      </DialogTitle>
+                    </DialogHeader>
+                    <div className="max-h-[420px] overflow-y-auto no-scrollbar space-y-2">
+                      <p>
+                        Por medio de la presente declaración, en mi calidad de paciente,
+                        reconozco lo siguiente:
+                      </p>
+                      <ul className="list-disc list-inside ">
+                        <li>
+                          He recibido información clara y detallada sobre mi condición
+                          odontológica que afecta mi salud bucal.
+                        </li>
+                        <li>
+                          Se me ha comunicado de manera clara y detallada que la condición
+                          odontológica respectiva requiere el procedimiento odontológico o
+                          intervención quirúrgica correspondiente.
+                        </li>
+                        <li>
+                          Estoy plenamente informado/a acerca de los riesgos asociados con
+                          el procedimiento odontológico o intervención quirúrgica que se
+                          llevará a cabo. Estos riesgos incluyen, entre otros,
+                          complicaciones inherentes a cualquier procedimiento clínico,
+                          como el uso de instrumental, medicamentos, inflamación,
+                          sensibilidad, sangrado, dolor, adormecimiento de labios, lengua,
+                          mentón, encía y dientes, reacciones a inyecciones, cambios en la
+                          oclusión (mordida), espasmos en la mandíbula y músculos,
+                          dificultades en la articulación temporomandibular, movilidad
+                          dental, corona o puentes existentes, dolor referido al oído,
+                          cuello y cabeza, náuseas, vómitos, reacciones alérgicas,
+                          cicatrización tardía, perforación de senos maxilares, fractura
+                          de dientes, corona o raíz de compleja resolución.
+                        </li>
+                        <li>
+                          Autorizo que el procedimiento odontológico o intervención
+                          quirúrgica, así como cualquier procedimiento necesario para
+                          abordar situaciones imprevisibles, riesgos o complicaciones
+                          derivadas directa o indirectamente del procedimiento inicial,
+                          sean realizados por el/la doctor(a) y el personal profesional
+                          que consideren necesario.
+                        </li>
+                        <li>
+                          Autorizo que el procedimiento odontológico o intervención
+                          quirúrgica, así como cualquier procedimiento necesario para
+                          abordar situaciones imprevisibles, riesgos o complicaciones
+                          derivadas directa o indirectamente del procedimiento inicial,
+                          sean realizados por el/la doctor(a) y el personal profesional
+                          que consideren necesario.
+                        </li>
+                        <li>
+                          Concedo mi consentimiento para que la anestesia sea administrada
+                          por el odontólogo y los autorizo a utilizar el tipo de anestesia
+                          que consideren más apropiado según mi condición clínica y el
+                          tipo de intervención necesaria. He sido debidamente informado/a
+                          por el/la doctor(a) de odontología sobre los riesgos asociados
+                          con la aplicación de anestesia, según consta en mi historia
+                          clínica.
+                        </li>
+                        <li>
+                          Me comprometo a seguir las indicaciones del profesional y del
+                          personal de odontología en cuanto a los cuidados pre y post
+                          procedimiento, con el fin de restablecer mi salud bucal.
+                          Asimismo, cumpliré con las citas odontológicas, prescripciones,
+                          dietas, instrucciones y controles periódicos.
+                        </li>
+                        <li>
+                          Asumo la responsabilidad de cubrir el costo total de los
+                          servicios de salud oral. En testimonio de lo anterior, suscribo
+                          el presente documento a los {new Date().getDay()} días del mes
+                          de{' '}
+                          <span className="capitalize">
+                            {new Date().toLocaleString('default', { month: 'long' })}
+                          </span>{' '}
+                          del año {new Date().getFullYear()}.
+                        </li>
+                      </ul>
+                    </div>
+                    <DialogFooter className="mt-4">
+                      <DialogClose asChild>
+                        <Button type="button" variant="secondary">
+                          Close
+                        </Button>
+                      </DialogClose>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              </FormItem>
+            )}
+          />
 
           <Button type="submit">Submit</Button>
         </form>
