@@ -2,7 +2,15 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import { usePatientsStore } from '@/hooks';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui';
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from '../ui';
+import { InfoCircledIcon } from '@radix-ui/react-icons';
 
 export const Patients = () => {
   const { patients, loading, startLoadingPatients } = usePatientsStore();
@@ -16,35 +24,53 @@ export const Patients = () => {
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <div className="grid sm:grid-cols-2 gap-8 lg:grid-cols-4">
-          {patients.map((patient) => (
-            <Link
-              key={patient?.dniNumber}
-              href={`/dashboard/patient/${patient?.dniNumber}`}
-              className="flex items-center justify-between"
-            >
-              <div className="flex items-center gap-4">
-                <Avatar>
-                  <AvatarImage
-                    src={`https://source.boringavatars.com/beam/120/${patient?.dniNumber}?colors=0A0310,49007E`}
-                    alt={patient?.name}
-                  />
-                  <AvatarFallback>
-                    {patient?.name
-                      .split(' ')
-                      .map((name) => name[0])
-                      .join('')}
-                  </AvatarFallback>
-                </Avatar>
+        <>
+          {patients.length === 0 ? (
+            <Alert>
+              <InfoCircledIcon className="h-4 w-4" />
+              <AlertTitle>Oops!</AlertTitle>
+              <AlertDescription>
+                You don&apos;t have any patients yet.{' '}
+                <Link
+                  href="/dashboard/patient/new"
+                  className="font-bold hover:text-primary/80"
+                >
+                  Add one!
+                </Link>
+              </AlertDescription>
+            </Alert>
+          ) : (
+            <div className="grid sm:grid-cols-2 gap-8 lg:grid-cols-4">
+              {patients.map((patient) => (
+                <Link
+                  key={patient?.dniNumber}
+                  href={`/dashboard/patient/${patient?.dniNumber}`}
+                  className="flex items-center justify-between"
+                >
+                  <div className="flex items-center gap-4">
+                    <Avatar>
+                      <AvatarImage
+                        src={`https://source.boringavatars.com/beam/120/${patient?.dniNumber}?colors=0A0310,49007E`}
+                        alt={patient?.name}
+                      />
+                      <AvatarFallback>
+                        {patient?.name
+                          .split(' ')
+                          .map((name) => name[0])
+                          .join('')}
+                      </AvatarFallback>
+                    </Avatar>
 
-                <div>
-                  <h3 className="text-lg font-semibold">{patient?.name}</h3>
-                  <p className="text-sm text-gray-500">{patient?.email}</p>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
+                    <div>
+                      <h3 className="text-lg font-semibold">{patient?.name}</h3>
+                      <p className="text-sm text-gray-500">{patient?.email}</p>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+        </>
       )}
     </>
   );
