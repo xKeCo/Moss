@@ -91,7 +91,19 @@ const formSchema = z.object({
       }),
       phone2: z.union([
         z.string().min(10, {
-          message: 'Phone must be 10 characters.',
+          message: 'Phone 2 must be 10 characters.',
+        }),
+        z.literal(''),
+      ]),
+      emergencyContactName: z.string().min(5, {
+        message: 'Emergency contact name must be at least 5 characters.',
+      }),
+      emergencyContactPhone: z.string().min(10, {
+        message: 'Emergency contact phone must be 10 characters.',
+      }),
+      emergencyContactPhone2: z.union([
+        z.string().min(10, {
+          message: 'Emergency contact phone 2 must be 10 characters.',
         }),
         z.literal(''),
       ]),
@@ -99,6 +111,10 @@ const formSchema = z.object({
     .refine((data) => data.phone1 !== data.phone2, {
       message: 'Phone 2 cannot be equal to phone 1.',
       path: ['phone2'],
+    })
+    .refine((data) => data.emergencyContactPhone !== data.emergencyContactPhone2, {
+      message: 'Emergency contact phone 2 cannot be equal to emergency contact phone 1.',
+      path: ['contactInformation.emergencyContactPhone2'],
     }),
 
   medicalInformation: z
@@ -192,6 +208,9 @@ export const PatientForm = () => {
         address: '',
         phone1: '',
         phone2: '',
+        emergencyContactName: '',
+        emergencyContactPhone: '',
+        emergencyContactPhone2: '',
       },
 
       medicalInformation: {
@@ -710,6 +729,52 @@ export const PatientForm = () => {
                 )}
               />
             )}
+          </div>
+
+          <div className="flex flex-col gap-4">
+            <h1>Emergency contact information</h1>
+
+            <div className="gap-4 grid sm:grid-cols-4">
+              <FormField
+                control={form.control}
+                name="contactInformation.emergencyContactName"
+                render={({ field }) => (
+                  <FormItem className="sm:col-span-2">
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Full name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="contactInformation.emergencyContactPhone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Phone</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter phone" {...field} maxLength={10} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="contactInformation.emergencyContactPhone2"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Phone 2</FormLabel>
+                    <FormControl>
+                      <Input placeholder="(optional)" {...field} maxLength={10} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
           </div>
 
           <FormField

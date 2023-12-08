@@ -28,6 +28,9 @@ interface IContactInformation {
   address: string;
   phone1: string;
   phone2?: string;
+  emergencyContactName: string;
+  emergencyContactPhone: string;
+  emergencyContactPhone2?: string;
 }
 
 interface IMedicalInformation {
