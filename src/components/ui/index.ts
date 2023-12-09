@@ -10,4 +10,5 @@ export * from './input';
 export * from './label';
 export * from './popover';
 export * from './select';
+export * from './skeleton';
 export * from './switch';

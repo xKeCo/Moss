@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google';
 import { Toaster } from 'sonner';
 
 import { Providers } from '@/components';
+import { cn } from '@/lib/utils';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,7 +18,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} dark`}>
+      <body className={cn(inter.className, 'dark')}>
         <Providers>{children}</Providers>
         <Toaster
           toastOptions={{

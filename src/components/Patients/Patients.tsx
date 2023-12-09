@@ -49,10 +49,7 @@ export const Patients = () => {
                 >
                   <div className="flex items-center gap-4">
                     <Avatar>
-                      <AvatarImage
-                        src={`https://source.boringavatars.com/beam/120/${patient?.dniNumber}?colors=0A0310,49007E`}
-                        alt={patient?.name}
-                      />
+                      <AvatarImage src={patient?.photoURL} alt={patient?.name} />
                       <AvatarFallback>
                         {patient?.name
                           .split(' ')

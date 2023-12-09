@@ -3,6 +3,7 @@ export interface IPatient {
   dniNumber: string;
   dniType: 'CC' | 'TI' | 'O' | '';
   email: string;
+  photoURL?: string;
 
   basicInformation: IBasicInformation;
   contactInformation: IContactInformation;
@@ -15,12 +16,12 @@ export interface IPatient {
 interface IBasicInformation {
   gender: 'M' | 'F' | 'O' | '';
   bloodType: 'O+' | 'O-' | 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | '';
-  birthDate: Date;
+  birthDate: Date | string;
   age: string;
   birthPlace: string;
   height: string;
   weight: string;
-  civilStatus: 'S' | 'C' | 'V' | 'D' | 'M' | '';
+  maritalStatus: 'S' | 'C' | 'V' | 'D' | 'M' | '';
   occupation: string;
 }
 

@@ -73,7 +73,7 @@ const formSchema = z.object({
     weight: z.string().min(1, {
       message: 'Weight is required.',
     }),
-    civilStatus: z
+    maritalStatus: z
       .enum(['S', 'C', 'V', 'D', 'M', ''])
       .refine((val) => val !== '', 'Civil status is required'),
     occupation: z.string().min(5, {
@@ -198,7 +198,7 @@ export const PatientForm = () => {
         birthDate: new Date(),
         age: '',
         birthPlace: '',
-        civilStatus: '',
+        maritalStatus: '',
         height: '',
         weight: '',
         occupation: '',
@@ -450,7 +450,7 @@ export const PatientForm = () => {
             />
             <FormField
               control={form.control}
-              name="basicInformation.civilStatus"
+              name="basicInformation.maritalStatus"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Civil Status</FormLabel>

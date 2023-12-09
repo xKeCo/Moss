@@ -50,7 +50,7 @@ export default function UserNav() {
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">
-              {session?.user?.user?.name || session?.user?.user?.username}
+              {session?.user?.user?.name ?? session?.user?.user?.username}
             </p>
             <p className="text-xs leading-none text-muted-foreground">
               {session?.user?.user?.email}

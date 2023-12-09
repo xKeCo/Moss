@@ -6,3 +6,4 @@ export * from './PatientForm/PatientForm';
 export * from './Icons/Icons';
 export * from './WithAuth/WithAuth';
 export * from './Patients/Patients';
+export * from './Breadcrumb/Breadcrumb';

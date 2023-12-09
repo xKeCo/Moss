@@ -9,7 +9,7 @@ import {
   onSetLoadingPatients,
 } from '@/redux';
 import { useAppDispatch, useAppSelector } from '@/redux/app/hooks';
-import { IPatient } from '@/utils/interfaces';
+import { IPatient } from '@/interfaces';
 
 export const usePatientsStore = () => {
   // Router
@@ -55,6 +55,25 @@ export const usePatientsStore = () => {
     } catch (error: any) {
       const errorMessage = error.response.data.msg;
       toast.error(errorMessage);
+    }
+  };
+
+  // Get patient by ID
+  const setPatientByID = async (id: string) => {
+    dispatch(onSetLoadingPatients(true));
+
+    try {
+      const { data } = await MossApi.get(`/patients/patient/${id}`);
+
+      console.log(data.patient[0]);
+
+      // if (data.patient) {
+      dispatch(onSetActivePatient(data.patient[0]));
+      // setError(null);
+      // }
+    } catch (error: any) {
+      dispatch(onSetActivePatient(null));
+      setError(error.response.data.msg);
     }
   };
 
@@ -135,5 +154,6 @@ export const usePatientsStore = () => {
     unsetActivePatient,
     startLoadingPatients,
     startSavingPatient,
+    setPatientByID,
   };
 };
