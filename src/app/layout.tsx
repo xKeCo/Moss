@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'DentalSoft - Dental Clinic Management System',
+  title: 'Moss - Dental Clinic Management System',
   description: 'Dental Clinic Management System',
 };
 

@@ -31,7 +31,7 @@ export function AuthForm({
   ...props
 }: Readonly<UserAuthFormProps>) {
   const { startLogin, startRegister } = useAuthStore();
-  const { data, status } = useSession();
+  const { status } = useSession();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
 
