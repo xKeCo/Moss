@@ -1,3 +1,4 @@
+import { IToothState } from './TeethGroup';
 import Tooth from './Tooth';
 
 interface TeethProps {
@@ -5,7 +6,7 @@ interface TeethProps {
   end: number;
   x: number;
   y: number;
-  handleChange: (id: string | number, toothState: any) => void;
+  handleChange: (id: number, toothState: IToothState) => void;
 }
 
 function Teeth({ start, end, x, y, handleChange }: Readonly<TeethProps>) {

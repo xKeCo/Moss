@@ -11,6 +11,8 @@ export default function Home() {
   useEffect(() => {
     if (status === 'authenticated') {
       router.replace('/dashboard');
+    } else if (status === 'unauthenticated') {
+      router.replace('/login');
     }
   }, [status, router]);
 

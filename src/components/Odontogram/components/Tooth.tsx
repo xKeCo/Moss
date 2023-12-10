@@ -1,9 +1,27 @@
 import React, { useEffect, useReducer, useRef } from 'react';
-import useContextMenu from 'contextmenu';
-import 'contextmenu/ContextMenu.css';
 import { cn } from '@/lib/utils';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from '@/components/ui';
 
-function Tooth({ number, positionX, positionY, onChange }: any) {
+interface ToothProps {
+  number: number;
+  positionX: number;
+  positionY: number;
+  onChange: (id: number, toothState: any) => void;
+}
+
+function Tooth({ number, positionX, positionY, onChange }: ToothProps) {
   const initialState = {
     cavities: {
       center: 0,
@@ -63,85 +81,87 @@ function Tooth({ number, positionX, positionY, onChange }: any) {
   const clear = () => ({ type: 'clear' });
 
   const [toothState, dispatch] = useReducer(reducer, initialState);
-  const [contextMenu, useCM] = useContextMenu({ submenuSymbol: '>' });
 
   const firstUpdate = useRef(true);
-  useEffect(() => {
-    if (firstUpdate.current) {
-      firstUpdate.current = false;
-      return;
-    }
-    onChange(number, toothState);
-  }, [toothState, onChange, number]);
 
-  // Done SubMenu
-  // const doneSubMenu = (place: string, value: number) => {
-  //   return {
-  //     Obturación: () => {
-  //       dispatch(carie(place, value));
-  //     },
-  //     'Obturación en todos': () => dispatch(carie('all', value)),
-  //     Ausente: () => {
-  //       dispatch(clear());
-  //       dispatch(absent(value));
-  //     },
-  //     Corona: () => dispatch(crown(value)),
-  //     Endodoncia: () => dispatch(endodontics(value)),
-  //   };
-  // };
-
-  // // Todo SubMenu
-  // const todoSubMenu = (place: string, value: number) => {
-  //   return {
-  //     Caries: () => dispatch(carie(place, value)),
-  //     'Caries en todos': () => dispatch(carie('all', value)),
-  //     Extracción: () => dispatch(extract(value)),
-  //     Corona: () => dispatch(crown(value)),
-  //     Endodoncia: () => dispatch(endodontics(value)),
-  //     Filtrado: () => dispatch(filter(value)),
-  //     Fracturado: () => dispatch(unerupted(value)),
-  //   };
-  // };
-
-  const menuContent = (place: string) => {
-    return {
-      Caries: () => dispatch(carie(place, 2)),
-      Obturación: () => {
-        dispatch(carie(place, 1));
-      },
-      'Caries en todos': () => dispatch(carie('all', 2)),
-      'Obturación en todos': () => dispatch(carie('all', 1)),
-      Ausente: () => {
+  const menuContent = [
+    {
+      name: 'Caries',
+      onClick: (zone: string) => dispatch(carie(zone, 2)),
+    },
+    {
+      name: 'Obturación',
+      onClick: (zone: string) => dispatch(carie(zone, 1)),
+    },
+    {
+      name: 'Caries en todos',
+      onClick: () => dispatch(carie('all', 2)),
+    },
+    {
+      name: 'Obturación en todos',
+      onClick: () => dispatch(carie('all', 1)),
+    },
+    {
+      name: 'Ausente',
+      onClick: () => {
         dispatch(clear());
         dispatch(absent(1));
       },
-      'Corona DX': () => dispatch(crown(1)),
-      'Corona TTO': () => dispatch(crown(2)),
-      'Endodoncia DX': () => dispatch(endodontics(1)),
-      'Endodoncia TTO': () => dispatch(endodontics(2)),
-      Extracción: () => {
+    },
+    {
+      name: 'Extracción',
+      onClick: () => {
         dispatch(clear());
         dispatch(extract(2));
       },
-      // Filtrado: () => dispatch(filter(value)),
-      'Sin erupcionar': () => dispatch(unerupted(1)),
-      'Implante DX': () => dispatch(implant(1)),
-      'Implante TTO': () => dispatch(implant(2)),
-      'Regeneración DX': () => dispatch(regeneration(1)),
-      'Regeneración TTO': () => dispatch(regeneration(2)),
-    };
-  };
-
-  // Main ContextMenu
-  const menuConfig = (place: string) => {
-    return {
-      // Tiene: doneSubMenu(place, 1),
-      // Necesita: todoSubMenu(place, 2),
-      ...menuContent(place),
-      'JSX line': <hr></hr>,
-      'Limpiar todo': () => dispatch(clear()),
-    };
-  };
+    },
+    {
+      name: 'Sin erupcionar',
+      onClick: () => dispatch(unerupted(1)),
+    },
+    {
+      name: 'DX',
+      subMenu: [
+        {
+          name: 'Corona DX',
+          onClick: () => dispatch(crown(1)),
+        },
+        {
+          name: 'Endodoncia DX',
+          onClick: () => dispatch(endodontics(1)),
+        },
+        {
+          name: 'Implante DX',
+          onClick: () => dispatch(implant(1)),
+        },
+        {
+          name: 'Regeneración DX',
+          onClick: () => dispatch(regeneration(1)),
+        },
+      ],
+    },
+    {
+      name: 'TTO',
+      subMenu: [
+        {
+          name: 'Corona TTO',
+          onClick: () => dispatch(crown(2)),
+        },
+        {
+          name: 'Endodoncia TTO',
+          onClick: () => dispatch(endodontics(2)),
+        },
+        {
+          name: 'Implante TTO',
+          onClick: () => dispatch(implant(2)),
+        },
+        {
+          name: 'Regeneración TTO',
+          onClick: () => dispatch(regeneration(2)),
+        },
+      ],
+    },
+  ];
 
   let getClassNamesByZone = (zone: string) => {
     if (toothState.cavities) {
@@ -155,52 +175,90 @@ function Tooth({ number, positionX, positionY, onChange }: any) {
     return '';
   };
 
-  // Tooth position
-  const translate = `translate(${positionX},${positionY})`;
+  const polygons = [
+    {
+      points: '0,0 20,0 15,5 5,5',
+      zone: 'top',
+    },
+    {
+      points: '5,15 15,15 20,20 0,20',
+      zone: 'bottom',
+    },
+    {
+      points: '15,5 20,0 20,20 15,15',
+      zone: 'left',
+    },
+    {
+      points: '0,0 5,5 5,15 0,20',
+      zone: 'right',
+    },
+    {
+      points: '5,5 15,5 15,15 5,15',
+      zone: 'center',
+    },
+  ];
+
+  useEffect(() => {
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+      return;
+    }
+    onChange(number, toothState);
+  }, [toothState, onChange, number]);
 
   return (
     <svg className={cn('cursor-pointer fill-white')}>
-      <g transform={translate}>
-        <polygon
-          points="0,0 20,0 15,5 5,5"
-          onContextMenu={useCM(menuConfig('top'))}
-          className={cn(
-            'stroke-black stroke-[0.5px] hover:fill-gray-400',
-            getClassNamesByZone('top')
-          )}
-        />
-        <polygon
-          points="5,15 15,15 20,20 0,20"
-          onContextMenu={useCM(menuConfig('bottom'))}
-          className={cn(
-            'stroke-black stroke-[0.5px] hover:fill-gray-400',
-            getClassNamesByZone('bottom')
-          )}
-        />
-        <polygon
-          points="15,5 20,0 20,20 15,15"
-          onContextMenu={useCM(menuConfig('left'))}
-          className={cn(
-            'stroke-black stroke-[0.5px] hover:fill-gray-400',
-            getClassNamesByZone('left')
-          )}
-        />
-        <polygon
-          points="0,0 5,5 5,15 0,20"
-          onContextMenu={useCM(menuConfig('right'))}
-          className={cn(
-            'stroke-black stroke-[0.5px] hover:fill-gray-400',
-            getClassNamesByZone('right')
-          )}
-        />
-        <polygon
-          points="5,5 15,5 15,15 5,15"
-          onContextMenu={useCM(menuConfig('center'))}
-          className={cn(
-            'stroke-black stroke-[0.5px] hover:fill-gray-400',
-            getClassNamesByZone('center')
-          )}
-        />
+      <g transform={`translate(${positionX},${positionY})`}>
+        {polygons.map((polygon) => (
+          <DropdownMenu key={polygon.zone}>
+            <DropdownMenuTrigger asChild>
+              <polygon
+                key={polygon.zone}
+                points={polygon.points}
+                className={cn(
+                  'stroke-black stroke-[0.5px] hover:fill-gray-400',
+                  getClassNamesByZone(polygon.zone)
+                )}
+              />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56">
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                {menuContent.map((item) => (
+                  <React.Fragment key={item.name}>
+                    {item.subMenu ? (
+                      <DropdownMenuSub>
+                        <DropdownMenuSubTrigger>{item.name}</DropdownMenuSubTrigger>
+                        <DropdownMenuPortal>
+                          <DropdownMenuSubContent>
+                            {item.subMenu.map((subItem) => (
+                              <DropdownMenuItem
+                                key={subItem.name}
+                                onClick={() => subItem.onClick()}
+                              >
+                                {subItem.name}
+                              </DropdownMenuItem>
+                            ))}
+                          </DropdownMenuSubContent>
+                        </DropdownMenuPortal>
+                      </DropdownMenuSub>
+                    ) : (
+                      <DropdownMenuItem onClick={() => item.onClick(polygon.zone)}>
+                        {item.name}
+                      </DropdownMenuItem>
+                    )}
+                  </React.Fragment>
+                ))}
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => dispatch(clear())}>
+                Limpiar todo
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ))}
+
         {drawToothActions()}
         <text
           x="6"
@@ -213,7 +271,6 @@ function Tooth({ number, positionX, positionY, onChange }: any) {
           {number}
         </text>
       </g>
-      {contextMenu}
     </svg>
   );
 
@@ -250,8 +307,6 @@ function Tooth({ number, positionX, positionY, onChange }: any) {
   function drawToothActions() {
     let otherFigures = null;
 
-    // console.log(toothState);
-
     if (toothState.extract > 0) {
       otherFigures = (
         <g stroke={toothState.extract === 2 ? 'red' : 'blue'}>
@@ -260,6 +315,7 @@ function Tooth({ number, positionX, positionY, onChange }: any) {
         </g>
       );
     }
+
     if (toothState.endodontics > 0) {
       otherFigures = (
         <g stroke={toothState.endodontics === 2 ? 'red' : 'blue'}>

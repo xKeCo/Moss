@@ -29,7 +29,6 @@
     "axios": "^1.6.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
-    "contextmenu": "^1.0.2",
     "date-fns": "^2.30.0",
     "eslint": "^8.52.0",
     "eslint-config-next": "^14.0.0",
