@@ -4,7 +4,6 @@ export * from './Navbar/UserNav/UserNav';
 export * from './AuthForm/AuthForm';
 export * from './PatientForm/PatientForm';
 export * from './Icons/Icons';
-export * from './WithAuth/WithAuth';
 export * from './Patients/Patients';
 export * from './Breadcrumb/Breadcrumb';
 export * from './Odontogram/Odontogram';
