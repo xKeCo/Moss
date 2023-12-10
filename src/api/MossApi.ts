@@ -8,7 +8,7 @@ const MossApi = axios.create({
 
   // TS
   // baseURL: 'https://ts-uao-project-production.up.railway.app/api',
-  baseURL: 'http://localhost:3001/api',
+  baseURL: process.env.BACK_URL,
 });
 
 // MossApi.interceptors.request.use((config) => {
