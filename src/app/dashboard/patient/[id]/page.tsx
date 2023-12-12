@@ -6,7 +6,7 @@ import { Breadcrumb } from '@/components';
 import { PatientCard, PatientInformation } from './components';
 
 export default function PatientInfoPage() {
-  const { id } = useParams();
+  const { id } = useParams() as { id: string };
   const { activePatient, loading, setPatientByID } = usePatientsStore();
 
   const breadcrumbValues = [

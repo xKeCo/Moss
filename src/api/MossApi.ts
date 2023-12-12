@@ -2,13 +2,9 @@
 import axios from 'axios';
 
 const MossApi = axios.create({
-  // baseURL: 'https://uao-project-backend-production.up.railway.app/api',
-  // baseURL: 'https://uao-project-backend-dev.up.railway.app/api',
-  // baseURL: 'https://uao-project-backend-newft.up.railway.app/api',
-
   // TS
   // baseURL: 'https://ts-uao-project-production.up.railway.app/api',
-  baseURL: process.env.BACK_URL ?? 'http://localhost:3001/api',
+  baseURL: 'https://moss-back-dev.up.railway.app/api',
 });
 
 // MossApi.interceptors.request.use((config) => {
