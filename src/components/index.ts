@@ -7,3 +7,4 @@ export * from './Icons/Icons';
 export * from './Patients/Patients';
 export * from './Breadcrumb/Breadcrumb';
 export * from './Odontogram/Odontogram';
+export * from './Providers/theme-provider';
