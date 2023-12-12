@@ -13,10 +13,19 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { signOut, useSession } from 'next-auth/react';
 import { useAuthStore } from '@/hooks';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui';
+import { useTheme } from 'next-themes';
 
 export default function UserNav() {
   const { data: session } = useSession();
   const { startLogout } = useAuthStore();
+  const { theme, setTheme } = useTheme();
 
   const dropdownMenuItems = [
     {
@@ -66,7 +75,28 @@ export default function UserNav() {
             </DropdownMenuItem>
           ))}
         </DropdownMenuGroup>
-        <DropdownMenuSeparator />
+
+        <DropdownMenuGroup className="flex justify-between items-center">
+          <DropdownMenuLabel className="font-normal">Theme</DropdownMenuLabel>
+
+          <Select
+            onValueChange={(value) => {
+              setTheme(value);
+            }}
+            value={theme}
+          >
+            <SelectTrigger className="w-[90px] h-7">
+              <SelectValue placeholder="Theme" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="light">Light</SelectItem>
+              <SelectItem value="dark">Dark</SelectItem>
+              <SelectItem value="system">System</SelectItem>
+            </SelectContent>
+          </Select>
+        </DropdownMenuGroup>
+
+        <DropdownMenuSeparator className="my-2" />
         <DropdownMenuItem onClick={startLogout}>
           Log out
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
