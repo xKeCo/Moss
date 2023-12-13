@@ -266,7 +266,7 @@ function Tooth({ number, positionX, positionY, onChange }: ToothProps) {
           stroke="navy"
           fill="navy"
           strokeWidth="0.1"
-          className="cursor-pointer fill-white text-[8px] text-center w-full"
+          className="fill-primary text-[8px] text-center w-full"
         >
           {number}
         </text>

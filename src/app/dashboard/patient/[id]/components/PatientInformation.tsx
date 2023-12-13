@@ -35,10 +35,6 @@ export const PatientInformation = () => {
       value: `${activePatient?.dniType}. ${activePatient?.dniNumber}`,
     },
     {
-      label: 'EPS',
-      value: activePatient?.medicalInformation?.EPSName?.toUpperCase()!,
-    },
-    {
       label: 'Blood type',
       value: activePatient?.basicInformation?.bloodType!,
     },
@@ -49,6 +45,10 @@ export const PatientInformation = () => {
     {
       label: 'Weight',
       value: activePatient?.basicInformation?.weight! + ' kg',
+    },
+    {
+      label: 'EPS',
+      value: activePatient?.medicalInformation?.EPSName?.toUpperCase()!,
     },
     {
       label: 'Address',

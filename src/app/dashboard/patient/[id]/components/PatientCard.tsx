@@ -31,8 +31,8 @@ export const PatientCard = () => {
         ) : (
           <>
             <h1 className="text-2xl font-semibold">{activePatient?.name}</h1>
-            <p className="text-slate-400">{activePatient?.email}</p>
-            <p className="text-slate-400">
+            <p className="text-muted-foreground">{activePatient?.email}</p>
+            <p className="text-muted-foreground">
               {formatPhone(activePatient?.contactInformation?.phone1!)}
             </p>
           </>

@@ -28,7 +28,7 @@ export default function PatientInfoPage() {
         <AlertDescription className="text-base">Paciente anticuagulado!</AlertDescription>
       </Alert> */}
 
-      <div className="grid grid-cols-8 gap-4">
+      <div className="grid md:grid-cols-6 xl:grid-cols-8 gap-4">
         <PatientCard />
         <PatientInformation />
       </div>

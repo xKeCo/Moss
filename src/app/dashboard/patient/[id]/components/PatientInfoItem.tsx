@@ -22,7 +22,7 @@ export const PatientInfoItem = ({
         </>
       ) : (
         <>
-          <h1 className="text-sm font-medium text-slate-400">{label}</h1>
+          <h1 className="text-sm font-medium text-muted-foreground">{label}</h1>
           <p>{value}</p>
         </>
       )}
