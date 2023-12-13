@@ -2,7 +2,7 @@ import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 
-import { MossApi } from '@/api';
+import { MossApi } from '@/services/api';
 
 export const authOptions = {
   providers: [

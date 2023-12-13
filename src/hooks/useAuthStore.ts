@@ -1,11 +1,11 @@
 // Redux hooks
-import { useAppDispatch, useAppSelector } from '@/redux/app/hooks';
+import { useAppDispatch, useAppSelector } from '@/services/redux/app/hooks';
 
 // Next
 import { useRouter } from 'next/navigation';
 
 // API Axios Call
-import { MossApi } from '@/api';
+import { MossApi } from '@/services/api';
 
 // Redux Actions
 import {
@@ -18,7 +18,7 @@ import {
   // onLogOutProfiles,
   // onLogOutReports,
   // onLogOutSearch,
-} from '@/redux';
+} from '@/services/redux';
 
 // Soonner Notifications
 import { toast } from 'sonner';

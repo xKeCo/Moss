@@ -1,7 +1,7 @@
 'use client';
 import { Provider as ReduxProvider } from 'react-redux';
 import { SessionProvider } from 'next-auth/react';
-import { store } from '@/redux';
+import { store } from '@/services/redux';
 
 interface IProviders {
   children: React.ReactNode;

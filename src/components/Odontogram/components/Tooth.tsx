@@ -166,9 +166,9 @@ function Tooth({ number, positionX, positionY, onChange }: ToothProps) {
   let getClassNamesByZone = (zone: string) => {
     if (toothState.cavities) {
       if (toothState.cavities[zone] === 2) {
-        return 'fill-red-400';
+        return 'fill-[#ff0000]';
       } else if (toothState.cavities[zone] === 1) {
-        return 'fill-blue-400';
+        return 'fill-[#0000ff]';
       }
     }
 
