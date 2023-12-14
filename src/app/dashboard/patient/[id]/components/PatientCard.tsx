@@ -7,7 +7,7 @@ export const PatientCard = () => {
   const { activePatient, loading } = usePatientsStore();
 
   return (
-    <div className="flex flex-col items-center justify-center col-span-2 border rounded-2xl gap-6 w-full p-6">
+    <div className="flex flex-col items-center justify-center col-span-4 md:col-span-2 border rounded-2xl gap-6 w-full p-6">
       {loading ? (
         <Skeleton className="w-28 h-28 rounded-full" />
       ) : (
