@@ -66,6 +66,7 @@ export const useAuthStore = () => {
     } catch (error: any) {
       console.log(error);
       toast.error(error.response.data.message);
+      dispatch(onLogout());
     }
   };
 
@@ -88,9 +89,9 @@ export const useAuthStore = () => {
       dispatch(onLogin(data.user));
     } catch (error: any) {
       const errorMessages = error.response.data.message;
-
       console.log(error);
       toast.error(errorMessages);
+      dispatch(onLogout());
     }
   };
 
