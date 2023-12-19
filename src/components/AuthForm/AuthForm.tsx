@@ -30,9 +30,8 @@ export function AuthForm({
   isRegister,
   ...props
 }: Readonly<UserAuthFormProps>) {
-  const { startLogin, startRegister } = useAuthStore();
+  const { status: checkingCredentials, startLogin, startRegister } = useAuthStore();
   const { status } = useSession();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
 
   const FormSchema = z.object({
@@ -60,15 +59,11 @@ export function AuthForm({
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    setIsLoading(true);
-
     const { email, password } = data;
 
     if (isRegister) {
-      setIsLoading(false);
       startRegister(data);
     } else {
-      setIsLoading(false);
       startLogin({ email, password });
     }
   }
@@ -140,8 +135,14 @@ export function AuthForm({
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={checkingCredentials === 'checking'}
+              >
+                {checkingCredentials === 'checking' && (
+                  <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                )}
                 {isRegister ? 'Create account' : 'Login'}
               </Button>
             </form>
