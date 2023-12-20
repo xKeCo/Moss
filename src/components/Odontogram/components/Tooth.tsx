@@ -5,7 +5,6 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuPortal,
   DropdownMenuSeparator,
   DropdownMenuSub,
@@ -21,8 +20,14 @@ interface ToothProps {
   onChange: (id: number, toothState: any) => void;
 }
 
-function Tooth({ number, positionX, positionY, onChange }: ToothProps) {
+export const Tooth = ({
+  number,
+  positionX,
+  positionY,
+  onChange,
+}: Readonly<ToothProps>) => {
   const initialState = {
+    tooth: number,
     cavities: {
       center: 0,
       top: 0,
@@ -222,8 +227,6 @@ function Tooth({ number, positionX, positionY, onChange }: ToothProps) {
               />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
               <DropdownMenuGroup>
                 {menuContent.map((item) => (
                   <React.Fragment key={item.name}>
@@ -390,6 +393,4 @@ function Tooth({ number, positionX, positionY, onChange }: ToothProps) {
 
     return otherFigures;
   }
-}
-
-export default Tooth;
+};
