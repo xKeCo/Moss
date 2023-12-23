@@ -28,14 +28,13 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
   Label,
   DialogFooter,
-  FormDescription,
   Checkbox,
   DialogClose,
 } from '../ui';
 import { usePatientsStore } from '@/hooks';
+import { useState } from 'react';
 
 const formSchema = z.object({
   name: z.string().min(5, {
@@ -63,7 +62,6 @@ const formSchema = z.object({
       .refine((val) => format(val, 'P') !== format(new Date(), 'P'), {
         message: 'Birth date cannot be today.',
       }),
-    age: z.string(),
     birthPlace: z.string().min(5, {
       message: 'Birth place must be at least 5 characters.',
     }),
@@ -114,7 +112,7 @@ const formSchema = z.object({
     })
     .refine((data) => data.emergencyContactPhone !== data.emergencyContactPhone2, {
       message: 'Emergency contact phone 2 cannot be equal to emergency contact phone 1.',
-      path: ['contactInformation.emergencyContactPhone2'],
+      path: ['emergencyContactPhone2'],
     }),
 
   medicalInformation: z
@@ -183,6 +181,7 @@ const formSchema = z.object({
 });
 export const PatientForm = () => {
   const { startSavingPatient } = usePatientsStore();
+  const [age, setAge] = useState(0);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -196,7 +195,6 @@ export const PatientForm = () => {
         gender: '',
         bloodType: '',
         birthDate: new Date(),
-        age: '',
         birthPlace: '',
         maritalStatus: '',
         height: '',
@@ -245,11 +243,6 @@ export const PatientForm = () => {
 
     startSavingPatient(values);
   }
-
-  const setAgeValue = (selectedDate: Date) => {
-    const age = new Date().getFullYear() - selectedDate.getFullYear();
-    form.setValue('basicInformation.age', age.toString());
-  };
 
   const clearEPSNameValue = (EPSActive: boolean) => {
     if (!EPSActive) {
@@ -371,7 +364,7 @@ export const PatientForm = () => {
                         selected={field.value}
                         onSelect={(date) => {
                           field.onChange(date);
-                          setAgeValue(date!);
+                          setAge(new Date().getFullYear() - date!.getFullYear());
                         }}
                         disabled={(date) =>
                           date > new Date() || date < new Date('1900-01-01')
@@ -387,19 +380,9 @@ export const PatientForm = () => {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="basicInformation.age"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Age</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Age" {...field} disabled endDecorator="years" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+
+            <Input placeholder="Age" value={age} disabled endDecorator="years" />
+
             <FormField
               control={form.control}
               name="basicInformation.birthPlace"
