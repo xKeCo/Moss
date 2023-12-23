@@ -3,6 +3,7 @@ import { usePatientsStore } from '@/hooks';
 import { PatientInfoItem } from '.';
 import {
   formatDate,
+  formatDniType,
   formatGender,
   formatMaritalStatus,
   formatPhone,
@@ -36,8 +37,8 @@ export const PatientInformation = () => {
       show: true,
     },
     {
-      label: 'Cedula',
-      value: `${activePatient?.dniType}. ${activePatient?.dniNumber}`,
+      label: '#. Identificación',
+      value: activePatient?.dniNumber as string,
       show: true,
     },
     {
