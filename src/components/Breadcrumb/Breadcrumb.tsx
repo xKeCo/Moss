@@ -24,12 +24,12 @@ export const Breadcrumb = ({ values, loading }: BreadcrumbProps) => {
             <>
               {value.href ? (
                 <Link href={value.href}>
-                  <p className="text-slate-400 hover:text-primary">{value.name}</p>
+                  <p className="text-muted-foreground hover:text-primary">{value.name}</p>
                 </Link>
               ) : (
                 <p
                   className={cn(
-                    'text-slate-400',
+                    'text-muted-foreground',
                     index === values.length - 1 && 'text-primary'
                   )}
                 >
@@ -40,7 +40,7 @@ export const Breadcrumb = ({ values, loading }: BreadcrumbProps) => {
           )}
 
           {index === values.length - 1 ? null : (
-            <div className="text-slate-400 text-base">/</div>
+            <div className="text-muted-foreground text-base">/</div>
           )}
         </React.Fragment>
       ))}

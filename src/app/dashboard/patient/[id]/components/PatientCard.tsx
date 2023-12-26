@@ -7,7 +7,7 @@ export const PatientCard = () => {
   const { activePatient, loading } = usePatientsStore();
 
   return (
-    <div className="flex flex-col items-center justify-center col-span-2 border rounded-2xl gap-6 w-full p-6">
+    <div className="flex flex-col items-center justify-center col-span-4 md:col-span-2 border rounded-2xl gap-6 w-full p-6">
       {loading ? (
         <Skeleton className="w-28 h-28 rounded-full" />
       ) : (
@@ -31,8 +31,8 @@ export const PatientCard = () => {
         ) : (
           <>
             <h1 className="text-2xl font-semibold">{activePatient?.name}</h1>
-            <p className="text-slate-400">{activePatient?.email}</p>
-            <p className="text-slate-400">
+            <p className="text-muted-foreground">{activePatient?.email}</p>
+            <p className="text-muted-foreground">
               {formatPhone(activePatient?.contactInformation?.phone1!)}
             </p>
           </>

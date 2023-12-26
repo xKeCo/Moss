@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { MossApi } from '@/api';
+import { MossApi } from '@/services/api';
 import {
   onAddNewPatient,
   onLoadPatients,
   onSetActivePatient,
   onSetLoadingPatients,
-} from '@/redux';
-import { useAppDispatch, useAppSelector } from '@/redux/app/hooks';
+} from '@/services/redux';
+import { useAppDispatch, useAppSelector } from '@/services/redux/app/hooks';
 import { IPatient } from '@/interfaces';
 
 export const usePatientsStore = () => {

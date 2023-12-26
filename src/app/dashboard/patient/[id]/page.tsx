@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { usePatientsStore } from '@/hooks';
 import { Breadcrumb } from '@/components';
-import { PatientCard, PatientInformation } from './components';
+import { PatientCard, PatientInformation, PatientTreatment } from './components';
 
 export default function PatientInfoPage() {
   const { id } = useParams() as { id: string };
@@ -15,7 +15,7 @@ export default function PatientInfoPage() {
   ];
 
   useEffect(() => {
-    setPatientByID(id as string);
+    setPatientByID(id);
   }, [id]);
 
   return (
@@ -28,10 +28,16 @@ export default function PatientInfoPage() {
         <AlertDescription className="text-base">Paciente anticuagulado!</AlertDescription>
       </Alert> */}
 
-      <div className="grid grid-cols-8 gap-4">
+      <div className="grid md:grid-cols-6 xl:grid-cols-8 xl:grid-rows-2 gap-4">
         <PatientCard />
         <PatientInformation />
+        <PatientTreatment />
       </div>
+      {/* <div className="grid md:grid-cols-6 xl:grid-cols-8 gap-4">
+          <PatientInformation />
+          <PatientTreatment />
+          <PatientTreatment />
+        </div> */}
     </div>
   );
 }

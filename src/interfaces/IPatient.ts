@@ -17,7 +17,6 @@ interface IBasicInformation {
   gender: 'M' | 'F' | 'O' | '';
   bloodType: 'O+' | 'O-' | 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | '';
   birthDate: Date | string;
-  age: string;
   birthPlace: string;
   height: string;
   weight: string;
