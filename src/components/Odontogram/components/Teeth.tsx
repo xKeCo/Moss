@@ -1,5 +1,5 @@
 import { IToothState } from './TeethGroup';
-import Tooth from './Tooth';
+import { Tooth } from './Tooth';
 
 interface TeethProps {
   start: number;
@@ -9,18 +9,13 @@ interface TeethProps {
   handleChange: (id: number, toothState: IToothState) => void;
 }
 
-function Teeth({ start, end, x, y, handleChange }: Readonly<TeethProps>) {
+export const Teeth = ({ start, end, x, y, handleChange }: Readonly<TeethProps>) => {
   const getArray = (start: number, end: number) => {
     const list = [];
 
-    if (start <= end) {
-      for (let i = start; i <= end; i++) {
-        list.push(i);
-      }
-    } else {
-      for (let i = start; i >= end; i--) {
-        list.push(i);
-      }
+    const increment = start <= end ? 1 : -1;
+    for (let i = start; i !== end + increment; i += increment) {
+      list.push(i);
     }
 
     return list;
@@ -29,7 +24,7 @@ function Teeth({ start, end, x, y, handleChange }: Readonly<TeethProps>) {
   const tooths = getArray(start, end);
 
   return (
-    <g transform="scale(2)" id="gmain">
+    <g className="scale-[1.2] sm:scale-[1.5] md:scale-[1.7] lg:scale-[2]">
       {tooths.map((i) => (
         <Tooth
           onChange={handleChange}
@@ -41,6 +36,4 @@ function Teeth({ start, end, x, y, handleChange }: Readonly<TeethProps>) {
       ))}
     </g>
   );
-}
-
-export default Teeth;
+};
