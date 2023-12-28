@@ -11,6 +11,8 @@ export interface IPatient {
   // healthInformation: IHealthInformation;
 
   termsAndConditions: boolean;
+  updatedAt: string;
+  createdAt: string;
 }
 
 interface IBasicInformation {

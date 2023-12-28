@@ -3,6 +3,7 @@ import { configureStore } from '@reduxjs/toolkit';
 // Slices imports
 import { authSlice } from './auth/authSlice';
 import { patientsSlice } from './patients/patientsSlice';
+import { treatmentsSlice } from './treatments/treatmentsSlice';
 // import { activitiesSlice } from './activities/activitiesSlice';
 // import { profilesSlice } from './profiles/profilesSlice';
 // import { searchSlice } from './search/searchSlice';
@@ -13,6 +14,7 @@ export const store = configureStore({
   reducer: {
     auth: authSlice.reducer,
     patients: patientsSlice.reducer,
+    treatments: treatmentsSlice.reducer,
     // activities: activitiesSlice.reducer,
     // profiles: profilesSlice.reducer,
     // search: searchSlice.reducer,

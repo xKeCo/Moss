@@ -1,6 +1,6 @@
 import { PatientForm } from '@/components';
 
-function NewPatientPage() {
+export default function NewPatientPage() {
   return (
     <div className="max-w-7xl mx-auto my-6 p-6">
       <h1 className="text-2xl xl:text-3xl font-semibold mb-3">New patient</h1>
@@ -10,5 +10,3 @@ function NewPatientPage() {
     </div>
   );
 }
-
-export default NewPatientPage;

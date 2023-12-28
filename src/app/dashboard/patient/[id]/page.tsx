@@ -1,13 +1,14 @@
 'use client';
 import { useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { usePatientsStore } from '@/hooks';
+import { usePatientsStore, useTreatmentsStore } from '@/hooks';
 import { Breadcrumb } from '@/components';
 import { PatientCard, PatientInformation, PatientTreatment } from './components';
 
 export default function PatientInfoPage() {
   const { id } = useParams() as { id: string };
   const { activePatient, loading, setPatientByID } = usePatientsStore();
+  const { setTreatmentByPatientId } = useTreatmentsStore();
 
   const breadcrumbValues = [
     { name: 'Patients', href: '/dashboard' },
@@ -16,6 +17,8 @@ export default function PatientInfoPage() {
 
   useEffect(() => {
     setPatientByID(id);
+    setTreatmentByPatientId(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   return (

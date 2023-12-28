@@ -1,6 +1,7 @@
 export * from './useForm';
 export * from './useAuthStore';
 export * from './usePatientsStore';
+export * from './useTreatmentsStore';
 // export * from './useActivitiesStore';
 // export * from './useSearch';
 // export * from './useProfilesStore';
