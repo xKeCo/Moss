@@ -9,8 +9,8 @@ export interface ITreatment {
   totalPrice: number;
   totalPaid: number;
   balance: number;
-  updatedAt: string;
-  createdAt: string;
+  updatedAt?: string;
+  createdAt?: string;
 }
 
 interface IRealTxPlan {
