@@ -1,3 +1,4 @@
+'use client';
 import React, { useEffect, useReducer, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import {
@@ -12,11 +13,13 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui';
+import { IToothState } from '@/interfaces';
 
-interface ToothProps {
+interface IToothProps {
   number: number;
   positionX: number;
   positionY: number;
+  initialState?: IToothState;
   onChange: (id: number, toothState: any) => void;
 }
 
@@ -24,9 +27,27 @@ export const Tooth = ({
   number,
   positionX,
   positionY,
+  initialState = {
+    tooth: number,
+    cavities: {
+      center: 0,
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+    },
+    extract: 0,
+    absent: 0,
+    crown: 0,
+    endodontics: 0,
+    filter: 0,
+    unerupted: 0,
+    implant: 0,
+    regeneration: 0,
+  },
   onChange,
-}: Readonly<ToothProps>) => {
-  const initialState = {
+}: Readonly<IToothProps>) => {
+  const emptyToothState = {
     tooth: number,
     cavities: {
       center: 0,
@@ -69,7 +90,7 @@ export const Tooth = ({
           cavities: setCavities(toothState, action.zone, action.value),
         };
       case 'clear':
-        return initialState;
+        return emptyToothState;
       default:
         throw new Error();
     }
@@ -168,12 +189,12 @@ export const Tooth = ({
     },
   ];
 
-  let getClassNamesByZone = (zone: string) => {
+  const getClassNamesByZone = (zone: string) => {
     if (toothState.cavities) {
       if (toothState.cavities[zone] === 2) {
         return 'fill-[#ff0000]';
       } else if (toothState.cavities[zone] === 1) {
-        return 'fill-[#0000ff]';
+        return 'fill-[#0066ff]';
       }
     }
 
@@ -312,7 +333,7 @@ export const Tooth = ({
 
     if (toothState.extract > 0) {
       otherFigures = (
-        <g stroke={toothState.extract === 2 ? 'red' : 'blue'}>
+        <g stroke={toothState.extract === 2 ? '#f53b1f' : '#0066ff'}>
           <line x1="0" y1="0" x2="20" y2="20" strokeWidth="2" />
           <line x1="0" y1="20" x2="20" y2="0" strokeWidth="2" />
         </g>
@@ -321,7 +342,7 @@ export const Tooth = ({
 
     if (toothState.endodontics > 0) {
       otherFigures = (
-        <g stroke={toothState.endodontics === 2 ? 'red' : 'blue'}>
+        <g stroke={toothState.endodontics === 2 ? '#f53b1f' : '#0066ff'}>
           <line x1="10" y1="0" x2="20" y2="20" strokeWidth="2" />
           <line x1="0" y1="20" x2="10" y2="0" strokeWidth="2" />
           <line x1="0" y1="19.38" x2="20" y2="19.38" strokeWidth="2" />
@@ -331,7 +352,7 @@ export const Tooth = ({
 
     if (toothState.absent > 0) {
       otherFigures = (
-        <g stroke={toothState.absent === 2 ? 'red' : 'blue'}>
+        <g stroke={toothState.absent === 2 ? '#f53b1f' : '#0066ff'}>
           <line x1="10" y1="0" x2="10" y2="20" strokeWidth="2" />
         </g>
       );
@@ -339,7 +360,7 @@ export const Tooth = ({
 
     if (toothState.unerupted > 0) {
       otherFigures = (
-        <g stroke={toothState.unerupted === 2 ? 'red' : 'blue'}>
+        <g stroke={toothState.unerupted === 2 ? '#f53b1f' : '#0066ff'}>
           <line x1="0" y1="10" x2="20" y2="10" strokeWidth="2"></line>
         </g>
       );
@@ -347,7 +368,7 @@ export const Tooth = ({
 
     if (toothState.implant > 0) {
       otherFigures = (
-        <g stroke={toothState.implant === 2 ? 'red' : 'blue'}>
+        <g stroke={toothState.implant === 2 ? '#f53b1f' : '#0066ff'}>
           <circle cx="10" cy="10" r="8" fill="none" strokeWidth="2" />
           <line x1="4" y1="10" x2="16" y2="10" strokeWidth="2" />
           <line x1="10" y1="4" x2="10" y2="16" strokeWidth="2" />
@@ -357,7 +378,7 @@ export const Tooth = ({
 
     if (toothState.regeneration > 0) {
       otherFigures = (
-        <g stroke={toothState.regeneration === 2 ? 'red' : 'blue'}>
+        <g stroke={toothState.regeneration === 2 ? '#f53b1f' : '#0066ff'}>
           <path
             d="M 0 10 Q 5 0 10 10 T 20 10"
             fill="none"
@@ -370,7 +391,7 @@ export const Tooth = ({
 
     if (toothState.filter > 0) {
       otherFigures = (
-        <g stroke={toothState.filter === 2 ? 'red' : 'blue'}>
+        <g stroke={toothState.filter === 2 ? '#f53b1f' : '#0066ff'}>
           <line x1="0" y1="20" x2="20" y2="0" strokeWidth="2" />
         </g>
       );
@@ -378,7 +399,7 @@ export const Tooth = ({
 
     if (toothState.crown > 0) {
       otherFigures = (
-        <g stroke={toothState.crown === 2 ? 'red' : 'blue'}>
+        <g stroke={toothState.crown === 2 ? '#f53b1f' : '#0066ff'}>
           <circle cx="10" cy="10" r="10" fill="none" strokeWidth="2" />
           {toothState.endodontics > 0 && (
             <>

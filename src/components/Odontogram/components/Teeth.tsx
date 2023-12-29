@@ -1,24 +1,29 @@
-import { IToothState } from './TeethGroup';
 import { Tooth } from './Tooth';
+import { IToothState } from '@/interfaces';
 
 interface TeethProps {
   start: number;
   end: number;
   x: number;
   y: number;
+  odontogramState: IToothState[];
   handleChange: (id: number, toothState: IToothState) => void;
 }
 
-export const Teeth = ({ start, end, x, y, handleChange }: Readonly<TeethProps>) => {
+export const Teeth = ({
+  start,
+  end,
+  x,
+  y,
+  odontogramState,
+  handleChange,
+}: Readonly<TeethProps>) => {
   const getArray = (start: number, end: number) => {
-    const list = [];
-
     const increment = start <= end ? 1 : -1;
-    for (let i = start; i !== end + increment; i += increment) {
-      list.push(i);
-    }
-
-    return list;
+    return Array.from(
+      { length: Math.abs(end - start) + 1 },
+      (_, index) => start + index * increment
+    );
   };
 
   const tooths = getArray(start, end);
@@ -32,6 +37,7 @@ export const Teeth = ({ start, end, x, y, handleChange }: Readonly<TeethProps>) 
           number={i}
           positionY={y}
           positionX={Math.abs((i - start) * 25) + x}
+          initialState={odontogramState.find((t) => t?.tooth === i)}
         />
       ))}
     </g>
