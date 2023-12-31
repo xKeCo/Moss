@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
 import * as z from 'zod';
 import { useTreatmentsStore } from '@/hooks';
@@ -67,6 +67,7 @@ export const TreatmentForm = ({
     txEvolDoc: '',
     txEvolPayment: '',
   };
+  const router = useRouter();
 
   const { startSavingTreatment } = useTreatmentsStore();
   const { id: patientId } = useParams() as { id: string };
@@ -80,7 +81,7 @@ export const TreatmentForm = ({
     useState<ITxEvolution>(initialEvolTreatment);
   const [treatmentsEvolutions, setTreatmentsEvolutions] = useState<ITxEvolution[]>([]);
 
-  const actualAndEvolutionsItems = [
+  const treatmentsAndEvolutionsItems = [
     {
       id: 1,
       title: 'Actual treatment plan',
@@ -118,6 +119,17 @@ export const TreatmentForm = ({
     });
   }
 
+  function cancelSubmit() {
+    form.reset({
+      diagnosis: '',
+      prognosis: '',
+    });
+
+    setTreatments([]);
+    setTreatmentsEvolutions([]);
+    router.push(`/dashboard/patient/${patientId}`);
+  }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 my-6">
@@ -150,7 +162,7 @@ export const TreatmentForm = ({
           />
         </div>
 
-        {actualAndEvolutionsItems.map(({ id, title, array, isEvol }) => (
+        {treatmentsAndEvolutionsItems.map(({ id, title, array, isEvol }) => (
           <div key={id}>
             <div className="flex justify-between mb-3">
               <h1 className="text-xl xl:text-xl font-semibold">{title}</h1>
@@ -215,6 +227,9 @@ export const TreatmentForm = ({
             )}
           </div>
         ))}
+        <Button type="button" variant="secondary" className="mr-4" onClick={cancelSubmit}>
+          Cancel
+        </Button>
         <Button type="submit">Save treatment</Button>
       </form>
     </Form>

@@ -1,9 +1,12 @@
 'use client';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CalendarIcon } from '@radix-ui/react-icons';
 import { format } from 'date-fns';
+import { usePatientsStore } from '@/hooks';
 import {
   Button,
   Form,
@@ -23,18 +26,9 @@ import {
   PopoverContent,
   PopoverTrigger,
   Switch,
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  Label,
-  DialogFooter,
   Checkbox,
-  DialogClose,
 } from '../ui';
-import { usePatientsStore } from '@/hooks';
-import { useState } from 'react';
+import { TermsAndConditionsModal } from './TermsAndConditionsModal';
 
 const formSchema = z.object({
   name: z.string().min(5, {
@@ -179,9 +173,11 @@ const formSchema = z.object({
     message: 'You must accept the terms and conditions.',
   }),
 });
+
 export const PatientForm = () => {
   const { startSavingPatient } = usePatientsStore();
   const [age, setAge] = useState(0);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -227,22 +223,13 @@ export const PatientForm = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-
-    // Phone 2 cannot be equal to phone
-    // if (values.phone === values.phone2) {
-    //   form.setError('phone2', {
-    //     type: 'manual',
-    //     message: 'Phone 2 cannot be equal to phone 1.',
-    //   });
-    //   return;
-    // }
-
-    console.log(values);
-
     startSavingPatient(values);
   }
+
+  const cancelSubmit = () => {
+    form.reset();
+    router.back();
+  };
 
   const clearEPSNameValue = (EPSActive: boolean) => {
     if (!EPSActive) {
@@ -771,116 +758,14 @@ export const PatientForm = () => {
                   id="termsAndConditions"
                 />
               </FormControl>
-              <Dialog>
-                <div className="grid gap-1.5 leading-none">
-                  <Label
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
-                    htmlFor="termsAndConditions"
-                  >
-                    Accept terms and conditions
-                  </Label>
-                  <p className="text-sm text-muted-foreground">
-                    You agree to our{' '}
-                    <DialogTrigger asChild>
-                      <span className="font-semibold cursor-pointer hover:text-muted-foreground/80">
-                        Terms of Service and Privacy Policy.
-                      </span>
-                    </DialogTrigger>
-                  </p>
-                  <FormMessage />
-                </div>
-                <DialogContent className="mb-4">
-                  <DialogHeader>
-                    <DialogTitle>
-                      CONSENTIMIENTO INFORMADO PARA LA PRACTICA DE INTERVENCIONES Y
-                      PROCEDIMIENTOS CLINICOS ODONTOLOGICOS
-                    </DialogTitle>
-                  </DialogHeader>
-                  <div className="max-h-[420px] overflow-y-auto no-scrollbar space-y-2">
-                    <p>
-                      Por medio de la presente declaración, en mi calidad de paciente,
-                      reconozco lo siguiente:
-                    </p>
-                    <ul className="list-disc list-inside ">
-                      <li>
-                        He recibido información clara y detallada sobre mi condición
-                        odontológica que afecta mi salud bucal.
-                      </li>
-                      <li>
-                        Se me ha comunicado de manera clara y detallada que la condición
-                        odontológica respectiva requiere el procedimiento odontológico o
-                        intervención quirúrgica correspondiente.
-                      </li>
-                      <li>
-                        Estoy plenamente informado/a acerca de los riesgos asociados con
-                        el procedimiento odontológico o intervención quirúrgica que se
-                        llevará a cabo. Estos riesgos incluyen, entre otros,
-                        complicaciones inherentes a cualquier procedimiento clínico, como
-                        el uso de instrumental, medicamentos, inflamación, sensibilidad,
-                        sangrado, dolor, adormecimiento de labios, lengua, mentón, encía y
-                        dientes, reacciones a inyecciones, cambios en la oclusión
-                        (mordida), espasmos en la mandíbula y músculos, dificultades en la
-                        articulación temporomandibular, movilidad dental, corona o puentes
-                        existentes, dolor referido al oído, cuello y cabeza, náuseas,
-                        vómitos, reacciones alérgicas, cicatrización tardía, perforación
-                        de senos maxilares, fractura de dientes, corona o raíz de compleja
-                        resolución.
-                      </li>
-                      <li>
-                        Autorizo que el procedimiento odontológico o intervención
-                        quirúrgica, así como cualquier procedimiento necesario para
-                        abordar situaciones imprevisibles, riesgos o complicaciones
-                        derivadas directa o indirectamente del procedimiento inicial, sean
-                        realizados por el/la doctor(a) y el personal profesional que
-                        consideren necesario.
-                      </li>
-                      <li>
-                        Autorizo que el procedimiento odontológico o intervención
-                        quirúrgica, así como cualquier procedimiento necesario para
-                        abordar situaciones imprevisibles, riesgos o complicaciones
-                        derivadas directa o indirectamente del procedimiento inicial, sean
-                        realizados por el/la doctor(a) y el personal profesional que
-                        consideren necesario.
-                      </li>
-                      <li>
-                        Concedo mi consentimiento para que la anestesia sea administrada
-                        por el odontólogo y los autorizo a utilizar el tipo de anestesia
-                        que consideren más apropiado según mi condición clínica y el tipo
-                        de intervención necesaria. He sido debidamente informado/a por
-                        el/la doctor(a) de odontología sobre los riesgos asociados con la
-                        aplicación de anestesia, según consta en mi historia clínica.
-                      </li>
-                      <li>
-                        Me comprometo a seguir las indicaciones del profesional y del
-                        personal de odontología en cuanto a los cuidados pre y post
-                        procedimiento, con el fin de restablecer mi salud bucal. Asimismo,
-                        cumpliré con las citas odontológicas, prescripciones, dietas,
-                        instrucciones y controles periódicos.
-                      </li>
-                      <li>
-                        Asumo la responsabilidad de cubrir el costo total de los servicios
-                        de salud oral. En testimonio de lo anterior, suscribo el presente
-                        documento a los {new Date().getDay()} días del mes de{' '}
-                        <span className="capitalize">
-                          {new Date().toLocaleString('default', { month: 'long' })}
-                        </span>{' '}
-                        del año {new Date().getFullYear()}.
-                      </li>
-                    </ul>
-                  </div>
-                  <DialogFooter className="mt-4">
-                    <DialogClose asChild>
-                      <Button type="button" variant="secondary">
-                        Close
-                      </Button>
-                    </DialogClose>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
+              <TermsAndConditionsModal />
             </FormItem>
           )}
         />
 
+        <Button type="button" variant="secondary" className="mr-4" onClick={cancelSubmit}>
+          Cancel
+        </Button>
         <Button type="submit">Save patient</Button>
       </form>
     </Form>

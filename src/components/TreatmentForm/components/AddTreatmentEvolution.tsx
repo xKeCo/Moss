@@ -1,6 +1,7 @@
 'use client';
 import { v4 as uuidv4 } from 'uuid';
 import { CalendarIcon, PlusIcon } from '@radix-ui/react-icons';
+import { toast } from 'sonner';
 import { format } from 'date-fns';
 import {
   Button,
@@ -17,13 +18,6 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
   Textarea,
 } from '@/components/ui';
 import { cn } from '@/lib/utils';
@@ -66,6 +60,26 @@ export const AddTreatmentEvolution = ({
   };
 
   const addNewTreatment = () => {
+    if (!treatmentEvol.txEvolDesc) {
+      toast.error('Please enter a treatment evolution description.');
+      return;
+    }
+
+    if (!treatmentEvol.txEvolDoc) {
+      toast.error('Please enter a treatment evolution doctor.');
+      return;
+    }
+
+    if (!treatmentEvol.txEvolDate) {
+      toast.error('Please enter a treatment evolution date.');
+      return;
+    }
+
+    if (!treatmentEvol.txEvolPayment) {
+      toast.error('Please enter a treatment evolution amount paid.');
+      return;
+    }
+
     const findTreatmentEvol = treatmentsEvols.find(
       (t: ITxEvolution) => t.txEvolId === treatmentEvol.txEvolId
     );
@@ -113,7 +127,7 @@ export const AddTreatmentEvolution = ({
 
         <div className="grid gap-4">
           <div className="flex flex-col">
-            <Label htmlFor="txEvolDesc">Treatment evolution activity (Description)</Label>
+            <Label htmlFor="txEvolDesc">Treatment evolution description</Label>
 
             <Textarea
               id="txEvolDesc"

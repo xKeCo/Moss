@@ -1,6 +1,7 @@
 'use client';
 import { v4 as uuidv4 } from 'uuid';
 import { CalendarIcon, PlusIcon } from '@radix-ui/react-icons';
+import { toast } from 'sonner';
 import { format } from 'date-fns';
 import {
   Button,
@@ -68,6 +69,26 @@ export const AddTreatmentPlan = ({
   };
 
   const addNewTreatment = () => {
+    if (!treatmentPlan.txActivity) {
+      toast.error('Treatment activity is required.');
+      return;
+    }
+
+    if (!treatmentPlan.txETT) {
+      toast.error('Estimated time of treatment is required.');
+      return;
+    }
+
+    if (!treatmentPlan.txStartDate) {
+      toast.error('Treatment start date is required.');
+      return;
+    }
+
+    if (!treatmentPlan.txPrice) {
+      toast.error('Treatment price is required.');
+      return;
+    }
+
     const findTreatment = treatmentsPlan.find(
       (t: IRealTxPlan) => t.txId === treatmentPlan.txId
     );
