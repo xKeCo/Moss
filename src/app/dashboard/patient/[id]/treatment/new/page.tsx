@@ -1,21 +1,20 @@
 'use client';
-import { Odontogram } from '@/components';
+import { Odontogram, TreatmentForm } from '@/components';
 import { IToothState } from '@/interfaces';
 
 export default function NewTreatmentPage() {
-  let odontogramState: IToothState[] = [];
+  let initialOdontogram: IToothState[] = [];
 
   return (
-    <div className="flex flex-col items-center justify-start">
-      <h1>TreatmentPage</h1>
-      <Odontogram odontogramState={odontogramState} />
-      <button
-        onClick={() => {
-          console.log('odontogramState', odontogramState);
-        }}
-      >
-        odontogramState
-      </button>
+    <div className="max-w-7xl mx-auto my-2 p-6">
+      <h1 className="text-2xl xl:text-3xl font-semibold mb-3">Odontogram</h1>
+      <div className="h-[2px] bg-secondary"></div>
+      <Odontogram odontogramState={initialOdontogram} />
+
+      <h1 className="text-2xl xl:text-3xl font-semibold mb-3">Treatment Information</h1>
+      <div className="h-[2px] bg-secondary"></div>
+
+      <TreatmentForm odontogramState={initialOdontogram} />
     </div>
   );
 }

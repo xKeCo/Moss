@@ -65,12 +65,7 @@ export const usePatientsStore = () => {
     try {
       const { data } = await MossApi.get(`/patients/patient/${id}`);
 
-      console.log(data.patient[0]);
-
-      // if (data.patient) {
       dispatch(onSetActivePatient(data.patient[0]));
-      // setError(null);
-      // }
     } catch (error: any) {
       dispatch(onSetActivePatient(null));
       setError(error.response.data.msg);

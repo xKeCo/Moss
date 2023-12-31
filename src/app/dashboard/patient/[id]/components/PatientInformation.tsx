@@ -101,7 +101,7 @@ export const PatientInformation = () => {
   ];
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 md:grid-rows-4 w-full gap-5 rounded-2xl p-6 border col-span-4">
+    <div className="grid grid-cols-2 md:grid-cols-4 md:grid-rows-4 w-full gap-3 rounded-2xl p-5 border col-span-4 items-center">
       {informationValues.map((value) => (
         <React.Fragment key={value.label}>
           {value.show && (

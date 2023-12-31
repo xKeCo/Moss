@@ -20,6 +20,7 @@ interface IToothProps {
   positionX: number;
   positionY: number;
   initialState?: IToothState;
+  readOnly?: boolean;
   onChange: (id: number, toothState: any) => void;
 }
 
@@ -45,6 +46,7 @@ export const Tooth = ({
     implant: 0,
     regeneration: 0,
   },
+  readOnly = false,
   onChange,
 }: Readonly<IToothProps>) => {
   const emptyToothState = {
@@ -233,16 +235,17 @@ export const Tooth = ({
   }, [toothState, onChange, number]);
 
   return (
-    <svg className={cn('cursor-pointer fill-white')}>
+    <svg className={cn('cursor-pointer fill-white', readOnly && 'cursor-default')}>
       <g transform={`translate(${positionX},${positionY})`}>
         {polygons.map((polygon) => (
           <DropdownMenu key={polygon.zone}>
-            <DropdownMenuTrigger asChild>
+            <DropdownMenuTrigger asChild disabled={readOnly}>
               <polygon
                 key={polygon.zone}
                 points={polygon.points}
                 className={cn(
-                  'stroke-black stroke-[0.5px] hover:fill-gray-400',
+                  'stroke-black stroke-[0.5px]',
+                  !readOnly && 'hover:fill-gray-400',
                   getClassNamesByZone(polygon.zone)
                 )}
               />

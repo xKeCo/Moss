@@ -7,6 +7,7 @@ interface TeethProps {
   x: number;
   y: number;
   odontogramState: IToothState[];
+  readOnly?: boolean;
   handleChange: (id: number, toothState: IToothState) => void;
 }
 
@@ -16,6 +17,7 @@ export const Teeth = ({
   x,
   y,
   odontogramState,
+  readOnly = false,
   handleChange,
 }: Readonly<TeethProps>) => {
   const getArray = (start: number, end: number) => {
@@ -37,6 +39,7 @@ export const Teeth = ({
           number={i}
           positionY={y}
           positionX={Math.abs((i - start) * 25) + x}
+          readOnly={readOnly}
           initialState={odontogramState.find((t) => t?.tooth === i)}
         />
       ))}

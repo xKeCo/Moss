@@ -50,10 +50,10 @@ export const useTreatmentsStore = () => {
     try {
       const { data } = await MossApi.post('/treatments/', treatment);
 
-      dispatch(onAddNewTreatment(data.treatments));
+      dispatch(onAddNewTreatment(data.treatment));
 
       toast.success('Treatment created successfully');
-      router.push('/dashboard');
+      router.back();
     } catch (error: any) {
       const errorMessage = error.response.data.msg;
       toast.error(errorMessage);
@@ -67,14 +67,27 @@ export const useTreatmentsStore = () => {
     try {
       const { data } = await MossApi.get(`/treatments/${id}`);
 
-      console.log(data.treatment[0]);
-
-      // if (data.treatment) {
       dispatch(onSetActiveTreatment(data.treatment[0]));
-      // setError(null);
-      // }
     } catch (error: any) {
       dispatch(onSetActiveTreatment(null));
+      const errorMessage = error.response.data.msg;
+      toast.error(errorMessage);
+      setError(error.response.data.msg);
+    }
+  };
+
+  // Get treatment by ID
+  const setTreatmentByTreatmentId = async (patientId: string, treatmentId: string) => {
+    dispatch(onSetLoadingTreatments(true));
+
+    try {
+      const { data } = await MossApi.get(`/treatments/${patientId}/${treatmentId}`);
+
+      dispatch(onSetActiveTreatment(data.treatment[0]));
+    } catch (error: any) {
+      dispatch(onSetActiveTreatment(null));
+      const errorMessage = error.response.data.msg;
+      toast.error(errorMessage);
       setError(error.response.data.msg);
     }
   };
@@ -157,5 +170,6 @@ export const useTreatmentsStore = () => {
     startLoadingTreatment,
     startSavingTreatment,
     setTreatmentByPatientId,
+    setTreatmentByTreatmentId,
   };
 };

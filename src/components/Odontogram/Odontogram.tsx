@@ -1,8 +1,17 @@
+'use client';
 import { IToothState } from '@/interfaces';
 import { Teeth } from './components/Teeth';
 
-export const Odontogram = ({ odontogramState }: { odontogramState: IToothState[] }) => {
+export const Odontogram = ({
+  odontogramState,
+  readOnly = false,
+}: {
+  odontogramState: IToothState[];
+  readOnly?: boolean;
+}) => {
   const handleToothUpdate = (id: number, toothState: IToothState) => {
+    if (readOnly) return;
+
     if (odontogramState.filter((n) => n?.tooth === id).length === 0) {
       odontogramState[id] = toothState;
       return;
@@ -19,14 +28,14 @@ export const Odontogram = ({ odontogramState }: { odontogramState: IToothState[]
     {
       start: 18,
       end: 11,
-      x: 0,
-      y: 0,
+      x: 0.5,
+      y: 0.5,
     },
     {
       start: 21,
       end: 28,
-      x: 210,
-      y: 0,
+      x: 209.5,
+      y: 0.5,
     },
     {
       start: 55,
@@ -37,7 +46,7 @@ export const Odontogram = ({ odontogramState }: { odontogramState: IToothState[]
     {
       start: 61,
       end: 65,
-      x: 210,
+      x: 209.5,
       y: 40,
     },
     {
@@ -49,33 +58,34 @@ export const Odontogram = ({ odontogramState }: { odontogramState: IToothState[]
     {
       start: 71,
       end: 75,
-      x: 210,
+      x: 209.5,
       y: 80,
     },
     {
       start: 48,
       end: 41,
-      x: 0,
+      x: 0.5,
       y: 120,
     },
     {
       start: 31,
       end: 38,
-      x: 210,
+      x: 209.5,
       y: 120,
     },
   ];
 
   return (
-    <svg className="my-0 mx-auto h-[180px] w-[486px] sm:h-[226px] sm:w-[607px] md:h-[256px] md:w-[688px] lg:h-[310px] lg:w-[810px]">
-      {teethGroup.map((group) => (
+    <svg className="my-6 mx-auto h-[180px] w-[486px] sm:h-[226px] sm:w-[607px] md:h-[256px] md:w-[688px] lg:h-[310px] lg:w-[810px]">
+      {teethGroup.map(({ start, end, x, y }) => (
         <Teeth
-          key={group.start}
-          start={group.start}
-          end={group.end}
-          x={group.x}
-          y={group.y}
+          key={start}
+          start={start}
+          end={end}
+          x={x}
+          y={y}
           odontogramState={odontogramState}
+          readOnly={readOnly}
           handleChange={handleToothUpdate}
         />
       ))}
