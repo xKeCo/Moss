@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
 import {
   AddTreatmentEvolution,
@@ -8,10 +9,9 @@ import {
   TreatmentEvolItem,
   TreatmentItem,
 } from '@/components';
-import { Button, Label } from '@/components/ui';
+import { Alert, Button, Label, Skeleton } from '@/components/ui';
 import { IRealTxPlan, ITxEvolution } from '@/interfaces';
 import { useTreatmentsStore } from '@/hooks';
-import { useRouter } from 'next/navigation';
 
 export default function TreatmentBasicInfo() {
   const initialTreatment: IRealTxPlan = {
@@ -32,7 +32,7 @@ export default function TreatmentBasicInfo() {
     txEvolPayment: '',
   };
   const router = useRouter();
-  const { activeTreatment, startSavingTreatment } = useTreatmentsStore();
+  const { loading, activeTreatment, startSavingTreatment } = useTreatmentsStore();
   const [openTreatmentModal, setOpenTreatmentModal] = useState(false);
   const [openTreatmentEvolModal, setOpenTreatmentEvolModal] = useState(false);
 
@@ -45,6 +45,21 @@ export default function TreatmentBasicInfo() {
   const basicInfo = [
     { label: 'Diagnosis', value: activeTreatment?.diagnosis },
     { label: 'Prognosis', value: activeTreatment?.prognosis },
+  ];
+
+  const treatmentsAndEvolutionsItems = [
+    {
+      id: 1,
+      title: 'Actual treatment plan',
+      array: treatments,
+      isEvol: false,
+    },
+    {
+      id: 2,
+      title: 'Treatment evolution',
+      array: treatmentsEvolutions,
+      isEvol: true,
+    },
   ];
 
   const cancelSubmit = () => {
@@ -97,86 +112,102 @@ export default function TreatmentBasicInfo() {
             {basicInfo.map((item) => (
               <div key={item.label}>
                 <Label className="text-base text-muted-foreground">{item.label}</Label>
-                <p className="text-base mt-2">{item.value}</p>
+                {loading ? (
+                  <Skeleton className="h-6 w-full mt-2" />
+                ) : (
+                  <p className="text-base mt-2">{item.value}</p>
+                )}
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      <div>
-        <div className="flex justify-between mb-3">
-          <h1 className="text-xl xl:text-xl font-semibold mt-2">Actual treatment plan</h1>
-          <AddTreatmentPlan
-            openPlan={openTreatmentModal}
-            setOpenPlan={setOpenTreatmentModal}
-            treatmentPlan={treatment}
-            treatmentsPlan={treatments}
-            setTreatmentPlan={setTreatment}
-            setTreatmentsPlan={setTreatments}
-          />
-        </div>
+      {treatmentsAndEvolutionsItems.map(({ id, title, array, isEvol }) => (
+        <div key={id}>
+          <div className="flex justify-between mb-3">
+            <h1 className="text-xl xl:text-xl font-semibold">{title}</h1>
 
-        {activeTreatment?.realTxPlan && (
-          <>
-            {treatments.length === 0 ? (
-              <EmptyTreatmentItem />
+            {id === 1 ? (
+              <AddTreatmentPlan
+                openPlan={openTreatmentModal}
+                setOpenPlan={setOpenTreatmentModal}
+                treatmentPlan={treatment}
+                treatmentsPlan={treatments}
+                setTreatmentPlan={setTreatment}
+                setTreatmentsPlan={setTreatments}
+              />
             ) : (
+              <AddTreatmentEvolution
+                openEvol={openTreatmentEvolModal}
+                setOpenEvol={setOpenTreatmentEvolModal}
+                treatmentEvol={treatmentEvolution}
+                treatmentsEvols={treatmentsEvolutions}
+                setTreatmentEvol={setTreatmentEvolution}
+                setTreatmentsEvols={setTreatmentsEvolutions}
+              />
+            )}
+          </div>
+
+          {loading ? (
+            <div className="grid md:grid-cols-2 gap-4">
+              {Array.from({ length: 4 }).map((_, index) => (
+                <Alert className="flex flex-col" key={index}>
+                  <div className="flex justify-between items-center mb-2">
+                    <Skeleton className="h-6 w-32 mb-1" />
+
+                    <Skeleton className="h-6 w-32" />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div className="flex flex-col items-start justify-center gap-2 w-full">
+                      <Skeleton className="h-6 w-full" />
+
+                      <Skeleton className="h-6 w-48" />
+                    </div>
+                  </div>
+                </Alert>
+              ))}
+            </div>
+          ) : array.length === 0 ? (
+            <EmptyTreatmentItem evolution={isEvol} />
+          ) : (
+            <div className="grid md:grid-cols-2 gap-4">
               <>
-                <div className="grid md:grid-cols-2 gap-4">
-                  {treatments.map((item, index) => (
-                    <TreatmentItem
-                      key={item.txId}
-                      item={item}
-                      index={index}
-                      treatments={treatments}
-                      setTreatment={setTreatment}
-                      setTreatments={setTreatments}
-                      setOpen={setOpenTreatmentModal}
-                    />
-                  ))}
-                </div>
+                {id === 1 ? (
+                  <>
+                    {treatments.map((item, index) => (
+                      <TreatmentItem
+                        key={item.txId}
+                        item={item}
+                        index={index}
+                        treatments={treatments}
+                        setTreatment={setTreatment}
+                        setTreatments={setTreatments}
+                        setOpen={setOpenTreatmentModal}
+                      />
+                    ))}
+                  </>
+                ) : (
+                  <>
+                    {treatmentsEvolutions.map((item, index) => (
+                      <TreatmentEvolItem
+                        key={item.txEvolId}
+                        item={item}
+                        index={index}
+                        treatmentsEvols={treatmentsEvolutions}
+                        setTreatmentEvol={setTreatmentEvolution}
+                        setTreatmentsEvols={setTreatmentsEvolutions}
+                        setOpenEvol={setOpenTreatmentEvolModal}
+                      />
+                    ))}
+                  </>
+                )}
               </>
-            )}
-          </>
-        )}
-      </div>
-
-      <div>
-        <div className="flex justify-between mb-3">
-          <h1 className="text-xl xl:text-xl font-semibold mt-2">Actual treatment plan</h1>
-          <AddTreatmentEvolution
-            openEvol={openTreatmentEvolModal}
-            setOpenEvol={setOpenTreatmentEvolModal}
-            treatmentEvol={treatmentEvolution}
-            treatmentsEvols={treatmentsEvolutions}
-            setTreatmentEvol={setTreatmentEvolution}
-            setTreatmentsEvols={setTreatmentsEvolutions}
-          />
+            </div>
+          )}
         </div>
-
-        {activeTreatment?.txEvolutions && (
-          <>
-            {treatmentsEvolutions.length === 0 ? (
-              <EmptyTreatmentItem evolution />
-            ) : (
-              <div className="grid md:grid-cols-2 gap-4 mb-4">
-                {treatmentsEvolutions.map((item, index) => (
-                  <TreatmentEvolItem
-                    key={item.txEvolId}
-                    item={item}
-                    index={index}
-                    treatmentsEvols={treatmentsEvolutions}
-                    setTreatmentEvol={setTreatmentEvolution}
-                    setTreatmentsEvols={setTreatmentsEvolutions}
-                    setOpenEvol={setOpenTreatmentEvolModal}
-                  />
-                ))}
-              </div>
-            )}
-          </>
-        )}
-      </div>
+      ))}
 
       <Button type="button" variant="secondary" className="mr-4" onClick={cancelSubmit}>
         Cancel

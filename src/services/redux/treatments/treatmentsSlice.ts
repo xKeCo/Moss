@@ -8,12 +8,14 @@ interface ITreatmentsState {
   loading: boolean;
   treatments: ITreatment[];
   activeTreatment: ITreatment | null;
+  errorMsg: string | null;
 }
 
 const initialState: ITreatmentsState = {
   loading: false,
   treatments: [],
   activeTreatment: null,
+  errorMsg: null,
 };
 
 export const treatmentsSlice = createSlice({
@@ -28,16 +30,19 @@ export const treatmentsSlice = createSlice({
       state.loading = false;
       state.treatments = action.payload;
       state.activeTreatment = null;
+      state.errorMsg = null;
     },
 
     onSetActiveTreatment: (state, action: PayloadAction<ITreatment | null>) => {
       state.loading = false;
       state.activeTreatment = action.payload;
+      state.errorMsg = null;
     },
 
     onAddNewTreatment: (state, action: PayloadAction<ITreatment>) => {
       state.treatments.push(action.payload);
       state.activeTreatment = null;
+      state.errorMsg = null;
     },
 
     onUpdateTreatment: (state, action: PayloadAction<ITreatment>) => {
@@ -49,6 +54,12 @@ export const treatmentsSlice = createSlice({
         );
         // state.activeTreatment = action.payload;
       }
+      state.errorMsg = null;
+    },
+
+    onSetErrorTreatment: (state, action: PayloadAction<string>) => {
+      state.loading = false;
+      state.errorMsg = action.payload;
     },
 
     // onDeleteTreatment: (state) => {
@@ -64,6 +75,7 @@ export const treatmentsSlice = createSlice({
     onLogOutreatments: (state) => {
       state.treatments = [];
       state.activeTreatment = null;
+      state.errorMsg = null;
     },
   },
 });
@@ -76,4 +88,5 @@ export const {
   onUpdateTreatment,
   // onDeleteTreatment,
   onLogOutreatments,
+  onSetErrorTreatment,
 } = treatmentsSlice.actions;

@@ -1,5 +1,3 @@
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { MossApi } from '@/services/api';
 import { useAppDispatch, useAppSelector } from '@/services/redux/app/hooks';
@@ -7,24 +5,21 @@ import {
   onAddNewTreatment,
   onLoadTreatments,
   onSetActiveTreatment,
+  onSetErrorTreatment,
   onSetLoadingTreatments,
-  onUpdateTreatment,
 } from '@/services/redux/treatments/treatmentsSlice';
 import { ITreatment } from '@/interfaces';
 
 export const useTreatmentsStore = () => {
   // Router
-  const router = useRouter();
 
   // Use selector
-  const { treatments, activeTreatment, loading } = useAppSelector(
+  const { treatments, activeTreatment, loading, errorMsg } = useAppSelector(
     (state) => state.treatments
   );
 
   // Dispatch
   const dispatch = useAppDispatch();
-
-  const [error, setError] = useState<string | null>();
 
   // Unset active treatment
   const unsetActiveTreatment = () => {
@@ -63,7 +58,7 @@ export const useTreatmentsStore = () => {
 
       const errorMessage = error.response.data.msg;
       toast.error(errorMessage);
-      setError(error.response.data.msg);
+      dispatch(onSetErrorTreatment(errorMessage));
     }
   };
 
@@ -74,14 +69,12 @@ export const useTreatmentsStore = () => {
     try {
       const { data } = await MossApi.get(`/treatments/${patientId}/${treatmentId}`);
 
-      console.log(data);
-
       dispatch(onSetActiveTreatment(data.treatment));
     } catch (error: any) {
       dispatch(onSetActiveTreatment(null));
       const errorMessage = error.response.data.msg;
       toast.error(errorMessage);
-      setError(error.response.data.msg);
+      dispatch(onSetErrorTreatment(errorMessage));
     }
   };
 
@@ -90,7 +83,6 @@ export const useTreatmentsStore = () => {
     try {
       if (treatment._id) {
         await MossApi.put(`/treatments/${treatment._id}`, treatment);
-        // dispatch(onUpdateTreatment(treatment));
 
         toast.success('Treatment updated successfully');
       } else {
@@ -177,7 +169,7 @@ export const useTreatmentsStore = () => {
     treatments,
     activeTreatment,
     loading,
-    error,
+    errorMsg,
 
     // Methods
     unsetActiveTreatment,

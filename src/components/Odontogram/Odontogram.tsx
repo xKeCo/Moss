@@ -1,14 +1,19 @@
 'use client';
+import React from 'react';
 import { IToothState } from '@/interfaces';
 import { Teeth } from './components/Teeth';
 
-export const Odontogram = ({
-  odontogramState,
-  readOnly = false,
-}: {
+interface IOdontogramProps {
   odontogramState: IToothState[];
   readOnly?: boolean;
-}) => {
+  loading?: boolean;
+}
+
+export const Odontogram = ({
+  odontogramState = [],
+  readOnly = false,
+  loading = false,
+}: IOdontogramProps) => {
   const handleToothUpdate = (id: number, toothState: IToothState) => {
     if (readOnly) return;
 
@@ -77,18 +82,21 @@ export const Odontogram = ({
 
   return (
     <svg className="my-6 mx-auto h-[180px] w-[486px] sm:h-[226px] sm:w-[607px] md:h-[256px] md:w-[688px] lg:h-[310px] lg:w-[810px]">
-      {teethGroup.map(({ start, end, x, y }) => (
-        <Teeth
-          key={start}
-          start={start}
-          end={end}
-          x={x}
-          y={y}
-          odontogramState={odontogramState}
-          readOnly={readOnly}
-          handleChange={handleToothUpdate}
-        />
-      ))}
+      <>
+        {teethGroup.map(({ start, end, x, y }) => (
+          <Teeth
+            key={start}
+            start={start}
+            end={end}
+            x={x}
+            y={y}
+            odontogramState={odontogramState}
+            readOnly={readOnly}
+            handleChange={handleToothUpdate}
+            loading={loading}
+          />
+        ))}
+      </>
     </svg>
   );
 };

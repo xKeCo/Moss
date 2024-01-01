@@ -4,7 +4,6 @@ import { Pencil2Icon, TrashIcon } from '@radix-ui/react-icons';
 import { Alert, Button } from '@/components/ui';
 import { formatCurrency } from '@/helpers';
 import { IRealTxPlan } from '@/interfaces';
-import { useEffect } from 'react';
 
 interface ITretmentItemProps {
   item: IRealTxPlan;
@@ -61,7 +60,7 @@ export const TreatmentItem = ({
       <div className="flex justify-between items-center mb-2">
         <h1 className="text-sm font-semibold mb-1">{`Treatment #${index + 1}`}</h1>
         <p className="text-sm font-medium text-muted-foreground">
-          {formatDate(item.txStartDate)}- {item.txETT} {item.txETTUnit}
+          {formatDate(item.txStartDate)} - {item.txETT} {item.txETTUnit}
         </p>
       </div>
 
