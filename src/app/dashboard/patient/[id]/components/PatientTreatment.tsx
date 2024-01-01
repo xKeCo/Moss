@@ -21,7 +21,7 @@ export const PatientTreatment = () => {
 
   const treatmentInformation: ITreatmentInfo[] = [
     {
-      label: 'Diagnostic',
+      label: 'Diagnosis',
       value: activeTreatment?.diagnosis!,
       colSpan: 2,
     },
@@ -45,7 +45,7 @@ export const PatientTreatment = () => {
 
   return (
     <>
-      <div className="flex flex-col items-start justify-start col-span-4 md:col-span-3 lg:col-span-2 border rounded-2xl gap-3 w-full p-6">
+      <div className="flex flex-col items-start justify-start col-span-4 md:col-span-3 lg:col-span-2 border rounded-2xl gap-3 w-full p-6 min-h-[274px]">
         {!activeTreatment ? (
           <div className="flex items-center justify-center h-full">
             <h1 className="text-2xl text-center">

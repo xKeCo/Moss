@@ -1,8 +1,10 @@
+'use client';
 import { v4 as uuidv4 } from 'uuid';
 import { Pencil2Icon, TrashIcon } from '@radix-ui/react-icons';
 import { Alert, Button } from '@/components/ui';
 import { formatCurrency } from '@/helpers';
 import { IRealTxPlan } from '@/interfaces';
+import { useEffect } from 'react';
 
 interface ITretmentItemProps {
   item: IRealTxPlan;
@@ -31,6 +33,19 @@ export const TreatmentItem = ({
     txPrice: '',
   };
 
+  const formatDate = (date: string | Date) => {
+    return new Date(date)
+      .toLocaleDateString('es-ES', {
+        weekday: 'short',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      })
+      .split(' ')
+      .slice(1, 4)
+      .join(' ');
+  };
+
   const editTreatment = () => {
     setTreatment(item);
     setOpen(true);
@@ -46,29 +61,32 @@ export const TreatmentItem = ({
       <div className="flex justify-between items-center mb-2">
         <h1 className="text-sm font-semibold mb-1">{`Treatment #${index + 1}`}</h1>
         <p className="text-sm font-medium text-muted-foreground">
-          {item.txStartDate.toString().split(' ').slice(1, 4).join(' ')} - {item.txETT}{' '}
-          {item.txETTUnit}
+          {formatDate(item.txStartDate)}- {item.txETT} {item.txETTUnit}
         </p>
       </div>
 
       <div className="flex items-center justify-between">
         <div className="flex flex-col items-start justify-center gap-2">
           <h1 className="text-xl font-semibold">{item.txActivity}</h1>
-          <p className="text-xl">{formatCurrency(Number(item.txPrice))}</p>
+          <p className="text-xl font-medium">{formatCurrency(Number(item.txPrice))}</p>
         </div>
 
         <div className="flex items-center justify-start gap-2">
-          <Button type="button" size="icon" onClick={editTreatment}>
-            <Pencil2Icon className="h-4 w-4" />
-          </Button>
-          <Button
-            type="button"
-            size="icon"
-            variant="destructive"
-            onClick={deleteTreatment}
-          >
-            <TrashIcon className="h-5 w-5" />
-          </Button>
+          {!item.txActive && (
+            <>
+              <Button type="button" size="icon" onClick={editTreatment}>
+                <Pencil2Icon className="h-4 w-4" />
+              </Button>
+              <Button
+                type="button"
+                size="icon"
+                variant="destructive"
+                onClick={deleteTreatment}
+              >
+                <TrashIcon className="h-5 w-5" />
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </Alert>

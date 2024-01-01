@@ -8,6 +8,7 @@ import {
   onLoadTreatments,
   onSetActiveTreatment,
   onSetLoadingTreatments,
+  onUpdateTreatment,
 } from '@/services/redux/treatments/treatmentsSlice';
 import { ITreatment } from '@/interfaces';
 
@@ -45,21 +46,6 @@ export const useTreatmentsStore = () => {
     }
   };
 
-  // Create treatment
-  const startSavingTreatment = async (treatment: ITreatment) => {
-    try {
-      const { data } = await MossApi.post('/treatments/', treatment);
-
-      dispatch(onAddNewTreatment(data.treatment));
-
-      toast.success('Treatment created successfully');
-      router.back();
-    } catch (error: any) {
-      const errorMessage = error.response.data.msg;
-      toast.error(errorMessage);
-    }
-  };
-
   // Get treatment by ID
   const setTreatmentByPatientId = async (id: string) => {
     dispatch(onSetLoadingTreatments(true));
@@ -67,9 +53,14 @@ export const useTreatmentsStore = () => {
     try {
       const { data } = await MossApi.get(`/treatments/${id}`);
 
-      dispatch(onSetActiveTreatment(data.treatment[0]));
+      dispatch(onSetActiveTreatment(data.treatment));
     } catch (error: any) {
       dispatch(onSetActiveTreatment(null));
+
+      if (error.response.status === 404) {
+        return;
+      }
+
       const errorMessage = error.response.data.msg;
       toast.error(errorMessage);
       setError(error.response.data.msg);
@@ -83,12 +74,35 @@ export const useTreatmentsStore = () => {
     try {
       const { data } = await MossApi.get(`/treatments/${patientId}/${treatmentId}`);
 
-      dispatch(onSetActiveTreatment(data.treatment[0]));
+      console.log(data);
+
+      dispatch(onSetActiveTreatment(data.treatment));
     } catch (error: any) {
       dispatch(onSetActiveTreatment(null));
       const errorMessage = error.response.data.msg;
       toast.error(errorMessage);
       setError(error.response.data.msg);
+    }
+  };
+
+  // Create treatment
+  const startSavingTreatment = async (treatment: ITreatment) => {
+    try {
+      if (treatment._id) {
+        await MossApi.put(`/treatments/${treatment._id}`, treatment);
+        // dispatch(onUpdateTreatment(treatment));
+
+        toast.success('Treatment updated successfully');
+      } else {
+        const { data } = await MossApi.post('/treatments/', treatment);
+
+        dispatch(onAddNewTreatment(data.treatment));
+
+        toast.success('Treatment created successfully');
+      }
+    } catch (error: any) {
+      const errorMessage = error.response.data.msg;
+      toast.error(errorMessage);
     }
   };
 

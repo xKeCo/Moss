@@ -3,7 +3,6 @@ import { usePatientsStore } from '@/hooks';
 import { PatientInfoItem } from '.';
 import {
   formatDate,
-  formatDniType,
   formatGender,
   formatMaritalStatus,
   formatPhone,

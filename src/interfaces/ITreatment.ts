@@ -5,6 +5,7 @@ export interface ITreatment {
   diagnosis: string;
   prognosis: string;
   patientId: string;
+  patientName?: string;
   initialOdontogram: IToothState[];
   realTxPlan: IRealTxPlan[];
   txEvolutions: ITxEvolution[];
@@ -23,6 +24,7 @@ export interface IRealTxPlan {
   txETTUnit: string;
   txStartDate: string | Date;
   txPrice: string;
+  txActive?: boolean;
 }
 
 export interface ITxEvolution {
@@ -31,4 +33,5 @@ export interface ITxEvolution {
   txEvolDesc: string;
   txEvolDoc: string;
   txEvolPayment: string;
+  txEvolActive?: boolean;
 }

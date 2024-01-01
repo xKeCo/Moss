@@ -17,6 +17,7 @@ export const Patients = () => {
 
   useEffect(() => {
     startLoadingPatients();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

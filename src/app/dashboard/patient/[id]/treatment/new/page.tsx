@@ -6,7 +6,7 @@ export default function NewTreatmentPage() {
   let initialOdontogram: IToothState[] = [];
 
   return (
-    <div className="max-w-7xl mx-auto my-2 p-6">
+    <>
       <h1 className="text-2xl xl:text-3xl font-semibold mb-3">Odontogram</h1>
       <div className="h-[2px] bg-secondary"></div>
       <Odontogram odontogramState={initialOdontogram} />
@@ -15,6 +15,6 @@ export default function NewTreatmentPage() {
       <div className="h-[2px] bg-secondary"></div>
 
       <TreatmentForm odontogramState={initialOdontogram} />
-    </div>
+    </>
   );
 }

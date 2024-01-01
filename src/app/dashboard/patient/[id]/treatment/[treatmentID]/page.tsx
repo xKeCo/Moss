@@ -1,8 +1,12 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
+import { v4 as uuidv4 } from 'uuid';
 import { useTreatmentsStore } from '@/hooks';
-import { Odontogram } from '@/components';
+import { AddTreatmentPlan, Odontogram, TreatmentItem } from '@/components';
+import { Label } from '@/components/ui';
+import { IRealTxPlan, ITxEvolution } from '@/interfaces';
+import TreatmentBasicInfo from './components/TreatmentBasicInfo';
 
 export default function TreatmentInformation() {
   const { activeTreatment, setTreatmentByTreatmentId } = useTreatmentsStore();
@@ -19,13 +23,19 @@ export default function TreatmentInformation() {
   }, [patientId, treatmentID]);
 
   return (
-    <div>
-      <h1>Treatment Information {treatmentID}</h1>
+    <>
+      <h1 className="text-2xl xl:text-3xl font-semibold mb-3">
+        {activeTreatment?.patientName} - Treatment Information
+      </h1>
+      <div className="h-[2px] bg-secondary"></div>
 
-      <h1>{activeTreatment?.diagnosis}</h1>
+      <h1 className="text-xl xl:text-xl font-semibold mt-2">Odontogram</h1>
+
       {activeTreatment?.initialOdontogram && (
         <Odontogram odontogramState={activeTreatment?.initialOdontogram!} readOnly />
       )}
-    </div>
+
+      <TreatmentBasicInfo />
+    </>
   );
 }

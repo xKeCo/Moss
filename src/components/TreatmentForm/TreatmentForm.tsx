@@ -117,6 +117,8 @@ export const TreatmentForm = ({
       realTxPlan: treatments,
       txEvolutions: treatmentsEvolutions,
     });
+
+    cancelSubmit();
   }
 
   function cancelSubmit() {
@@ -139,7 +141,7 @@ export const TreatmentForm = ({
             name="diagnosis"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Diagnosis</FormLabel>
+                <FormLabel className="text-base">Diagnosis</FormLabel>
                 <FormControl>
                   <Textarea {...field} className="resize-none" />
                 </FormControl>
@@ -152,7 +154,7 @@ export const TreatmentForm = ({
             name="prognosis"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Prognosis</FormLabel>
+                <FormLabel className="text-base">Prognosis</FormLabel>
                 <FormControl>
                   <Textarea {...field} className="resize-none" />
                 </FormControl>

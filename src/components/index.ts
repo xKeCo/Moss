@@ -9,3 +9,4 @@ export * from './Patients/Patients';
 export * from './Providers/Providers';
 export * from './Providers/theme-provider';
 export * from './TreatmentForm/TreatmentForm';
+export * from './TreatmentForm/components';

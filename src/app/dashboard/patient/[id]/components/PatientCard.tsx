@@ -1,4 +1,3 @@
-'use client';
 import { usePatientsStore } from '@/hooks';
 import { Avatar, AvatarFallback, AvatarImage, Skeleton } from '@/components/ui';
 import { formatPhone } from '@/helpers';

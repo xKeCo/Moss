@@ -40,19 +40,16 @@ export const treatmentsSlice = createSlice({
       state.activeTreatment = null;
     },
 
-    // onUpdateTreatment: (state, action: PayloadAction<ITreatment>) => {
-    //   state.loading = false;
+    onUpdateTreatment: (state, action: PayloadAction<ITreatment>) => {
+      state.loading = false;
 
-    //   state.treatments = state.treatments.map((treatment) => {
-    //     if (treatment.dniNumber === action.payload.dniNumber) {
-    //       return action.payload;
-    //     }
-
-    //     return treatment;
-    //   });
-
-    //   state.activeTreatment = action.payload;
-    // },
+      if (state.activeTreatment) {
+        state.treatments = state.treatments.map((treatment) =>
+          treatment._id === action.payload._id ? action.payload : treatment
+        );
+        // state.activeTreatment = action.payload;
+      }
+    },
 
     // onDeleteTreatment: (state) => {
     //   state.loading = false;
@@ -76,7 +73,7 @@ export const {
   onLoadTreatments,
   onSetActiveTreatment,
   onAddNewTreatment,
-  // onUpdateTreatment,
+  onUpdateTreatment,
   // onDeleteTreatment,
   onLogOutreatments,
 } = treatmentsSlice.actions;
