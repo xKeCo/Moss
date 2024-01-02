@@ -9,9 +9,11 @@ import {
   onSetLoadingTreatments,
 } from '@/services/redux/treatments/treatmentsSlice';
 import { ITreatment } from '@/interfaces';
+import { useRouter } from 'next/navigation';
 
 export const useTreatmentsStore = () => {
   // Router
+  const router = useRouter();
 
   // Use selector
   const { treatments, activeTreatment, loading, errorMsg } = useAppSelector(
@@ -83,7 +85,7 @@ export const useTreatmentsStore = () => {
     try {
       if (treatment._id) {
         await MossApi.put(`/treatments/${treatment._id}`, treatment);
-
+        router.back();
         toast.success('Treatment updated successfully');
       } else {
         const { data } = await MossApi.post('/treatments/', treatment);
