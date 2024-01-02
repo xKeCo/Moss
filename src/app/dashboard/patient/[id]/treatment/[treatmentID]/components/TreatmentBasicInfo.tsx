@@ -110,7 +110,9 @@ export default function TreatmentBasicInfo() {
           <div className="grid sm:grid-cols-2 gap-4">
             {basicInfo.map((item) => (
               <div key={item.label}>
-                <Label className="text-base text-muted-foreground">{item.label}</Label>
+                <p className="text-base font-medium text-muted-foreground">
+                  {item.label}
+                </p>
                 {loading ? (
                   <Skeleton className="h-6 w-full mt-2" />
                 ) : (

@@ -12,6 +12,7 @@ export const Navbar = () => {
         </Link>
 
         <Input
+          id="search"
           placeholder="Search patient"
           type="text"
           className="hidden sm:block w-[300px]"

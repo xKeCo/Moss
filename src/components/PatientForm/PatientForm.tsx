@@ -266,7 +266,7 @@ export const PatientForm = () => {
               <FormItem className="sm:col-span-2">
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Full name" {...field} />
+                  <Input placeholder="Full name" autoComplete="name" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -451,7 +451,7 @@ export const PatientForm = () => {
               <FormItem className="sm:col-span-2">
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="Email" {...field} />
+                  <Input placeholder="Email" autoComplete="email" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -554,8 +554,11 @@ export const PatientForm = () => {
             name="medicalInformation.EPSActive"
             render={({ field }) => (
               <FormItem className="flex flex-col justify-around">
-                <FormLabel className="h-[17px]">EPS Active</FormLabel>
+                <FormLabel className="h-[17px]" htmlFor="medicalInformation.EPSActive">
+                  EPS Active
+                </FormLabel>
                 <Switch
+                  id="medicalInformation.EPSActive"
                   checked={field.value}
                   onCheckedChange={(value: boolean) => {
                     field.onChange(value);
@@ -589,8 +592,14 @@ export const PatientForm = () => {
             name="medicalInformation.visitedDoctor"
             render={({ field }) => (
               <FormItem className="flex flex-col justify-around">
-                <FormLabel className="h-[17px]">Visited a doctor</FormLabel>
+                <FormLabel
+                  className="h-[17px]"
+                  htmlFor="medicalInformation.visitedDoctor"
+                >
+                  Visited a doctor
+                </FormLabel>
                 <Switch
+                  id="medicalInformation.visitedDoctor"
                   checked={field.value}
                   onCheckedChange={(doctorType: boolean) => {
                     field.onChange(doctorType);
@@ -634,8 +643,11 @@ export const PatientForm = () => {
             name="medicalInformation.inTreatment"
             render={({ field }) => (
               <FormItem className="flex flex-col justify-around">
-                <FormLabel className="h-[17px]">In treatment</FormLabel>
+                <FormLabel className="h-[17px]" htmlFor="medicalInformation.inTreatment">
+                  In treatment
+                </FormLabel>
                 <Switch
+                  id="medicalInformation.inTreatment"
                   checked={field.value}
                   onCheckedChange={(inTreatment: boolean) => {
                     field.onChange(inTreatment);
@@ -669,8 +681,11 @@ export const PatientForm = () => {
             name="medicalInformation.boneScan"
             render={({ field }) => (
               <FormItem className="flex flex-col justify-around">
-                <FormLabel className="h-[17px]">Bone scan</FormLabel>
+                <FormLabel className="h-[17px]" htmlFor="medicalInformation.boneScan">
+                  Bone scan
+                </FormLabel>
                 <Switch
+                  id="medicalInformation.boneScan"
                   checked={field.value}
                   onCheckedChange={(boneScan: boolean) => {
                     field.onChange(boneScan);

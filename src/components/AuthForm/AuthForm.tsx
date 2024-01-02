@@ -93,7 +93,11 @@ export function AuthForm({
 
         <div className={cn('grid gap-6', className)} {...props}>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="space-y-4"
+              autoComplete="off"
+            >
               <FormField
                 control={form.control}
                 name="email"
@@ -101,7 +105,7 @@ export function AuthForm({
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input placeholder="Email" {...field} />
+                      <Input placeholder="Email" {...field} autoComplete="email" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -115,7 +119,11 @@ export function AuthForm({
                     <FormItem>
                       <FormLabel>Username</FormLabel>
                       <FormControl>
-                        <Input placeholder="Username" {...field} />
+                        <Input
+                          placeholder="Username"
+                          {...field}
+                          autoComplete="username"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -129,7 +137,12 @@ export function AuthForm({
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter password" {...field} type="password" />
+                      <Input
+                        placeholder="Enter password"
+                        {...field}
+                        type="password"
+                        autoComplete="current-password"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
