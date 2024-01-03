@@ -1,7 +1,5 @@
 'use client';
-import { HTMLAttributes, useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { HTMLAttributes, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import * as z from 'zod';
@@ -25,29 +23,28 @@ interface UserAuthFormProps extends HTMLAttributes<HTMLDivElement> {
   isRegister?: boolean;
 }
 
+const FormSchema = z.object({
+  email: z.string().email({
+    message: 'Please enter a valid email address.',
+  }),
+  username: z
+    .string()
+    .min(2, {
+      message: 'Username must be at least 2 characters.',
+    })
+    .optional(),
+  password: z.string().min(6, {
+    message: 'Password must be at least 6 characters.',
+  }),
+});
+
 export function AuthForm({
   className,
   isRegister,
   ...props
 }: Readonly<UserAuthFormProps>) {
-  const { status: checkingCredentials, startLogin, startRegister } = useAuthStore();
-  const { status } = useSession();
-  const router = useRouter();
-
-  const FormSchema = z.object({
-    email: z.string().email({
-      message: 'Please enter a valid email address.',
-    }),
-    username: z
-      .string()
-      .min(2, {
-        message: 'Username must be at least 2 characters.',
-      })
-      .optional(),
-    password: z.string().min(6, {
-      message: 'Password must be at least 6 characters.',
-    }),
-  });
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { startLogin, startRegister } = useAuthStore();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -59,6 +56,7 @@ export function AuthForm({
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
+    setIsLoading(true);
     const { email, password } = data;
 
     if (isRegister) {
@@ -67,12 +65,6 @@ export function AuthForm({
       startLogin({ email, password });
     }
   }
-
-  useEffect(() => {
-    if (status === 'authenticated') {
-      router.replace('/dashboard');
-    }
-  }, [status, router]);
 
   return (
     <div className="px-8">
@@ -148,14 +140,8 @@ export function AuthForm({
                   </FormItem>
                 )}
               />
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={checkingCredentials === 'checking'}
-              >
-                {checkingCredentials === 'checking' && (
-                  <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                )}
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading && <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />}
                 {isRegister ? 'Create account' : 'Login'}
               </Button>
             </form>
@@ -184,9 +170,9 @@ export function AuthForm({
             }
           >
             {isLoading ? (
-              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+              <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
             ) : (
-              <Icons.google className="mr-2 h-4 w-4" />
+              <Icons.Google className="mr-2 h-4 w-4" />
             )}{' '}
             Google
           </Button> */}

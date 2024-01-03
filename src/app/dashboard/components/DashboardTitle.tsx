@@ -9,7 +9,7 @@ export const DashboardTitle = () => {
       <h1 className="text-4xl font-semibold">Dashboard</h1>
       <Link href="/dashboard/patient/new">
         <Button className="text-sm">
-          <Icons.add className="mr-2 h-4 w-4" />
+          <Icons.Add className="mr-2 h-4 w-4" />
           Add Patient
         </Button>
       </Link>
