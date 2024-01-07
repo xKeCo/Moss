@@ -28,7 +28,7 @@ import {
   Textarea,
 } from '@/components/ui';
 import { cn } from '@/lib/utils';
-import { IRealTxPlan } from '@/interfaces';
+import type { IRealTxPlan } from '@/interfaces';
 
 interface IAddTreatmentPlanProps {
   openPlan: boolean;

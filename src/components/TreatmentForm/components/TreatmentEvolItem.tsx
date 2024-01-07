@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
-import { OpenInNewWindowIcon, Pencil2Icon, TrashIcon } from '@radix-ui/react-icons';
+import { Pencil2Icon, TrashIcon } from '@radix-ui/react-icons';
 import { Alert, Button } from '@/components/ui';
 import { formatCurrency } from '@/helpers';
-import { IRealTxPlan, ITxEvolution } from '@/interfaces';
+import type { ITxEvolution } from '@/interfaces';
 
 interface ITretmentEvolItemProps {
   item: ITxEvolution;

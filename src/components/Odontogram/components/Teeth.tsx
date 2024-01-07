@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { Tooth } from './Tooth';
-import { IToothState } from '@/interfaces';
+import type { IToothState } from '@/interfaces';
 import { cn } from '@/lib/utils';
 
 interface TeethProps {

@@ -1,5 +1,5 @@
 // Redux toolkit
-import { IPatient } from '@/interfaces';
+import type { IPatient } from '@/interfaces';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // Types

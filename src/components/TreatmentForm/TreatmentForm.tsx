@@ -23,7 +23,7 @@ import {
   TreatmentEvolItem,
   TreatmentItem,
 } from './components';
-import { IRealTxPlan, IToothState, ITxEvolution } from '@/interfaces';
+import type { IRealTxPlan, IToothState, ITxEvolution } from '@/interfaces';
 import { toast } from 'sonner';
 
 const FormSchema = z.object({

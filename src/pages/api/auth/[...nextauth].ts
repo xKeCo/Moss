@@ -2,7 +2,8 @@ import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 
-import { MossApi } from '@/services/api';
+import prisma from '@/lib/prisma';
+import bycryptjs from 'bcryptjs';
 
 export const authOptions = {
   providers: [
@@ -19,14 +20,23 @@ export const authOptions = {
       },
 
       async authorize(credentials, req) {
-        const { data } = await MossApi.post('/auth/login', {
-          email: credentials!.email,
-          password: credentials!.password,
+        const { email, password } = credentials!;
+
+        const user = await prisma.user.findUnique({
+          where: {
+            email: email.toLowerCase(),
+          },
         });
 
-        if (!data.user) throw new Error(data.message);
+        if (!user) throw new Error('UserNotFound');
 
-        return data;
+        if (!bycryptjs.compareSync(password, user.password)) {
+          return null;
+        }
+
+        const { password: _, ...rest } = user;
+
+        return rest;
       },
     }),
   ],
@@ -45,6 +55,7 @@ export const authOptions = {
   },
   pages: {
     signIn: '/login',
+    newUser: '/register',
   },
 };
 

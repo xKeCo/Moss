@@ -2,11 +2,14 @@
 import { HTMLAttributes, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useAuthStore } from '@/hooks';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
+import { registerUser } from '@/actions';
 import {
   Button,
   Input,
@@ -44,7 +47,8 @@ export function AuthForm({
   ...props
 }: Readonly<UserAuthFormProps>) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { startLogin, startRegister } = useAuthStore();
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -55,14 +59,70 @@ export function AuthForm({
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  const startLogin = async (email: string, password: string) => {
     setIsLoading(true);
-    const { email, password } = data;
+
+    try {
+      const signInResult = await signIn('credentials', {
+        email,
+        password,
+        redirect: false,
+      });
+
+      setIsLoading(false);
+
+      if (!signInResult?.ok) {
+        return toast.error('Invalid credentials');
+      }
+
+      router.push(searchParams?.get('from') || '/dashboard');
+    } catch (error) {
+      setIsLoading(false);
+      console.log('error', error);
+      toast.error('An error occurred during login');
+    }
+  };
+
+  const startRegister = async (email: string, password: string, username: string) => {
+    setIsLoading(true);
+
+    try {
+      const user = await registerUser(email, password, username);
+
+      if (!user.ok) {
+        if (user.error === 'emailExists') {
+          form.setError('email', {
+            message: 'Email already exists.',
+          });
+        }
+
+        if (user.error === 'usernameExists') {
+          form.setError('username', {
+            message: 'Username already exists.',
+          });
+        }
+
+        setIsLoading(false);
+        return toast.error(user.errorMessage);
+      }
+
+      await startLogin(email, password);
+
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      console.log('error', error);
+      toast.error('An error occurred during registration');
+    }
+  };
+
+  function onSubmit(data: z.infer<typeof FormSchema>) {
+    const { email, password, username } = data;
 
     if (isRegister) {
-      startRegister(data);
+      startRegister(email, password, username!);
     } else {
-      startLogin({ email, password });
+      startLogin(email, password);
     }
   }
 

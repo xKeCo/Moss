@@ -15,10 +15,10 @@ import { InfoCircledIcon } from '@radix-ui/react-icons';
 export const Patients = () => {
   const { patients, loading, startLoadingPatients } = usePatientsStore();
 
-  useEffect(() => {
-    startLoadingPatients();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   startLoadingPatients();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   return (
     <>

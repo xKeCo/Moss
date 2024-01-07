@@ -8,7 +8,7 @@ import {
   onSetErrorTreatment,
   onSetLoadingTreatments,
 } from '@/services/redux/treatments/treatmentsSlice';
-import { ITreatment } from '@/interfaces';
+import type { ITreatment } from '@/interfaces';
 import { useRouter } from 'next/navigation';
 
 export const useTreatmentsStore = () => {

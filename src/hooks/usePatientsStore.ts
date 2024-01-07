@@ -9,7 +9,7 @@ import {
   onSetLoadingPatients,
 } from '@/services/redux';
 import { useAppDispatch, useAppSelector } from '@/services/redux/app/hooks';
-import { IPatient } from '@/interfaces';
+import type { IPatient } from '@/interfaces';
 
 export const usePatientsStore = () => {
   // Router

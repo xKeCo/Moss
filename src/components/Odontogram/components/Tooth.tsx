@@ -13,7 +13,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui';
-import { IToothState } from '@/interfaces';
+import type { IToothState } from '@/interfaces';
 
 interface IToothProps {
   number: number;

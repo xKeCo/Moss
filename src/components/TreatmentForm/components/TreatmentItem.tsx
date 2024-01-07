@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Pencil2Icon, TrashIcon } from '@radix-ui/react-icons';
 import { Alert, Button } from '@/components/ui';
 import { formatCurrency } from '@/helpers';
-import { IRealTxPlan } from '@/interfaces';
+import type { IRealTxPlan } from '@/interfaces';
 
 interface ITretmentItemProps {
   item: IRealTxPlan;

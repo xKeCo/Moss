@@ -9,8 +9,8 @@ import {
   TreatmentEvolItem,
   TreatmentItem,
 } from '@/components';
-import { Alert, Button, Label, Skeleton } from '@/components/ui';
-import { IRealTxPlan, ITxEvolution } from '@/interfaces';
+import { Alert, Button, Skeleton } from '@/components/ui';
+import type { IRealTxPlan, ITxEvolution } from '@/interfaces';
 import { useTreatmentsStore } from '@/hooks';
 
 export default function TreatmentBasicInfo() {
@@ -92,6 +92,48 @@ export default function TreatmentBasicInfo() {
     }
   };
 
+  const renderTreatmentItems = ({
+    id,
+    array,
+    isEvol,
+  }: {
+    id: number;
+    array: IRealTxPlan[] | ITxEvolution[];
+    isEvol: boolean;
+  }) => {
+    if (array.length === 0) {
+      return <EmptyTreatmentItem evolution={isEvol} />;
+    } else {
+      return (
+        <div className="grid md:grid-cols-2 gap-4">
+          {id === 1
+            ? treatments.map((item, index) => (
+                <TreatmentItem
+                  key={item.txId}
+                  item={item}
+                  index={index}
+                  treatments={treatments}
+                  setTreatment={setTreatment}
+                  setTreatments={setTreatments}
+                  setOpen={setOpenTreatmentModal}
+                />
+              ))
+            : treatmentsEvolutions.map((item, index) => (
+                <TreatmentEvolItem
+                  key={item.txEvolId}
+                  item={item}
+                  index={index}
+                  treatmentsEvols={treatmentsEvolutions}
+                  setTreatmentEvol={setTreatmentEvolution}
+                  setTreatmentsEvols={setTreatmentsEvolutions}
+                  setOpenEvol={setOpenTreatmentEvolModal}
+                />
+              ))}
+        </div>
+      );
+    }
+  };
+
   useEffect(() => {
     if (activeTreatment) {
       setTreatments(activeTreatment.realTxPlan);
@@ -170,42 +212,8 @@ export default function TreatmentBasicInfo() {
                 </Alert>
               ))}
             </div>
-          ) : array.length === 0 ? (
-            <EmptyTreatmentItem evolution={isEvol} />
           ) : (
-            <div className="grid md:grid-cols-2 gap-4">
-              <>
-                {id === 1 ? (
-                  <>
-                    {treatments.map((item, index) => (
-                      <TreatmentItem
-                        key={item.txId}
-                        item={item}
-                        index={index}
-                        treatments={treatments}
-                        setTreatment={setTreatment}
-                        setTreatments={setTreatments}
-                        setOpen={setOpenTreatmentModal}
-                      />
-                    ))}
-                  </>
-                ) : (
-                  <>
-                    {treatmentsEvolutions.map((item, index) => (
-                      <TreatmentEvolItem
-                        key={item.txEvolId}
-                        item={item}
-                        index={index}
-                        treatmentsEvols={treatmentsEvolutions}
-                        setTreatmentEvol={setTreatmentEvolution}
-                        setTreatmentsEvols={setTreatmentsEvolutions}
-                        setOpenEvol={setOpenTreatmentEvolModal}
-                      />
-                    ))}
-                  </>
-                )}
-              </>
-            </div>
+            renderTreatmentItems({ id, array, isEvol })
           )}
         </div>
       ))}

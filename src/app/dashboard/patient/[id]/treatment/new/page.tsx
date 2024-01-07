@@ -1,6 +1,6 @@
 'use client';
 import { Odontogram, TreatmentForm } from '@/components';
-import { IToothState } from '@/interfaces';
+import type { IToothState } from '@/interfaces';
 
 export default function NewTreatmentPage() {
   let initialOdontogram: IToothState[] = [];

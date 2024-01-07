@@ -21,7 +21,7 @@ import {
   Textarea,
 } from '@/components/ui';
 import { cn } from '@/lib/utils';
-import { ITxEvolution } from '@/interfaces';
+import type { ITxEvolution } from '@/interfaces';
 
 interface IAddTreatmentEvolutionProps {
   openEvol: boolean;

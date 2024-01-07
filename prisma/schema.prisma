@@ -1,0 +1,229 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum DniType {
+  CC
+  TI
+  O
+}
+
+enum Gender {
+  M 
+  F 
+  O
+}
+
+enum BloodType {
+  A_POSITIVE
+  A_NEGATIVE
+  B_POSITIVE
+  B_NEGATIVE
+  O_POSITIVE
+  O_NEGATIVE
+  AB_POSITIVE
+  AB_NEGATIVE
+}
+
+enum MaritalStatus {
+  S
+  C
+  V
+  D
+  M
+  U
+}
+
+enum DoctorType {
+  G
+  E
+}
+
+model BasicInformation {
+  id            String   @id @default(uuid())
+  gender        Gender
+  bloodType     BloodType
+  birthDate     DateTime
+  birthPlace    String
+  height        Float
+  weight        Float
+  maritalStatus MaritalStatus
+
+  Patient       Patient @relation(fields: [patientId], references: [id])
+  patientId     String   @unique
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model ContactInformation {
+  id                     String   @id @default(uuid())
+  address                String
+  phone1                 String
+  phone2                 String?
+  emergencyContactName   String
+  emergencyContactPhone  String
+  emergencyContactPhone2 String?
+
+  Patient                Patient @relation(fields: [patientId], references: [id])
+  patientId              String   @unique
+
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+}
+
+model MedicalInformation {
+  id                 String   @id @default(uuid())
+  EPSActive          Boolean
+  EPSName            String?
+  visitedDoctor      Boolean
+  doctorType         DoctorType?
+  inTreatment        Boolean
+  treatmentName      String?
+  boneScan           Boolean
+  boneScanType       String?
+
+  Patient            Patient @relation(fields: [patientId], references: [id])
+  patientId          String   @unique
+
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?  @default("${email.split(\"@\")[0]}")
+  username  String   @unique
+  password  String   
+  photoURL  String?  @default("https://source.boringavatars.com/marble/50/${username}")
+
+  workspaces Workspace[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Workspace {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  
+// A workspace can have many users and many patients
+  users     User[]
+  patients  Patient[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Patient {
+  id                   String     @id     @default(uuid())
+  name                 String
+  dniType              DniType            @default(CC)
+  dniNumber            String             @unique
+  email                String
+  photoURL             String?            @default("https://source.boringavatars.com/marble/50/${dniNumber}")
+
+  workspace            Workspace          @relation(fields: [workspaceId], references: [id])
+  workspaceId          String             @unique
+
+  BasicInformation     BasicInformation? 
+  ContactInformation   ContactInformation?
+  MedicalInformation   MedicalInformation?
+  Treatment            Treatment?         
+
+  termsAndConditions   Boolean            @default(true)
+  hasExtraInfo         Boolean            @default(false)   
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+}
+
+model Cavities {
+  id                String   @id @default(uuid())
+  center            Int
+  top               Int
+  bottom            Int
+  left              Int
+  right             Int
+
+  InitialOdontogram InitialOdontogram @relation(fields: [initialOdontogramId], references: [id])
+  initialOdontogramId String         @unique
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model InitialOdontogram {
+  id           String    @id @default(uuid())
+  tooth        Int 
+  extract      Int 
+  absent       Int
+  crown        Int
+  endodontics  Int
+  filter       Int
+  unerupted    Int
+  implant      Int
+  regeneration Int
+
+  cavities     Cavities?
+
+  Treatment    Treatment @relation(fields: [treatmentId], references: [id])
+  treatmentId  String    @unique
+
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model RealTxPlan {
+  id           String    @id @default(uuid())
+  txPhase      String
+  txActivity   String
+  txETT        String
+  txStartDate  String
+  txPrice      String
+  txActive     Boolean?  @default(true)
+
+  Treatment    Treatment @relation(fields: [treatmentId], references: [id])
+  treatmentId  String    @unique
+
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt  
+}
+
+model TxEvolution {
+  id            String    @id @default(uuid())
+  txEvolDate    String
+  txEvolDesc    String
+  txEvolDoc     String
+  txEvolPayment String
+  txEvolActive  Boolean?  @default(true)
+
+  Treatment     Treatment @relation(fields: [treatmentId], references: [id])
+  treatmentId   String    @unique
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt  
+}
+
+model Treatment {
+  id                  String             @id @default(uuid())
+  diagnosis           String
+  prognosis           String
+
+  Patient             Patient?          @relation(fields: [patientId], references: [id])
+  patientId           String            @unique
+  InitialOdontogram   InitialOdontogram?
+  RealTxPlan          RealTxPlan[]
+  TxEvolution         TxEvolution[]
+
+  totalPrice          Float              @default(0)
+  totlaPaid           Float              @default(0)
+  totalPending        Float              @default(0)
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+}
