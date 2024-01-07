@@ -5,7 +5,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import prisma from '@/lib/prisma';
 import bycryptjs from 'bcryptjs';
 
-export const authOptions = {
+export const authOptions = NextAuth({
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID!,
@@ -57,6 +57,6 @@ export const authOptions = {
     signIn: '/login',
     newUser: '/register',
   },
-};
+});
 
-export default NextAuth(authOptions);
+export { authOptions as GET, authOptions as POST };
