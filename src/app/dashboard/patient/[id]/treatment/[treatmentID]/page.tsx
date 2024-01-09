@@ -4,7 +4,7 @@ import { useParams } from 'next/navigation';
 import { useTreatmentsStore } from '@/hooks';
 import { Odontogram } from '@/components';
 import { Button, Skeleton } from '@/components/ui';
-import TreatmentBasicInfo from './components/TreatmentBasicInfo';
+import { TreatmentBasicInfo } from './components/TreatmentBasicInfo';
 import { ArrowLeftIcon, CrossCircledIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 

@@ -13,7 +13,7 @@ import { Alert, Button, Skeleton } from '@/components/ui';
 import type { IRealTxPlan, ITxEvolution } from '@/interfaces';
 import { useTreatmentsStore } from '@/hooks';
 
-export default function TreatmentBasicInfo() {
+export const TreatmentBasicInfo = () => {
   const initialTreatment: IRealTxPlan = {
     txId: uuidv4(),
     txPhase: `Fase 1`,
@@ -228,4 +228,4 @@ export default function TreatmentBasicInfo() {
       )}
     </div>
   );
-}
+};

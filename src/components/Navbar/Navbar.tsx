@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import UserNav from './UserNav/UserNav';
-import { Input } from '../ui/input';
+import { Input } from '../ui';
+import { UserNav, WorkspaceSwitcher } from '..';
 
 export const Navbar = () => {
   return (
@@ -18,7 +18,8 @@ export const Navbar = () => {
           className="hidden sm:block w-[300px]"
         />
       </div>
-      <div className="ml-auto flex items-center space-x-4">
+      <div className="ml-auto flex items-center gap-6">
+        <WorkspaceSwitcher />
         <UserNav />
       </div>
     </div>

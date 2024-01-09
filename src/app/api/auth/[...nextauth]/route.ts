@@ -26,6 +26,9 @@ const handler = NextAuth({
           where: {
             email: email.toLowerCase(),
           },
+          include: {
+            workspaces: true,
+          },
         });
 
         if (!user) throw new Error('UserNotFound');
@@ -41,13 +44,27 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
-    jwt({ token, user }: { token: any; user: any }) {
+    jwt({
+      token,
+      session,
+      trigger,
+      user,
+    }: {
+      token: any;
+      user: any;
+      session?: any;
+      trigger?: any;
+    }) {
       if (user) token.user = user;
+
+      if (trigger === 'update') {
+        return { ...token, user: session.user };
+      }
 
       return token;
     },
 
-    session({ session, token }: { session: any; token: any }) {
+    session({ session, token, trigger }: { session: any; token: any; trigger?: any }) {
       session.user = token.user as any;
 
       return session;

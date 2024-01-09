@@ -89,6 +89,8 @@ export function AuthForm({
     try {
       const user = await registerUser(email, password, username);
 
+      setIsLoading(false);
+
       if (!user.ok) {
         if (user.error === 'emailExists') {
           form.setError('email', {
@@ -102,7 +104,6 @@ export function AuthForm({
           });
         }
 
-        setIsLoading(false);
         return toast.error(user.errorMessage);
       }
 

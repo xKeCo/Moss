@@ -1,9 +1,27 @@
-export interface IUser {
-  _id: string;
+// export interface IUser {
+//   id: string;
+//   name: string;
+//   username: string;
+//   email: string;
+//   password: string;
+//   role: 'A' | 'U';
+//   photoURL: string;
+// }
+
+interface IWorkspace {
+  id: string;
   name: string;
-  username: string;
+  createdAt: Date;
+  updatedAt: Date;
+  users: IUser[];
+}
+export interface IUser {
+  id: string;
   email: string;
-  password: string;
-  role: 'A' | 'U';
+  username: string;
+  name: string;
   photoURL: string;
+  workspaces: IWorkspace[];
+  createdAt: string;
+  updatedAt: string;
 }

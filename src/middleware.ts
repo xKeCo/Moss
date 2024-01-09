@@ -5,13 +5,29 @@ import { NextResponse } from 'next/server';
 export default withAuth(
   async function middleware(req) {
     const token = await getToken({ req });
+
     const isAuth = !!token;
-    const isAuthPage =
+    const emptyWorkspace =
+      (token?.user as { workspaces?: any[] })?.workspaces?.length === 0;
+    const isEmptyWorkspacePage = req.nextUrl.pathname === '/workspace';
+    const isRestrictedPage =
       req.nextUrl.pathname.startsWith('/login') ||
       req.nextUrl.pathname.startsWith('/register') ||
       req.nextUrl.pathname === '/';
 
-    if (isAuthPage) {
+    if (isAuth && emptyWorkspace) {
+      if (req.nextUrl.pathname.startsWith('/dashboard') || isRestrictedPage) {
+        return NextResponse.redirect(new URL('/workspace', req.url));
+      }
+
+      return null;
+    }
+
+    if (isAuth && !emptyWorkspace && isEmptyWorkspacePage) {
+      return NextResponse.redirect(new URL('/dashboard', req.url));
+    }
+
+    if (isRestrictedPage) {
       if (isAuth) {
         return NextResponse.redirect(new URL('/dashboard', req.url));
       }
@@ -43,5 +59,5 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ['/', '/dashboard/:path*', '/login', '/register'],
+  matcher: ['/', '/dashboard/:path*', '/workspace', '/login', '/register'],
 };
