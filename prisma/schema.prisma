@@ -50,11 +50,12 @@ model BasicInformation {
   bloodType     BloodType
   birthDate     DateTime
   birthPlace    String
-  height        Float
-  weight        Float
+  height        String
+  weight        String
   maritalStatus MaritalStatus
+  occupation    String
 
-  Patient       Patient @relation(fields: [patientId], references: [id])
+  Patient       Patient @relation(fields: [patientId], references: [dniNumber])
   patientId     String   @unique
 
   createdAt     DateTime @default(now())
@@ -70,7 +71,7 @@ model ContactInformation {
   emergencyContactPhone  String
   emergencyContactPhone2 String?
 
-  Patient                Patient @relation(fields: [patientId], references: [id])
+  Patient                Patient @relation(fields: [patientId], references: [dniNumber])
   patientId              String   @unique
 
   createdAt              DateTime @default(now())
@@ -88,7 +89,7 @@ model MedicalInformation {
   boneScan           Boolean
   boneScanType       String?
 
-  Patient            Patient @relation(fields: [patientId], references: [id])
+  Patient            Patient @relation(fields: [patientId], references: [dniNumber])
   patientId          String   @unique
 
   createdAt          DateTime @default(now())
@@ -113,7 +114,6 @@ model Workspace {
   id        String   @id @default(uuid())
   name      String   @unique
   
-// A workspace can have many users and many patients
   users     User[]
   patients  Patient[]
 
@@ -130,7 +130,7 @@ model Patient {
   photoURL             String?            @default("https://source.boringavatars.com/marble/50/${dniNumber}")
 
   workspace            Workspace          @relation(fields: [workspaceId], references: [id])
-  workspaceId          String             @unique
+  workspaceId          String             
 
   BasicInformation     BasicInformation? 
   ContactInformation   ContactInformation?

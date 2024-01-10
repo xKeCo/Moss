@@ -1,12 +1,14 @@
 'use client';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { z } from 'zod';
+import { useSession } from 'next-auth/react';
+import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CalendarIcon } from '@radix-ui/react-icons';
+import { z } from 'zod';
 import { format } from 'date-fns';
-import { usePatientsStore } from '@/hooks';
+import { createPatient, navigate } from '@/actions';
+import { patientFormSchema } from '@/lib/validations';
 import {
   Button,
   Form,
@@ -30,169 +32,25 @@ import {
 } from '../ui';
 import { TermsAndConditionsModal } from './TermsAndConditionsModal';
 
-const formSchema = z.object({
-  name: z.string().min(5, {
-    message: 'Name must be at least 5 characters.',
-  }),
-  dniType: z
-    .enum(['', 'CC', 'TI', 'O'])
-    .refine((val) => val !== '', 'DNI type is required'),
-  dniNumber: z.string().min(8, {
-    message: 'DNI number must be at least 8 characters.',
-  }),
-  email: z.string().email({
-    message: 'Email must be a valid email.',
-  }),
+import { Icons } from '..';
 
-  basicInformation: z.object({
-    gender: z.enum(['', 'M', 'F', 'O']).refine((val) => val !== '', 'Gender is required'),
-    bloodType: z
-      .enum(['', 'O+', 'O-', 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-'])
-      .refine((val) => val !== '', 'Blood type is required'),
-    birthDate: z
-      .date({
-        required_error: 'Birth date is required.',
-      })
-      .refine((val) => format(val, 'P') !== format(new Date(), 'P'), {
-        message: 'Birth date cannot be today.',
-      }),
-    birthPlace: z.string().min(5, {
-      message: 'Birth place must be at least 5 characters.',
-    }),
-    height: z.string().min(1, {
-      message: 'Height is required.',
-    }),
-    weight: z.string().min(1, {
-      message: 'Weight is required.',
-    }),
-    maritalStatus: z
-      .enum(['S', 'C', 'V', 'D', 'M', ''])
-      .refine((val) => val !== '', 'Civil status is required'),
-    occupation: z.string().min(5, {
-      message: 'Occupation must be at least 5 characters.',
-    }),
-  }),
-
-  contactInformation: z
-    .object({
-      address: z.string().min(5, {
-        message: 'Address must be at least 5 characters.',
-      }),
-      phone1: z.string().min(10, {
-        message: 'Phone must be 10 characters.',
-      }),
-      phone2: z.union([
-        z.string().min(10, {
-          message: 'Phone 2 must be 10 characters.',
-        }),
-        z.literal(''),
-      ]),
-      emergencyContactName: z.string().min(5, {
-        message: 'Emergency contact name must be at least 5 characters.',
-      }),
-      emergencyContactPhone: z.string().min(10, {
-        message: 'Emergency contact phone must be 10 characters.',
-      }),
-      emergencyContactPhone2: z.union([
-        z.string().min(10, {
-          message: 'Emergency contact phone 2 must be 10 characters.',
-        }),
-        z.literal(''),
-      ]),
-    })
-    .refine((data) => data.phone1 !== data.phone2, {
-      message: 'Phone 2 cannot be equal to phone 1.',
-      path: ['phone2'],
-    })
-    .refine((data) => data.emergencyContactPhone !== data.emergencyContactPhone2, {
-      message: 'Emergency contact phone 2 cannot be equal to emergency contact phone 1.',
-      path: ['emergencyContactPhone2'],
-    }),
-
-  medicalInformation: z
-    .object({
-      EPSActive: z.boolean(),
-      EPSName: z.string().optional(),
-      visitedDoctor: z.boolean(),
-      doctorType: z.enum(['', 'G', 'E']).optional(),
-      inTreatment: z.boolean(),
-      treatment: z.string().optional(),
-      boneScan: z.boolean(),
-      boneScanType: z.string().optional(),
-    })
-    .refine(
-      (data) => {
-        if (data.EPSActive && data.EPSName === '') {
-          return false;
-        }
-        return true;
-      },
-      {
-        message: 'EPS name is required if EPS is active.',
-        path: ['EPSName'],
-      }
-    )
-    .refine(
-      (data) => {
-        if (data.visitedDoctor && data.doctorType === '') {
-          return false;
-        }
-        return true;
-      },
-      {
-        message: 'Doctor type is required if visited doctor is true.',
-        path: ['doctorType'],
-      }
-    )
-    .refine(
-      (data) => {
-        if (data.inTreatment && data.treatment === '') {
-          return false;
-        }
-        return true;
-      },
-      {
-        message: 'Treatment is required if in treatment is true.',
-        path: ['treatment'],
-      }
-    )
-    .refine(
-      (data) => {
-        if (data.boneScan && data.boneScanType === '') {
-          return false;
-        }
-        return true;
-      },
-      {
-        message: 'Bone scan type is required if bone scan is true.',
-        path: ['boneScanType'],
-      }
-    ),
-
-  termsAndConditions: z.boolean().refine((val) => val === true, {
-    message: 'You must accept the terms and conditions.',
-  }),
-});
+type PatientFormData = z.infer<typeof patientFormSchema>;
 
 export const PatientForm = () => {
-  const { startSavingPatient } = usePatientsStore();
+  const { data: session } = useSession();
   const [age, setAge] = useState(0);
-  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<PatientFormData>({
+    resolver: zodResolver(patientFormSchema),
     defaultValues: {
       name: '',
-      dniType: '',
       dniNumber: '',
       email: '',
 
       basicInformation: {
-        gender: '',
-        bloodType: '',
         birthDate: new Date(),
         birthPlace: '',
-        maritalStatus: '',
         height: '',
         weight: '',
         occupation: '',
@@ -211,9 +69,8 @@ export const PatientForm = () => {
         EPSActive: true,
         EPSName: '',
         visitedDoctor: true,
-        doctorType: '',
         inTreatment: true,
-        treatment: '',
+        treatmentName: '',
         boneScan: true,
         boneScanType: '',
       },
@@ -222,13 +79,33 @@ export const PatientForm = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    startSavingPatient(values);
+  async function onSubmit(values: PatientFormData) {
+    setIsLoading(true);
+
+    const patient = await createPatient(values, session?.user?.workspaces[0].id!);
+    console.log(patient);
+
+    setIsLoading(false);
+
+    if (!patient?.ok) {
+      if (patient?.error === 'patientExists') {
+        form.setError('dniNumber', {
+          type: 'manual',
+          message: 'Patient id already exists. Please try another one.',
+        });
+      }
+
+      return toast.error(patient?.errorMessage);
+    }
+
+    await navigate(`/dashboard`);
+    toast.success('Patient created successfully!');
+    form.reset();
   }
 
-  const cancelSubmit = () => {
+  const cancelSubmit = async () => {
     form.reset();
-    router.back();
+    await navigate(`/dashboard`);
   };
 
   const clearEPSNameValue = (EPSActive: boolean) => {
@@ -239,13 +116,13 @@ export const PatientForm = () => {
 
   const clearDoctorTypeValue = (visitedDoctor: boolean) => {
     if (!visitedDoctor) {
-      form.setValue('medicalInformation.doctorType', '');
+      form.setValue('medicalInformation.doctorType', undefined);
     }
   };
 
   const clearTreatmentValue = (inTreatment: boolean) => {
     if (!inTreatment) {
-      form.setValue('medicalInformation.treatment', '');
+      form.setValue('medicalInformation.treatmentName', '');
     }
   };
 
@@ -307,14 +184,14 @@ export const PatientForm = () => {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="O+">O+</SelectItem>
-                    <SelectItem value="O-">O-</SelectItem>
-                    <SelectItem value="A+">A+</SelectItem>
-                    <SelectItem value="A-">A-</SelectItem>
-                    <SelectItem value="B+">B+</SelectItem>
-                    <SelectItem value="B-">B-</SelectItem>
-                    <SelectItem value="AB+">AB+</SelectItem>
-                    <SelectItem value="AB-">AB-</SelectItem>
+                    <SelectItem value="O_POSITIVE">O+</SelectItem>
+                    <SelectItem value="O_NEGATIVE">O-</SelectItem>
+                    <SelectItem value="A_POSITIVE">A+</SelectItem>
+                    <SelectItem value="A_NEGATIVE">A-</SelectItem>
+                    <SelectItem value="B_POSITIVE">B+</SelectItem>
+                    <SelectItem value="B_NEGATIVE">B-</SelectItem>
+                    <SelectItem value="AB_POSITIVE">AB+</SelectItem>
+                    <SelectItem value="AB_NEGATIVE">AB-</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -432,6 +309,7 @@ export const PatientForm = () => {
                   <SelectContent>
                     <SelectItem value="S">Soltero</SelectItem>
                     <SelectItem value="C">Casado</SelectItem>
+                    <SelectItem value="U">Union Libre</SelectItem>
                     <SelectItem value="D">Divorsid@</SelectItem>
                     <SelectItem value="V">Viud@</SelectItem>
                     <SelectItem value="M">Menor de edad</SelectItem>
@@ -663,7 +541,7 @@ export const PatientForm = () => {
           {form.watch('medicalInformation.inTreatment') && (
             <FormField
               control={form.control}
-              name="medicalInformation.treatment"
+              name="medicalInformation.treatmentName"
               render={({ field }) => (
                 <FormItem className="sm:col-span-5 lg:col-span-2">
                   <FormLabel>Treatment</FormLabel>
@@ -778,10 +656,19 @@ export const PatientForm = () => {
           )}
         />
 
-        <Button type="button" variant="secondary" className="mr-4" onClick={cancelSubmit}>
+        <Button
+          type="button"
+          variant="secondary"
+          className="mr-4"
+          onClick={cancelSubmit}
+          disabled={isLoading}
+        >
           Cancel
         </Button>
-        <Button type="submit">Save patient</Button>
+        <Button type="submit" disabled={isLoading}>
+          Save patient
+          {isLoading && <Icons.Spinner className="ml-2 h-4 w-4 animate-spin" />}
+        </Button>
       </form>
     </Form>
   );

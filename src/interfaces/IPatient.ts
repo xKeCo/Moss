@@ -1,7 +1,7 @@
 export interface IPatient {
   name: string;
   dniNumber: string;
-  dniType: 'CC' | 'TI' | 'O' | '';
+  dniType: 'CC' | 'TI' | 'O';
   email: string;
   photoURL?: string;
 
@@ -16,13 +16,22 @@ export interface IPatient {
 }
 
 interface IBasicInformation {
-  gender: 'M' | 'F' | 'O' | '';
-  bloodType: 'O+' | 'O-' | 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | '';
+  gender: 'M' | 'F' | 'O';
+  bloodType:
+    | 'O_POSITIVE'
+    | 'O_NEGATIVE'
+    | 'A_POSITIVE'
+    | 'A_NEGATIVE'
+    | 'B_POSITIVE'
+    | 'B_NEGATIVE'
+    | 'AB_POSITIVE'
+    | 'AB_NEGATIVE';
+
   birthDate: Date | string;
   birthPlace: string;
   height: string;
   weight: string;
-  maritalStatus: 'S' | 'C' | 'V' | 'D' | 'M' | '';
+  maritalStatus: 'S' | 'C' | 'V' | 'U' | 'D' | 'M';
   occupation: string;
 }
 
@@ -39,7 +48,7 @@ interface IMedicalInformation {
   EPSActive: boolean;
   EPSName?: string;
   visitedDoctor: boolean;
-  doctorType?: 'G' | 'E' | '';
+  doctorType?: 'G' | 'E';
   inTreatment: boolean;
   treatment?: string;
   boneScan: boolean;

@@ -5,6 +5,8 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
+import { createWorkspace, navigate } from '@/actions';
+import { workspaceFormSchema } from '@/lib/validations';
 import { Icons, UserNav } from '@/components';
 import {
   Card,
@@ -22,20 +24,15 @@ import {
   FormControl,
   FormMessage,
 } from '@/components/ui';
-import { createWorkspace, navigate } from '@/actions';
 
-const FormSchema = z.object({
-  workspaceName: z.string().min(5, {
-    message: 'Workspace name must be at least 5 characters long.',
-  }),
-});
+type PatientFormData = z.infer<typeof workspaceFormSchema>;
 
 export default function WorkspacePage() {
   const { data: session, update } = useSession();
   const [isLoading, setIsLoading] = useState(false);
 
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<PatientFormData>({
+    resolver: zodResolver(workspaceFormSchema),
     defaultValues: {
       workspaceName: '',
     },
@@ -45,7 +42,7 @@ export default function WorkspacePage() {
     signOut({ callbackUrl: `/login` });
   };
 
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
+  async function onSubmit(data: PatientFormData) {
     setIsLoading(true);
     const { workspaceName } = data;
 
@@ -72,7 +69,7 @@ export default function WorkspacePage() {
       },
     });
 
-    navigate(`/dashboard`);
+    await navigate(`/dashboard`);
     toast.success('Workspace created successfully!');
     form.reset();
   }
