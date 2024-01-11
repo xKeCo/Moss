@@ -48,7 +48,7 @@ export const PatientForm = () => {
       dniNumber: '',
       email: '',
 
-      basicInformation: {
+      BasicInformation: {
         birthDate: new Date(),
         birthPlace: '',
         height: '',
@@ -56,7 +56,7 @@ export const PatientForm = () => {
         occupation: '',
       },
 
-      contactInformation: {
+      ContactInformation: {
         address: '',
         phone1: '',
         phone2: '',
@@ -65,7 +65,7 @@ export const PatientForm = () => {
         emergencyContactPhone2: '',
       },
 
-      medicalInformation: {
+      MedicalInformation: {
         EPSActive: true,
         EPSName: '',
         visitedDoctor: true,
@@ -82,7 +82,10 @@ export const PatientForm = () => {
   async function onSubmit(values: PatientFormData) {
     setIsLoading(true);
 
-    const patient = await createPatient(values, session?.user?.workspaces[0].id!);
+    const patient = await createPatient(
+      { ...values, Treatment: null },
+      session?.user?.workspaces[0].id!
+    );
     console.log(patient);
 
     setIsLoading(false);
@@ -110,25 +113,25 @@ export const PatientForm = () => {
 
   const clearEPSNameValue = (EPSActive: boolean) => {
     if (!EPSActive) {
-      form.setValue('medicalInformation.EPSName', '');
+      form.setValue('MedicalInformation.EPSName', '');
     }
   };
 
   const clearDoctorTypeValue = (visitedDoctor: boolean) => {
     if (!visitedDoctor) {
-      form.setValue('medicalInformation.doctorType', undefined);
+      form.setValue('MedicalInformation.doctorType', undefined);
     }
   };
 
   const clearTreatmentValue = (inTreatment: boolean) => {
     if (!inTreatment) {
-      form.setValue('medicalInformation.treatmentName', '');
+      form.setValue('MedicalInformation.treatmentName', '');
     }
   };
 
   const clearBoneScanTypeValue = (boneScan: boolean) => {
     if (!boneScan) {
-      form.setValue('medicalInformation.boneScanType', '');
+      form.setValue('MedicalInformation.boneScanType', '');
     }
   };
 
@@ -151,7 +154,7 @@ export const PatientForm = () => {
           />
           <FormField
             control={form.control}
-            name="basicInformation.gender"
+            name="BasicInformation.gender"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Gender</FormLabel>
@@ -173,7 +176,7 @@ export const PatientForm = () => {
           />
           <FormField
             control={form.control}
-            name="basicInformation.bloodType"
+            name="BasicInformation.bloodType"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Blood type</FormLabel>
@@ -203,7 +206,7 @@ export const PatientForm = () => {
         <div className="gap-4 grid sm:grid-cols-4 lg:grid-cols-8">
           <FormField
             control={form.control}
-            name="basicInformation.birthDate"
+            name="BasicInformation.birthDate"
             render={({ field }) => (
               <FormItem className="flex flex-col">
                 <FormLabel className="h-[17px] mt-[6px]">Date of birth</FormLabel>
@@ -248,7 +251,7 @@ export const PatientForm = () => {
 
           <FormField
             control={form.control}
-            name="basicInformation.birthPlace"
+            name="BasicInformation.birthPlace"
             render={({ field }) => (
               <FormItem className="sm:col-span-2">
                 <FormLabel>Place of birth</FormLabel>
@@ -296,7 +299,7 @@ export const PatientForm = () => {
           />
           <FormField
             control={form.control}
-            name="basicInformation.maritalStatus"
+            name="BasicInformation.maritalStatus"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Civil Status</FormLabel>
@@ -337,7 +340,7 @@ export const PatientForm = () => {
           />
           <FormField
             control={form.control}
-            name="contactInformation.address"
+            name="ContactInformation.address"
             render={({ field }) => (
               <FormItem className="sm:col-span-2">
                 <FormLabel>Address</FormLabel>
@@ -350,7 +353,7 @@ export const PatientForm = () => {
           />
           <FormField
             control={form.control}
-            name="contactInformation.phone1"
+            name="ContactInformation.phone1"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Phone</FormLabel>
@@ -363,7 +366,7 @@ export const PatientForm = () => {
           />
           <FormField
             control={form.control}
-            name="contactInformation.phone2"
+            name="ContactInformation.phone2"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Phone 2</FormLabel>
@@ -376,7 +379,7 @@ export const PatientForm = () => {
           />
           <FormField
             control={form.control}
-            name="basicInformation.height"
+            name="BasicInformation.height"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Height</FormLabel>
@@ -394,7 +397,7 @@ export const PatientForm = () => {
           />
           <FormField
             control={form.control}
-            name="basicInformation.weight"
+            name="BasicInformation.weight"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Weight</FormLabel>
@@ -414,7 +417,7 @@ export const PatientForm = () => {
 
         <FormField
           control={form.control}
-          name="basicInformation.occupation"
+          name="BasicInformation.occupation"
           render={({ field }) => (
             <FormItem className="sm:col-span-2">
               <FormLabel>Occupation</FormLabel>
@@ -429,14 +432,14 @@ export const PatientForm = () => {
         <div className="gap-4 grid sm:grid-cols-6 lg:grid-cols-6">
           <FormField
             control={form.control}
-            name="medicalInformation.EPSActive"
+            name="MedicalInformation.EPSActive"
             render={({ field }) => (
               <FormItem className="flex flex-col justify-around">
-                <FormLabel className="h-[17px]" htmlFor="medicalInformation.EPSActive">
+                <FormLabel className="h-[17px]" htmlFor="MedicalInformation.EPSActive">
                   EPS Active
                 </FormLabel>
                 <Switch
-                  id="medicalInformation.EPSActive"
+                  id="MedicalInformation.EPSActive"
                   checked={field.value}
                   onCheckedChange={(value: boolean) => {
                     field.onChange(value);
@@ -449,10 +452,10 @@ export const PatientForm = () => {
             )}
           />
 
-          {form.watch('medicalInformation.EPSActive') && (
+          {form.watch('MedicalInformation.EPSActive') && (
             <FormField
               control={form.control}
-              name="medicalInformation.EPSName"
+              name="MedicalInformation.EPSName"
               render={({ field }) => (
                 <FormItem className="sm:col-span-5 lg:col-span-2">
                   <FormLabel>EPS Name</FormLabel>
@@ -467,17 +470,17 @@ export const PatientForm = () => {
 
           <FormField
             control={form.control}
-            name="medicalInformation.visitedDoctor"
+            name="MedicalInformation.visitedDoctor"
             render={({ field }) => (
               <FormItem className="flex flex-col justify-around">
                 <FormLabel
                   className="h-[17px]"
-                  htmlFor="medicalInformation.visitedDoctor"
+                  htmlFor="MedicalInformation.visitedDoctor"
                 >
                   Visited a doctor
                 </FormLabel>
                 <Switch
-                  id="medicalInformation.visitedDoctor"
+                  id="MedicalInformation.visitedDoctor"
                   checked={field.value}
                   onCheckedChange={(doctorType: boolean) => {
                     field.onChange(doctorType);
@@ -490,10 +493,10 @@ export const PatientForm = () => {
             )}
           />
 
-          {form.watch('medicalInformation.visitedDoctor') && (
+          {form.watch('MedicalInformation.visitedDoctor') && (
             <FormField
               control={form.control}
-              name="medicalInformation.doctorType"
+              name="MedicalInformation.doctorType"
               render={({ field }) => (
                 <FormItem className="sm:col-span-5 lg:col-span-2">
                   <FormLabel>Doctor type</FormLabel>
@@ -518,14 +521,14 @@ export const PatientForm = () => {
         <div className="gap-4 grid sm:grid-cols-6 lg:grid-cols-6">
           <FormField
             control={form.control}
-            name="medicalInformation.inTreatment"
+            name="MedicalInformation.inTreatment"
             render={({ field }) => (
               <FormItem className="flex flex-col justify-around">
-                <FormLabel className="h-[17px]" htmlFor="medicalInformation.inTreatment">
+                <FormLabel className="h-[17px]" htmlFor="MedicalInformation.inTreatment">
                   In treatment
                 </FormLabel>
                 <Switch
-                  id="medicalInformation.inTreatment"
+                  id="MedicalInformation.inTreatment"
                   checked={field.value}
                   onCheckedChange={(inTreatment: boolean) => {
                     field.onChange(inTreatment);
@@ -538,10 +541,10 @@ export const PatientForm = () => {
             )}
           />
 
-          {form.watch('medicalInformation.inTreatment') && (
+          {form.watch('MedicalInformation.inTreatment') && (
             <FormField
               control={form.control}
-              name="medicalInformation.treatmentName"
+              name="MedicalInformation.treatmentName"
               render={({ field }) => (
                 <FormItem className="sm:col-span-5 lg:col-span-2">
                   <FormLabel>Treatment</FormLabel>
@@ -556,14 +559,14 @@ export const PatientForm = () => {
 
           <FormField
             control={form.control}
-            name="medicalInformation.boneScan"
+            name="MedicalInformation.boneScan"
             render={({ field }) => (
               <FormItem className="flex flex-col justify-around">
-                <FormLabel className="h-[17px]" htmlFor="medicalInformation.boneScan">
+                <FormLabel className="h-[17px]" htmlFor="MedicalInformation.boneScan">
                   Bone scan
                 </FormLabel>
                 <Switch
-                  id="medicalInformation.boneScan"
+                  id="MedicalInformation.boneScan"
                   checked={field.value}
                   onCheckedChange={(boneScan: boolean) => {
                     field.onChange(boneScan);
@@ -576,10 +579,10 @@ export const PatientForm = () => {
             )}
           />
 
-          {form.watch('medicalInformation.boneScan') && (
+          {form.watch('MedicalInformation.boneScan') && (
             <FormField
               control={form.control}
-              name="medicalInformation.boneScanType"
+              name="MedicalInformation.boneScanType"
               render={({ field }) => (
                 <FormItem className="sm:col-span-5 lg:col-span-2">
                   <FormLabel>Bone scan type</FormLabel>
@@ -599,7 +602,7 @@ export const PatientForm = () => {
           <div className="gap-4 grid sm:grid-cols-4">
             <FormField
               control={form.control}
-              name="contactInformation.emergencyContactName"
+              name="ContactInformation.emergencyContactName"
               render={({ field }) => (
                 <FormItem className="sm:col-span-2">
                   <FormLabel>Name</FormLabel>
@@ -612,7 +615,7 @@ export const PatientForm = () => {
             />
             <FormField
               control={form.control}
-              name="contactInformation.emergencyContactPhone"
+              name="ContactInformation.emergencyContactPhone"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Phone</FormLabel>
@@ -625,7 +628,7 @@ export const PatientForm = () => {
             />
             <FormField
               control={form.control}
-              name="contactInformation.emergencyContactPhone2"
+              name="ContactInformation.emergencyContactPhone2"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Phone 2</FormLabel>

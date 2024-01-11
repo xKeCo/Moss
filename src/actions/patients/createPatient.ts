@@ -2,7 +2,7 @@
 import { IPatient } from '@/interfaces';
 import prisma from '@/lib/prisma';
 
-export const createPatient = async (patientData: IPatient, workspaceId: string) => {
+export const createPatient = async (patientData: any, workspaceId: string) => {
   try {
     const existingPatient = await prisma.patient.findFirst({
       where: {
@@ -19,7 +19,7 @@ export const createPatient = async (patientData: IPatient, workspaceId: string) 
       };
     }
 
-    const { basicInformation, contactInformation, medicalInformation } = patientData;
+    const { BasicInformation, ContactInformation, MedicalInformation } = patientData;
 
     const newPatient = await prisma.patient.create({
       data: {
@@ -36,7 +36,7 @@ export const createPatient = async (patientData: IPatient, workspaceId: string) 
 
     const newBasicInformation = await prisma.basicInformation.create({
       data: {
-        ...basicInformation,
+        ...BasicInformation,
         patientId: patientData.dniNumber,
       },
       select: {
@@ -46,7 +46,7 @@ export const createPatient = async (patientData: IPatient, workspaceId: string) 
 
     const newContactInformation = await prisma.contactInformation.create({
       data: {
-        ...contactInformation,
+        ...ContactInformation,
         patientId: patientData.dniNumber,
       },
       select: {
@@ -55,7 +55,7 @@ export const createPatient = async (patientData: IPatient, workspaceId: string) 
     });
 
     const newMedicalInformation = await prisma.medicalInformation.create({
-      data: { ...medicalInformation, patientId: patientData.dniNumber },
+      data: { ...MedicalInformation, patientId: patientData.dniNumber },
       select: {
         id: true,
       },

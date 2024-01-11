@@ -13,7 +13,7 @@ export const patientFormSchema = z.object({
     message: 'Email must be a valid email.',
   }),
 
-  basicInformation: z.object({
+  BasicInformation: z.object({
     gender: z.enum(['M', 'F', 'O']).refine((val) => val, 'Gender is required'),
     bloodType: z
       .enum([
@@ -51,7 +51,7 @@ export const patientFormSchema = z.object({
     }),
   }),
 
-  contactInformation: z
+  ContactInformation: z
     .object({
       address: z.string().min(5, {
         message: 'Address must be at least 5 characters.',
@@ -77,7 +77,7 @@ export const patientFormSchema = z.object({
       path: ['emergencyContactPhone2'],
     }),
 
-  medicalInformation: z
+  MedicalInformation: z
     .object({
       EPSActive: z.boolean(),
       EPSName: z.string().optional(),

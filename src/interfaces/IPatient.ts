@@ -11,10 +11,10 @@ export interface IPatient {
   updatedAt?: string | Date;
   createdAt?: string | Date;
 
-  BasicInformation?: IBasicInformation | null;
-  ContactInformation?: IContactInformation | null;
-  MedicalInformation?: IMedicalInformation | null;
-  Treatment?: any;
+  BasicInformation: IBasicInformation | null;
+  ContactInformation: IContactInformation | null;
+  MedicalInformation: IMedicalInformation | null;
+  Treatment: any;
   // healthInformation: IHealthInformation;
 }
 
