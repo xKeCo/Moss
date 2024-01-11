@@ -1,4 +1,5 @@
 export * from './register';
-export * from './createWorkspace';
+export * from './workspace/createWorkspace';
 export * from './navigate';
-export * from './createPatient';
+export * from './patients/createPatient';
+export * from './patients/patientsByWorkspace';

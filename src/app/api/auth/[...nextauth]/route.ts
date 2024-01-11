@@ -5,7 +5,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import prisma from '@/lib/prisma';
 import bycryptjs from 'bcryptjs';
 
-const handler = NextAuth({
+export const handler = NextAuth({
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID!,
@@ -65,7 +65,7 @@ const handler = NextAuth({
     },
 
     session({ session, token, trigger }: { session: any; token: any; trigger?: any }) {
-      session.user = token.user as any;
+      session.user = token.user;
 
       return session;
     },

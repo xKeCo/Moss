@@ -25,6 +25,7 @@ import {
 } from './components';
 import type { IRealTxPlan, IToothState, ITxEvolution } from '@/interfaces';
 import { toast } from 'sonner';
+import { navigate } from '@/actions';
 
 const FormSchema = z.object({
   diagnosis: z
@@ -67,10 +68,10 @@ export const TreatmentForm = ({
     txEvolDoc: '',
     txEvolPayment: '',
   };
-  const router = useRouter();
+  // const router = useRouter();
 
   const { startSavingTreatment } = useTreatmentsStore();
-  const { id: patientId } = useParams() as { id: string };
+  const { patientID, workspaceID } = useParams();
   const [openTreatmentModal, setOpenTreatmentModal] = useState(false);
   const [openTreatmentEvolModal, setOpenTreatmentEvolModal] = useState(false);
 
@@ -112,7 +113,7 @@ export const TreatmentForm = ({
 
     startSavingTreatment({
       ...data,
-      patientId: `${patientId}`,
+      patientId: `${patientID}`,
       initialOdontogram: odontogramState.filter((n) => n),
       realTxPlan: treatments,
       txEvolutions: treatmentsEvolutions,
@@ -121,15 +122,16 @@ export const TreatmentForm = ({
     cancelSubmit();
   }
 
-  function cancelSubmit() {
+  async function cancelSubmit() {
     form.reset({
       diagnosis: '',
       prognosis: '',
     });
 
+    await navigate(`/dashboard/${workspaceID}/patient/${patientID}`);
     setTreatments([]);
     setTreatmentsEvolutions([]);
-    router.push(`/dashboard/patient/${patientId}`);
+    // router.push(`/dashboard/patient/${patientId}`);
   }
 
   return (

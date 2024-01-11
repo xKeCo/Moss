@@ -1,14 +1,18 @@
 export const formatDate = (date: string, showTime: boolean = false) => {
   if (!date) return 'N/A';
 
-  const [year, month, day] = date.split('T')[0].split('-');
+  const dateSting = date.toString();
 
-  // add time to date
-  const [hour, minute] = date.split('T')[1].split(':');
+  const [_, month, day, year] = dateSting.split(' ');
 
-  if (showTime) {
-    return `${day}/${month}/${year.slice(2, 4)} ${hour}:${minute}`;
-  }
+  // const [year, month, day] = date.split('T')[0].split('-');
 
-  return `${day}/${month}/${year}`;
+  // // add time to date
+  // const [hour, minute] = date.split('T')[1].split(':');
+
+  // if (showTime) {
+  //   return `${day}/${month}/${year.slice(2, 4)} ${hour}:${minute}`;
+  // }
+
+  return `${month} ${day} ${year}`;
 };

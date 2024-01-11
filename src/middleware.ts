@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 
 export default withAuth(
   async function middleware(req) {
-    const token = await getToken({ req });
+    const token: any = await getToken({ req });
 
     const isAuth = !!token;
     const emptyWorkspace =
@@ -15,6 +15,14 @@ export default withAuth(
       req.nextUrl.pathname.startsWith('/register') ||
       req.nextUrl.pathname === '/';
 
+    if (!isAuth) {
+      if (!isRestrictedPage) {
+        return NextResponse.redirect(new URL('/login', req.url));
+      }
+
+      return null;
+    }
+
     if (isAuth && emptyWorkspace) {
       if (req.nextUrl.pathname.startsWith('/dashboard') || isRestrictedPage) {
         return NextResponse.redirect(new URL('/workspace', req.url));
@@ -24,26 +32,19 @@ export default withAuth(
     }
 
     if (isAuth && !emptyWorkspace && isEmptyWorkspacePage) {
-      return NextResponse.redirect(new URL('/dashboard', req.url));
+      return NextResponse.redirect(
+        new URL(`/dashboard/${token.user?.workspaces[0]?.id}`, req.url)
+      );
     }
 
-    if (isRestrictedPage) {
+    if (isRestrictedPage || req.nextUrl.pathname === '/dashboard') {
       if (isAuth) {
-        return NextResponse.redirect(new URL('/dashboard', req.url));
+        return NextResponse.redirect(
+          new URL(`/dashboard/${token.user?.workspaces[0]?.id}`, req.url)
+        );
       }
 
       return null;
-    }
-
-    if (!isAuth) {
-      let from = req.nextUrl.pathname;
-      if (req.nextUrl.search) {
-        from += req.nextUrl.search;
-      }
-
-      return NextResponse.redirect(
-        new URL(`/login?from=${encodeURIComponent(from)}`, req.url)
-      );
     }
   },
   {

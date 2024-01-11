@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import {
-  Button,
   Select,
   SelectContent,
   SelectItem,
@@ -19,7 +18,7 @@ export const WorkspaceSwitcher = () => {
 
   useEffect(() => {
     if (session) {
-      setSelectedWorkspace(session?.user?.workspaces[0]?.name!);
+      setSelectedWorkspace(session?.user?.workspaces[0]?.name);
     }
   }, [session]);
 

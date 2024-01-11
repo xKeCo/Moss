@@ -1,21 +1,25 @@
 export interface IPatient {
+  id?: string;
   name: string;
   dniNumber: string;
   dniType: 'CC' | 'TI' | 'O';
   email: string;
-  photoURL?: string;
-
-  basicInformation: IBasicInformation;
-  contactInformation: IContactInformation;
-  medicalInformation: IMedicalInformation;
-  // healthInformation: IHealthInformation;
-
+  photoURL?: string | null;
+  workspaceId?: string;
   termsAndConditions: boolean;
-  updatedAt?: string;
-  createdAt?: string;
+  hasExtraInfo?: boolean;
+  updatedAt?: string | Date;
+  createdAt?: string | Date;
+
+  BasicInformation?: IBasicInformation | null;
+  ContactInformation?: IContactInformation | null;
+  MedicalInformation?: IMedicalInformation | null;
+  Treatment?: any;
+  // healthInformation: IHealthInformation;
 }
 
 interface IBasicInformation {
+  id?: string;
   gender: 'M' | 'F' | 'O';
   bloodType:
     | 'O_POSITIVE'
@@ -27,32 +31,43 @@ interface IBasicInformation {
     | 'AB_POSITIVE'
     | 'AB_NEGATIVE';
 
-  birthDate: Date | string;
+  birthDate: string | Date;
   birthPlace: string;
   height: string;
   weight: string;
   maritalStatus: 'S' | 'C' | 'V' | 'U' | 'D' | 'M';
   occupation: string;
+  patientId?: string;
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
 }
 
 interface IContactInformation {
+  id?: string;
   address: string;
   phone1: string;
-  phone2?: string;
+  phone2?: string | null;
   emergencyContactName: string;
   emergencyContactPhone: string;
-  emergencyContactPhone2?: string;
+  emergencyContactPhone2?: string | null;
+  patientId?: string;
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
 }
 
 interface IMedicalInformation {
+  id?: string;
   EPSActive: boolean;
-  EPSName?: string;
+  EPSName?: string | null;
   visitedDoctor: boolean;
-  doctorType?: 'G' | 'E';
+  doctorType?: 'G' | 'E' | null;
   inTreatment: boolean;
-  treatment?: string;
+  treatmentName?: string | null;
   boneScan: boolean;
-  boneScanType?: string;
+  boneScanType?: string | null;
+  patientId?: string;
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
 }
 
 // interface IHealthInformation {
@@ -65,3 +80,10 @@ interface IMedicalInformation {
 // observations: string[];
 // other: string[];
 // }
+
+export interface IPatientCard {
+  name: string;
+  dniNumber: string;
+  email: string;
+  photoURL: string | null;
+}
