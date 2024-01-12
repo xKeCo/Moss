@@ -102,14 +102,14 @@ export const PatientForm = () => {
       return toast.error(patient?.errorMessage);
     }
 
-    router.replace(`/dashboard`);
+    router.push(`/dashboard`);
     toast.success('Patient created successfully!');
     form.reset();
   }
 
   const cancelSubmit = () => {
     form.reset();
-    router.replace(`/dashboard`);
+    router.push(`/dashboard`);
   };
 
   const clearEPSNameValue = (EPSActive: boolean) => {

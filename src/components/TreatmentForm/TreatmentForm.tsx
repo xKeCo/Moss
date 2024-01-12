@@ -129,7 +129,7 @@ export const TreatmentForm = ({
 
     setTreatments([]);
     setTreatmentsEvolutions([]);
-    router.replace(`/dashboard/${workspaceID}/patient/${patientID}`);
+    router.push(`/dashboard/${workspaceID}/patient/${patientID}`);
   }
 
   return (
