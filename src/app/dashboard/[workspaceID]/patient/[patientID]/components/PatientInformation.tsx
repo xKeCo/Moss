@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 import { PatientInfoItem } from '.';
 import {
+  formatBloodType,
   formatDate,
   formatGender,
   formatMaritalStatus,
@@ -54,7 +55,7 @@ export const PatientInformation = ({ patientInfo }: IPatientInformationProps) =>
     },
     {
       label: 'Blood type',
-      value: patientInfo?.BasicInformation?.bloodType!,
+      value: formatBloodType(patientInfo?.BasicInformation?.bloodType!),
       show: true,
     },
     {

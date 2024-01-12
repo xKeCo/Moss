@@ -1,11 +1,12 @@
 'use client';
 import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { v4 as uuidv4 } from 'uuid';
-import * as z from 'zod';
-import { useTreatmentsStore } from '@/hooks';
 import { useForm } from 'react-hook-form';
+import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { v4 as uuidv4 } from 'uuid';
+import { toast } from 'sonner';
+import { useTreatmentsStore } from '@/hooks';
 import {
   Button,
   Form,
@@ -24,8 +25,6 @@ import {
   TreatmentItem,
 } from './components';
 import type { IRealTxPlan, IToothState, ITxEvolution } from '@/interfaces';
-import { toast } from 'sonner';
-import { navigate } from '@/actions';
 
 const FormSchema = z.object({
   diagnosis: z
@@ -68,7 +67,7 @@ export const TreatmentForm = ({
     txEvolDoc: '',
     txEvolPayment: '',
   };
-  // const router = useRouter();
+  const router = useRouter();
 
   const { startSavingTreatment } = useTreatmentsStore();
   const { patientID, workspaceID } = useParams();
@@ -128,10 +127,9 @@ export const TreatmentForm = ({
       prognosis: '',
     });
 
-    await navigate(`/dashboard/${workspaceID}/patient/${patientID}`);
     setTreatments([]);
     setTreatmentsEvolutions([]);
-    // router.push(`/dashboard/patient/${patientId}`);
+    router.replace(`/dashboard/${workspaceID}/patient/${patientID}`);
   }
 
   return (

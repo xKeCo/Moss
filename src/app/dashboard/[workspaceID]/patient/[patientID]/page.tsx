@@ -16,7 +16,7 @@ export default async function PatientInfoPage({
 
   const breadcrumbValues = [
     { name: 'Patients', href: '/dashboard' },
-    { name: 'Loading...' },
+    { name: patientInfo?.name ?? 'Loading..' },
   ];
 
   return (

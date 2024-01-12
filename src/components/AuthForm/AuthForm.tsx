@@ -2,14 +2,14 @@
 import { HTMLAttributes, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
-import { navigate, registerUser } from '@/actions';
+import { registerUser } from '@/actions';
 import {
   Button,
   Input,
@@ -48,6 +48,7 @@ export function AuthForm({
 }: Readonly<UserAuthFormProps>) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -74,7 +75,7 @@ export function AuthForm({
         return toast.error('Invalid credentials');
       }
 
-      await navigate(searchParams?.get('from') ?? `/dashboard`);
+      router.replace(searchParams?.get('from') ?? `/dashboard`);
     } catch (error) {
       setIsLoading(false);
       console.log('error', error);

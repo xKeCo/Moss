@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { CalendarIcon } from '@radix-ui/react-icons';
 import { z } from 'zod';
 import { format } from 'date-fns';
-import { createPatient, navigate } from '@/actions';
+import { createPatient } from '@/actions';
 import { patientFormSchema } from '@/lib/validations';
 import {
   Button,
@@ -33,6 +33,7 @@ import {
 import { TermsAndConditionsModal } from './TermsAndConditionsModal';
 
 import { Icons } from '..';
+import { useRouter } from 'next/navigation';
 
 type PatientFormData = z.infer<typeof patientFormSchema>;
 
@@ -40,6 +41,7 @@ export const PatientForm = () => {
   const { data: session } = useSession();
   const [age, setAge] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const form = useForm<PatientFormData>({
     resolver: zodResolver(patientFormSchema),
@@ -86,7 +88,6 @@ export const PatientForm = () => {
       { ...values, Treatment: null },
       session?.user?.workspaces[0].id!
     );
-    console.log(patient);
 
     setIsLoading(false);
 
@@ -101,14 +102,14 @@ export const PatientForm = () => {
       return toast.error(patient?.errorMessage);
     }
 
-    await navigate(`/dashboard`);
+    router.replace(`/dashboard`);
     toast.success('Patient created successfully!');
     form.reset();
   }
 
-  const cancelSubmit = async () => {
+  const cancelSubmit = () => {
     form.reset();
-    await navigate(`/dashboard`);
+    router.replace(`/dashboard`);
   };
 
   const clearEPSNameValue = (EPSActive: boolean) => {
