@@ -50,7 +50,7 @@ export const treatmentsSlice = createSlice({
 
       if (state.activeTreatment) {
         state.treatments = state.treatments.map((treatment) =>
-          treatment._id === action.payload._id ? action.payload : treatment
+          treatment.id === action.payload.id ? action.payload : treatment
         );
         // state.activeTreatment = action.payload;
       }

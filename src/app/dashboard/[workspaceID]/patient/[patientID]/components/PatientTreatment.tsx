@@ -4,8 +4,7 @@ import {
   ArrowRightIcon,
   FilePlusIcon,
 } from '@radix-ui/react-icons';
-import { usePatientsStore, useTreatmentsStore } from '@/hooks';
-import { Button, Skeleton } from '@/components/ui';
+import { Button } from '@/components/ui';
 import { formatCurrency, formatDate } from '@/helpers';
 import { cn } from '@/lib/utils';
 import { IPatient } from '@/interfaces';
@@ -33,11 +32,11 @@ export const PatientTreatment = ({
     },
     {
       label: 'Created date',
-      value: formatDate(patientInfo?.Treatment?.createdAt!, true),
+      value: formatDate(patientInfo?.Treatment?.createdAt! as string, true),
     },
     {
       label: 'Last update',
-      value: formatDate(patientInfo?.Treatment?.updatedAt!, true),
+      value: formatDate(patientInfo?.Treatment?.updatedAt! as string, true),
     },
     {
       label: 'Total price',
@@ -45,7 +44,7 @@ export const PatientTreatment = ({
     },
     {
       label: 'Current balance',
-      value: formatCurrency(patientInfo?.Treatment?.balance!),
+      value: formatCurrency(patientInfo?.Treatment?.totalPending!),
     },
   ];
 
@@ -71,15 +70,8 @@ export const PatientTreatment = ({
                   )}
                   key={label}
                 >
-                  {/* {loading ? (
-                    <>
-                      <Skeleton className="h-5 w-[100px]" />
-                      <Skeleton className="h-6 w-full" />
-                    </>
-                  ) : ( */}
                   <h2 className="text-sm font-semibold">{label}</h2>
                   <p className="text-base text-muted-foreground">{value}</p>
-                  {/* )} */}
                 </div>
               ))}
             </div>
@@ -88,9 +80,6 @@ export const PatientTreatment = ({
       )}
 
       <div className="flex items-center justify-end w-full">
-        {/* {loading ? (
-          <Skeleton className="h-9 w-full" />
-        ) : ( */}
         <Button className="gap-2 w-full" asChild>
           <Link
             href={
@@ -112,7 +101,6 @@ export const PatientTreatment = ({
             )}
           </Link>
         </Button>
-        {/* )} */}
       </div>
     </div>
   );

@@ -4,7 +4,9 @@ export const formatGender = (gender: string) => {
       return 'Otro';
     case 'M':
       return 'Masculino';
-    default:
+    case 'F':
       return 'Femenino';
+    default:
+      return 'N/A';
   }
 };

@@ -41,7 +41,7 @@ export const AddTreatmentEvolution = ({
   setTreatmentsEvols,
 }: IAddTreatmentEvolutionProps) => {
   const initialTreatmentEvolution: ITxEvolution = {
-    txEvolId: uuidv4(),
+    id: uuidv4(),
     txEvolDate: new Date(),
     txEvolDesc: '',
     txEvolDoc: '',
@@ -81,15 +81,18 @@ export const AddTreatmentEvolution = ({
     }
 
     const findTreatmentEvol = treatmentsEvols.find(
-      (t: ITxEvolution) => t.txEvolId === treatmentEvol.txEvolId
+      (t: ITxEvolution) => t.id === treatmentEvol.id
     );
 
     if (findTreatmentEvol) {
       const index = treatmentsEvols.findIndex(
-        (t: ITxEvolution) => t.txEvolId === treatmentEvol.txEvolId
+        (t: ITxEvolution) => t.id === treatmentEvol.id
       );
 
-      treatmentsEvols[index] = treatmentEvol;
+      treatmentsEvols[index] = {
+        ...treatmentEvol,
+        txEvolDate: treatmentEvol.txEvolDate.toString(),
+      };
 
       setTreatmentsEvols([...treatmentsEvols]);
       setTreatmentEvol(initialTreatmentEvolution);
@@ -98,7 +101,10 @@ export const AddTreatmentEvolution = ({
       return;
     }
 
-    setTreatmentsEvols([...treatmentsEvols, treatmentEvol]);
+    setTreatmentsEvols([
+      ...treatmentsEvols,
+      { ...treatmentEvol, txEvolDate: treatmentEvol.txEvolDate.toString() },
+    ]);
     setTreatmentEvol(initialTreatmentEvolution);
     setOpenEvol(false);
   };

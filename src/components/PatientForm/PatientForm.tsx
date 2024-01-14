@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { CalendarIcon } from '@radix-ui/react-icons';
 import { z } from 'zod';
 import { format } from 'date-fns';
-import { createPatient } from '@/actions';
+import { createPatient, navigate } from '@/actions';
 import { patientFormSchema } from '@/lib/validations';
 import {
   Button,
@@ -102,7 +102,8 @@ export const PatientForm = () => {
       return toast.error(patient?.errorMessage);
     }
 
-    router.push(`/dashboard`);
+    // router.push(`/dashboard`);
+    await navigate(`/dashboard`);
     toast.success('Patient created successfully!');
     form.reset();
   }

@@ -7,6 +7,6 @@ export const formatDniType = (dniType: string) => {
     case 'O':
       return 'Otro';
     default:
-      return 'Femenino';
+      return 'CC';
   }
 };

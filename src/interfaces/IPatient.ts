@@ -1,3 +1,5 @@
+import { ITreatment } from '.';
+
 export interface IPatient {
   id?: string;
   name: string;
@@ -14,7 +16,7 @@ export interface IPatient {
   BasicInformation: IBasicInformation | null;
   ContactInformation: IContactInformation | null;
   MedicalInformation: IMedicalInformation | null;
-  Treatment: any;
+  Treatment: ITreatment | null;
   // healthInformation: IHealthInformation;
 }
 

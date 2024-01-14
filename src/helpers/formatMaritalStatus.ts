@@ -6,6 +6,8 @@ export const formatMaritalStatus = (status: string) => {
       return 'Casado';
     case 'V':
       return 'Viudo';
+    case 'U':
+      return 'Union libre';
     case 'D':
       return 'Divorciado';
     case 'M':

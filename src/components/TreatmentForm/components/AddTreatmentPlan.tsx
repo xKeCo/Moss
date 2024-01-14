@@ -48,7 +48,7 @@ export const AddTreatmentPlan = ({
   setTreatmentsPlan,
 }: IAddTreatmentPlanProps) => {
   const initialTreatment: IRealTxPlan = {
-    txId: uuidv4(),
+    id: uuidv4(),
     txPhase: `Fase 1`,
     txActivity: '',
     txETT: '',
@@ -90,15 +90,18 @@ export const AddTreatmentPlan = ({
     }
 
     const findTreatment = treatmentsPlan.find(
-      (t: IRealTxPlan) => t.txId === treatmentPlan.txId
+      (t: IRealTxPlan) => t.id === treatmentPlan.id
     );
 
     if (findTreatment) {
       const index = treatmentsPlan.findIndex(
-        (t: IRealTxPlan) => t.txId === treatmentPlan.txId
+        (t: IRealTxPlan) => t.id === treatmentPlan.id
       );
 
-      treatmentsPlan[index] = treatmentPlan;
+      treatmentsPlan[index] = {
+        ...treatmentPlan,
+        txStartDate: treatmentPlan.txStartDate.toString(),
+      };
 
       setTreatmentsPlan([...treatmentsPlan]);
       setTreatmentPlan(initialTreatment);
@@ -107,7 +110,10 @@ export const AddTreatmentPlan = ({
       return;
     }
 
-    setTreatmentsPlan([...treatmentsPlan, treatmentPlan]);
+    setTreatmentsPlan([
+      ...treatmentsPlan,
+      { ...treatmentPlan, txStartDate: treatmentPlan.txStartDate.toString() },
+    ]);
     setTreatmentPlan(initialTreatment);
     setOpenPlan(false);
   };

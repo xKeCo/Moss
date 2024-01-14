@@ -144,33 +144,38 @@ model Patient {
 }
 
 model Cavities {
-  id                String   @id @default(uuid())
-  center            Int
-  top               Int
-  bottom            Int
-  left              Int
-  right             Int
+  id               String   @id @default(uuid())
+  center           Int
+  top              Int
+  bottom           Int
+  left             Int
+  right            Int
 
-  InitialOdontogram InitialOdontogram @relation(fields: [initialOdontogramId], references: [id])
-  initialOdontogramId String         @unique
+  Tooth            Tooth?   @relation(fields: [toothId], references: [id])
+  toothId          String   @unique
+}
 
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+model Tooth {
+  id                  String           @id @default(uuid())
+  cavities            Cavities?
+  tooth               Int
+  extract             Int 
+  absent              Int
+  crown               Int
+  endodontics         Int
+  filter              Int
+  unerupted           Int
+  implant             Int
+  regeneration        Int
+
+
+  InitialOdontogram   InitialOdontogram @relation(fields: [initialOdontogramId], references: [id])
+  initialOdontogramId String            
 }
 
 model InitialOdontogram {
   id           String    @id @default(uuid())
-  tooth        Int 
-  extract      Int 
-  absent       Int
-  crown        Int
-  endodontics  Int
-  filter       Int
-  unerupted    Int
-  implant      Int
-  regeneration Int
-
-  cavities     Cavities?
+  Tooth        Tooth[]
 
   Treatment    Treatment @relation(fields: [treatmentId], references: [id])
   treatmentId  String    @unique
@@ -184,12 +189,13 @@ model RealTxPlan {
   txPhase      String
   txActivity   String
   txETT        String
+  txETTUnit    String
   txStartDate  String
   txPrice      String
   txActive     Boolean?  @default(true)
 
   Treatment    Treatment @relation(fields: [treatmentId], references: [id])
-  treatmentId  String    @unique
+  treatmentId  String    
 
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt  
@@ -204,7 +210,7 @@ model TxEvolution {
   txEvolActive  Boolean?  @default(true)
 
   Treatment     Treatment @relation(fields: [treatmentId], references: [id])
-  treatmentId   String    @unique
+  treatmentId   String    
 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt  
@@ -215,14 +221,14 @@ model Treatment {
   diagnosis           String
   prognosis           String
 
-  Patient             Patient?          @relation(fields: [patientId], references: [id])
+  Patient             Patient?          @relation(fields: [patientId], references: [dniNumber])
   patientId           String            @unique
   InitialOdontogram   InitialOdontogram?
   RealTxPlan          RealTxPlan[]
-  TxEvolution         TxEvolution[]
+  TxEvolutions         TxEvolution[]
 
   totalPrice          Float              @default(0)
-  totlaPaid           Float              @default(0)
+  totalPaid           Float              @default(0)
   totalPending        Float              @default(0)
   createdAt           DateTime           @default(now())
   updatedAt           DateTime           @updatedAt

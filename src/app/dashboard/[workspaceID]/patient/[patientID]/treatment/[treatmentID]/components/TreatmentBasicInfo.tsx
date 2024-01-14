@@ -15,7 +15,7 @@ import { useTreatmentsStore } from '@/hooks';
 
 export const TreatmentBasicInfo = () => {
   const initialTreatment: IRealTxPlan = {
-    txId: uuidv4(),
+    id: uuidv4(),
     txPhase: `Fase 1`,
     txActivity: '',
     txETT: '',
@@ -25,7 +25,7 @@ export const TreatmentBasicInfo = () => {
   };
 
   const initialEvolTreatment: ITxEvolution = {
-    txEvolId: uuidv4(),
+    id: uuidv4(),
     txEvolDate: new Date(),
     txEvolDesc: '',
     txEvolDoc: '',
@@ -71,10 +71,10 @@ export const TreatmentBasicInfo = () => {
   };
 
   const validateShowSaveButton = () => {
-    if (treatments.length !== activeTreatment?.realTxPlan.length) {
+    if (treatments.length !== activeTreatment?.RealTxPlan?.length) {
       return true;
     }
-    if (treatmentsEvolutions.length !== activeTreatment?.txEvolutions.length) {
+    if (treatmentsEvolutions.length !== activeTreatment?.TxEvolutions?.length) {
       return true;
     }
     return false;
@@ -109,7 +109,7 @@ export const TreatmentBasicInfo = () => {
           {id === 1
             ? treatments.map((item, index) => (
                 <TreatmentItem
-                  key={item.txId}
+                  key={item.id}
                   item={item}
                   index={index}
                   treatments={treatments}
@@ -120,7 +120,7 @@ export const TreatmentBasicInfo = () => {
               ))
             : treatmentsEvolutions.map((item, index) => (
                 <TreatmentEvolItem
-                  key={item.txEvolId}
+                  key={item.id}
                   item={item}
                   index={index}
                   treatmentsEvols={treatmentsEvolutions}
@@ -136,8 +136,8 @@ export const TreatmentBasicInfo = () => {
 
   useEffect(() => {
     if (activeTreatment) {
-      setTreatments(activeTreatment.realTxPlan);
-      setTreatmentsEvolutions(activeTreatment.txEvolutions);
+      setTreatments(activeTreatment?.RealTxPlan!);
+      setTreatmentsEvolutions(activeTreatment.TxEvolutions!);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

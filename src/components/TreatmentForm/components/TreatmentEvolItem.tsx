@@ -22,7 +22,7 @@ export const TreatmentEvolItem = ({
   setTreatmentsEvols,
 }: ITretmentEvolItemProps) => {
   const initialEvolTreatment: ITxEvolution = {
-    txEvolId: uuidv4(),
+    id: uuidv4(),
     txEvolDate: new Date(),
     txEvolDesc: '',
     txEvolDoc: '',
@@ -48,7 +48,7 @@ export const TreatmentEvolItem = ({
   };
 
   const deleteTreatmentEvol = () => {
-    setTreatmentsEvols(treatmentsEvols.filter((t) => t.txEvolId !== item.txEvolId));
+    setTreatmentsEvols(treatmentsEvols.filter((t) => t.id !== item.id));
     setTreatmentEvol(initialEvolTreatment);
   };
 

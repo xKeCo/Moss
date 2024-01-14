@@ -1,12 +1,11 @@
 'use client';
 import { useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'sonner';
-import { useTreatmentsStore } from '@/hooks';
 import {
   Button,
   Form,
@@ -25,33 +24,25 @@ import {
   TreatmentItem,
 } from './components';
 import type { IRealTxPlan, IToothState, ITxEvolution } from '@/interfaces';
+import { treatmentFormSchema } from '@/lib/validations';
+import { createTreatment, navigate } from '@/actions';
+import { Icons } from '..';
 
-const FormSchema = z.object({
-  diagnosis: z
-    .string()
-    .min(5, {
-      message: 'Diagnosis must be at least 5 characters.',
-    })
-    .max(100, {
-      message: 'Diagnosis must be at most 100 characters.',
-    }),
-  prognosis: z
-    .string()
-    .min(5, {
-      message: 'Prognosis must be at least 5 characters.',
-    })
-    .max(100, {
-      message: 'Prognosis must be at most 100 characters.',
-    }),
-});
+interface ITreatmentFormProps {
+  odontogramState: IToothState[];
+  workspaceID: string;
+  patientID: string;
+}
+
+type TreatmentFormData = z.infer<typeof treatmentFormSchema>;
 
 export const TreatmentForm = ({
   odontogramState,
-}: {
-  odontogramState: IToothState[];
-}) => {
+  workspaceID,
+  patientID,
+}: ITreatmentFormProps) => {
   const initialTreatment: IRealTxPlan = {
-    txId: uuidv4(),
+    id: uuidv4(),
     txPhase: `Fase 1`,
     txActivity: '',
     txETT: '',
@@ -61,7 +52,7 @@ export const TreatmentForm = ({
   };
 
   const initialEvolTreatment: ITxEvolution = {
-    txEvolId: uuidv4(),
+    id: uuidv4(),
     txEvolDate: new Date(),
     txEvolDesc: '',
     txEvolDoc: '',
@@ -69,13 +60,13 @@ export const TreatmentForm = ({
   };
   const router = useRouter();
 
-  const { startSavingTreatment } = useTreatmentsStore();
-  const { patientID, workspaceID } = useParams();
   const [openTreatmentModal, setOpenTreatmentModal] = useState(false);
   const [openTreatmentEvolModal, setOpenTreatmentEvolModal] = useState(false);
 
   const [treatment, setTreatment] = useState<IRealTxPlan>(initialTreatment);
   const [treatments, setTreatments] = useState<IRealTxPlan[]>([]);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [treatmentEvolution, setTreatmentEvolution] =
     useState<ITxEvolution>(initialEvolTreatment);
@@ -96,29 +87,41 @@ export const TreatmentForm = ({
     },
   ];
 
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<TreatmentFormData>({
+    resolver: zodResolver(treatmentFormSchema),
     defaultValues: {
       diagnosis: '',
       prognosis: '',
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  async function onSubmit(data: TreatmentFormData) {
     if (treatments.length === 0) {
       toast.error('You must add at least one treatment plan.');
       return;
     }
 
-    startSavingTreatment({
-      ...data,
-      patientId: `${patientID}`,
-      initialOdontogram: odontogramState.filter((n) => n),
-      realTxPlan: treatments,
-      txEvolutions: treatmentsEvolutions,
-    });
+    setIsLoading(true);
 
-    cancelSubmit();
+    const treatmentCreated = await createTreatment(
+      {
+        ...data,
+        InitialOdontogram: odontogramState.filter((n) => n),
+        realTxPlan: treatments,
+        txEvolutions: treatmentsEvolutions,
+      },
+      patientID
+    );
+
+    setIsLoading(false);
+
+    if (!treatmentCreated.ok) {
+      toast.error(treatmentCreated.errorMessage);
+      return;
+    }
+
+    toast.success('Treatment created successfully.');
+    await navigate(`/dashboard/${workspaceID}/patient/${patientID}`);
   }
 
   async function cancelSubmit() {
@@ -194,37 +197,35 @@ export const TreatmentForm = ({
               <EmptyTreatmentItem evolution={isEvol} />
             ) : (
               <div className="grid md:grid-cols-2 gap-4">
-                <>
-                  {id === 1 ? (
-                    <>
-                      {treatments.map((item, index) => (
-                        <TreatmentItem
-                          key={item.txId}
-                          item={item}
-                          index={index}
-                          treatments={treatments}
-                          setTreatment={setTreatment}
-                          setTreatments={setTreatments}
-                          setOpen={setOpenTreatmentModal}
-                        />
-                      ))}
-                    </>
-                  ) : (
-                    <>
-                      {treatmentsEvolutions.map((item, index) => (
-                        <TreatmentEvolItem
-                          key={item.txEvolId}
-                          item={item}
-                          index={index}
-                          treatmentsEvols={treatmentsEvolutions}
-                          setTreatmentEvol={setTreatmentEvolution}
-                          setTreatmentsEvols={setTreatmentsEvolutions}
-                          setOpenEvol={setOpenTreatmentEvolModal}
-                        />
-                      ))}
-                    </>
-                  )}
-                </>
+                {id === 1 ? (
+                  <>
+                    {treatments.map((item, index) => (
+                      <TreatmentItem
+                        key={item.id}
+                        item={item}
+                        index={index}
+                        treatments={treatments}
+                        setTreatment={setTreatment}
+                        setTreatments={setTreatments}
+                        setOpen={setOpenTreatmentModal}
+                      />
+                    ))}
+                  </>
+                ) : (
+                  <>
+                    {treatmentsEvolutions.map((item, index) => (
+                      <TreatmentEvolItem
+                        key={item.id}
+                        item={item}
+                        index={index}
+                        treatmentsEvols={treatmentsEvolutions}
+                        setTreatmentEvol={setTreatmentEvolution}
+                        setTreatmentsEvols={setTreatmentsEvolutions}
+                        setOpenEvol={setOpenTreatmentEvolModal}
+                      />
+                    ))}
+                  </>
+                )}
               </div>
             )}
           </div>
@@ -232,7 +233,12 @@ export const TreatmentForm = ({
         <Button type="button" variant="secondary" className="mr-4" onClick={cancelSubmit}>
           Cancel
         </Button>
-        <Button type="submit">Save treatment</Button>
+        <Button type="submit">
+          {isLoading && (
+            <Icons.Spinner className="animate-spin mr-2 h-5 w-5 text-white" />
+          )}
+          Save treatment
+        </Button>
       </form>
     </Form>
   );

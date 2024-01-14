@@ -23,7 +23,7 @@ export const TreatmentItem = ({
   setOpen,
 }: ITretmentItemProps) => {
   const initialTreatment: IRealTxPlan = {
-    txId: uuidv4(),
+    id: uuidv4(),
     txPhase: `Fase 1`,
     txActivity: '',
     txETT: '',
@@ -51,7 +51,7 @@ export const TreatmentItem = ({
   };
 
   const deleteTreatment = () => {
-    setTreatments(treatments.filter((t) => t.txId !== item.txId));
+    setTreatments(treatments.filter((t) => t.id !== item.id));
     setTreatment(initialTreatment);
   };
 

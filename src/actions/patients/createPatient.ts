@@ -28,75 +28,30 @@ export const createPatient = async (patientData: any, workspaceId: string) => {
         name: patientData.name,
         photoURL: `https://source.boringavatars.com/marble/50/${patientData.dniNumber}`,
         workspaceId: workspaceId,
-      },
-      select: {
-        id: true,
-      },
-    });
-
-    const newBasicInformation = await prisma.basicInformation.create({
-      data: {
-        ...BasicInformation,
-        patientId: patientData.dniNumber,
-      },
-      select: {
-        id: true,
-      },
-    });
-
-    const newContactInformation = await prisma.contactInformation.create({
-      data: {
-        ...ContactInformation,
-        patientId: patientData.dniNumber,
-      },
-      select: {
-        id: true,
-      },
-    });
-
-    const newMedicalInformation = await prisma.medicalInformation.create({
-      data: { ...MedicalInformation, patientId: patientData.dniNumber },
-      select: {
-        id: true,
-      },
-    });
-
-    const updatedPatient = await prisma.patient.update({
-      where: {
-        id: newPatient.id,
-      },
-      data: {
         BasicInformation: {
-          connect: {
-            id: newBasicInformation.id,
+          create: {
+            ...BasicInformation,
           },
         },
         ContactInformation: {
-          connect: {
-            id: newContactInformation.id,
+          create: {
+            ...ContactInformation,
           },
         },
         MedicalInformation: {
-          connect: {
-            id: newMedicalInformation.id,
+          create: {
+            ...MedicalInformation,
           },
         },
       },
       select: {
         id: true,
-        dniNumber: true,
-        email: true,
-        name: true,
-        photoURL: true,
-        BasicInformation: true,
-        ContactInformation: true,
-        MedicalInformation: true,
       },
     });
 
     return {
       ok: true,
-      patient: updatedPatient,
+      patient: newPatient,
     };
   } catch (error) {
     console.log(error);
