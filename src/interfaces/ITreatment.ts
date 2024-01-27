@@ -1,15 +1,20 @@
-import { IToothState } from '.';
+import type { IToothState } from '.';
+
+interface IInitialOdontogram {
+  Tooth: IToothState[];
+}
 
 export interface ITreatment {
   id: string;
   diagnosis: string;
   prognosis: string;
 
+  Patient: any;
   patientId: string;
 
-  InitialOdontogram?: IToothState[] | null;
-  RealTxPlan?: IRealTxPlan[] | null;
-  TxEvolutions?: ITxEvolution[] | null;
+  InitialOdontogram: IInitialOdontogram | null;
+  RealTxPlan: IRealTxPlan[] | null;
+  TxEvolutions: ITxEvolution[] | null;
 
   totalPrice: number;
   totalPaid: number;
@@ -26,7 +31,7 @@ export interface IRealTxPlan {
   txETTUnit: string;
   txStartDate: string | Date;
   txPrice: string;
-  txActive?: boolean;
+  txActive?: boolean | null;
 }
 
 export interface ITxEvolution {
@@ -35,5 +40,5 @@ export interface ITxEvolution {
   txEvolDesc: string;
   txEvolDoc: string;
   txEvolPayment: string;
-  txEvolActive?: boolean;
+  txEvolActive?: boolean | null;
 }

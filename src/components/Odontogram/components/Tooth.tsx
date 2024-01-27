@@ -36,7 +36,6 @@ export const Tooth = ({
       bottom: 0,
       left: 0,
       right: 0,
-      toothId: number,
     },
     extract: 0,
     absent: 0,
@@ -58,7 +57,6 @@ export const Tooth = ({
       bottom: 0,
       left: 0,
       right: 0,
-      toothId: number,
     },
     extract: 0,
     absent: 0,
@@ -281,9 +279,7 @@ export const Tooth = ({
                 ))}
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => dispatch(clear())}>
-                Limpiar todo
-              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => dispatch(clear())}>Limpiar todo</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         ))}
@@ -384,12 +380,7 @@ export const Tooth = ({
     if (toothState.regeneration > 0) {
       otherFigures = (
         <g stroke={toothState.regeneration === 2 ? '#f53b1f' : '#0066ff'}>
-          <path
-            d="M 0 10 Q 5 0 10 10 T 20 10"
-            fill="none"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
+          <path d="M 0 10 Q 5 0 10 10 T 20 10" fill="none" strokeWidth="2" strokeLinecap="round" />
         </g>
       );
     }

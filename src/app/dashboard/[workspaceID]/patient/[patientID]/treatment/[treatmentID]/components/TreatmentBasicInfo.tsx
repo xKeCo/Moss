@@ -2,18 +2,20 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
+import { toast } from 'sonner';
 import {
   AddTreatmentEvolution,
   AddTreatmentPlan,
   EmptyTreatmentItem,
+  Icons,
   TreatmentEvolItem,
   TreatmentItem,
 } from '@/components';
-import { Alert, Button, Skeleton } from '@/components/ui';
-import type { IRealTxPlan, ITxEvolution } from '@/interfaces';
-import { useTreatmentsStore } from '@/hooks';
+import { Button } from '@/components/ui';
+import type { IRealTxPlan, ITreatment, ITxEvolution } from '@/interfaces';
+import { updateTreatment } from '@/actions';
 
-export const TreatmentBasicInfo = () => {
+export const TreatmentBasicInfo = ({ treatmentInfo }: { treatmentInfo: ITreatment }) => {
   const initialTreatment: IRealTxPlan = {
     id: uuidv4(),
     txPhase: `Fase 1`,
@@ -32,26 +34,28 @@ export const TreatmentBasicInfo = () => {
     txEvolPayment: '',
   };
   const router = useRouter();
-  const { loading, activeTreatment, startSavingTreatment } = useTreatmentsStore();
+
+  const [treatment, setTreatment] = useState<ITreatment>(treatmentInfo);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const [openTreatmentModal, setOpenTreatmentModal] = useState(false);
   const [openTreatmentEvolModal, setOpenTreatmentEvolModal] = useState(false);
 
-  const [treatmentEvolution, setTreatmentEvolution] =
-    useState<ITxEvolution>(initialEvolTreatment);
+  const [treatmentEvolution, setTreatmentEvolution] = useState<ITxEvolution>(initialEvolTreatment);
   const [treatmentsEvolutions, setTreatmentsEvolutions] = useState<ITxEvolution[]>([]);
-  const [treatment, setTreatment] = useState<IRealTxPlan>(initialTreatment);
-  const [treatments, setTreatments] = useState<IRealTxPlan[]>([]);
+  const [treatmentPlan, setTreatmentPlan] = useState<IRealTxPlan>(initialTreatment);
+  const [treatmentsPlan, setTreatmentsPlan] = useState<IRealTxPlan[]>([]);
 
   const basicInfo = [
-    { label: 'Diagnosis', value: activeTreatment?.diagnosis },
-    { label: 'Prognosis', value: activeTreatment?.prognosis },
+    { label: 'Diagnosis', value: treatment?.diagnosis },
+    { label: 'Prognosis', value: treatment?.prognosis },
   ];
 
   const treatmentsAndEvolutionsItems = [
     {
       id: 1,
       title: 'Actual treatment plan',
-      array: treatments,
+      array: treatmentsPlan,
       isEvol: false,
     },
     {
@@ -63,32 +67,57 @@ export const TreatmentBasicInfo = () => {
   ];
 
   const cancelSubmit = () => {
-    setTreatment(initialTreatment);
-    setTreatments([]);
+    setTreatmentPlan(initialTreatment);
+    setTreatmentsPlan([]);
     setTreatmentEvolution(initialEvolTreatment);
     setTreatmentsEvolutions([]);
     router.back();
   };
 
   const validateShowSaveButton = () => {
-    if (treatments.length !== activeTreatment?.RealTxPlan?.length) {
-      return true;
-    }
-    if (treatmentsEvolutions.length !== activeTreatment?.TxEvolutions?.length) {
+    if (
+      treatmentsPlan.length !== treatment?.RealTxPlan?.length ||
+      treatmentsEvolutions.length !== treatment?.TxEvolutions?.length
+    ) {
       return true;
     }
     return false;
   };
 
-  const saveTreatment = () => {
-    if (activeTreatment) {
+  const saveTreatment = async () => {
+    if (treatment) {
+      setIsLoading(true);
+
       const treatmentData = {
-        ...activeTreatment,
-        realTxPlan: treatments,
-        txEvolutions: treatmentsEvolutions,
+        ...treatment,
+        RealTxPlan: treatmentsPlan,
+        TxEvolutions: treatmentsEvolutions,
       };
 
-      startSavingTreatment(treatmentData);
+      const {
+        Patient,
+        updatedAt,
+        totalPending,
+        totalPaid,
+        totalPrice,
+        InitialOdontogram,
+        ...rest
+      } = treatmentData;
+
+      const { ok, updatedTreatment, errorMessage } = await updateTreatment(rest, treatment?.id);
+
+      setIsLoading(false);
+
+      if (!ok) {
+        toast.error(errorMessage);
+        return;
+      }
+
+      setTreatment(updatedTreatment!);
+      setTreatmentsPlan(updatedTreatment?.RealTxPlan!);
+      setTreatmentsEvolutions(updatedTreatment?.TxEvolutions!);
+
+      toast.success('Treatment updated successfully.');
     }
   };
 
@@ -107,14 +136,14 @@ export const TreatmentBasicInfo = () => {
       return (
         <div className="grid md:grid-cols-2 gap-4">
           {id === 1
-            ? treatments.map((item, index) => (
+            ? treatmentsPlan.map((item, index) => (
                 <TreatmentItem
                   key={item.id}
                   item={item}
                   index={index}
-                  treatments={treatments}
-                  setTreatment={setTreatment}
-                  setTreatments={setTreatments}
+                  treatments={treatmentsPlan}
+                  setTreatment={setTreatmentPlan}
+                  setTreatments={setTreatmentsPlan}
                   setOpen={setOpenTreatmentModal}
                 />
               ))
@@ -135,13 +164,13 @@ export const TreatmentBasicInfo = () => {
   };
 
   useEffect(() => {
-    if (activeTreatment) {
-      setTreatments(activeTreatment?.RealTxPlan!);
-      setTreatmentsEvolutions(activeTreatment.TxEvolutions!);
+    if (treatment) {
+      setTreatmentsPlan(treatment?.RealTxPlan!);
+      setTreatmentsEvolutions(treatment.TxEvolutions!);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeTreatment]);
+  }, [treatment]);
 
   return (
     <div className="space-y-6">
@@ -152,14 +181,12 @@ export const TreatmentBasicInfo = () => {
           <div className="grid sm:grid-cols-2 gap-4">
             {basicInfo.map((item) => (
               <div key={item.label}>
-                <p className="text-base font-medium text-muted-foreground">
-                  {item.label}
-                </p>
-                {loading ? (
+                <p className="text-base font-medium text-muted-foreground">{item.label}</p>
+                {/* {loading ? (
                   <Skeleton className="h-6 w-full mt-2" />
-                ) : (
-                  <p className="text-base mt-2">{item.value}</p>
-                )}
+                ) : ( */}
+                <p className="text-base mt-2">{item.value}</p>
+                {/* )} */}
               </div>
             ))}
           </div>
@@ -175,10 +202,10 @@ export const TreatmentBasicInfo = () => {
               <AddTreatmentPlan
                 openPlan={openTreatmentModal}
                 setOpenPlan={setOpenTreatmentModal}
-                treatmentPlan={treatment}
-                treatmentsPlan={treatments}
-                setTreatmentPlan={setTreatment}
-                setTreatmentsPlan={setTreatments}
+                treatmentPlan={treatmentPlan}
+                treatmentsPlan={treatmentsPlan}
+                setTreatmentPlan={setTreatmentPlan}
+                setTreatmentsPlan={setTreatmentsPlan}
               />
             ) : (
               <AddTreatmentEvolution
@@ -191,8 +218,7 @@ export const TreatmentBasicInfo = () => {
               />
             )}
           </div>
-
-          {loading ? (
+          {/* {loading ? (
             <div className="grid md:grid-cols-2 gap-4">
               {Array.from({ length: 4 }).map((_, index) => (
                 <Alert className="flex flex-col" key={index}>
@@ -212,9 +238,9 @@ export const TreatmentBasicInfo = () => {
                 </Alert>
               ))}
             </div>
-          ) : (
-            renderTreatmentItems({ id, array, isEvol })
-          )}
+          ) : ( */}
+
+          {renderTreatmentItems({ id, array, isEvol })}
         </div>
       ))}
 
@@ -222,7 +248,8 @@ export const TreatmentBasicInfo = () => {
         Cancel
       </Button>
       {validateShowSaveButton() && (
-        <Button type="button" onClick={saveTreatment}>
+        <Button type="button" onClick={saveTreatment} disabled={isLoading}>
+          {isLoading && <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />}
           Save treatment
         </Button>
       )}

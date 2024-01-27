@@ -1,19 +1,26 @@
 'use server';
 import prisma from '@/lib/prisma';
+import type { ICavities } from '@/interfaces';
 
 export const createTreatment = async (treatmentData: any, patientID: string) => {
   try {
-    const totalPrice = treatmentData.realTxPlan.reduce(
+    const totalPrice = treatmentData.RealTxPlan.reduce(
       (acc: number, curr: any) => acc + Number(curr.txPrice),
       0
     );
 
-    const totalPaid = treatmentData.txEvolutions.reduce(
+    const totalPaid = treatmentData.TxEvolutions.reduce(
       (acc: number, curr: any) => acc + Number(curr.txEvolPayment),
       0
     );
 
     const totalPending = totalPrice - totalPaid;
+
+    const onlyCavities = treatmentData.InitialOdontogram.map((tooth: any) => tooth.cavities);
+    const teethWithoutCavities = treatmentData.InitialOdontogram.map((tooth: any) => {
+      const { cavities, ...toothWithoutCavities } = tooth;
+      return toothWithoutCavities;
+    });
 
     const newTreatment = await prisma.treatment.create({
       data: {
@@ -22,19 +29,19 @@ export const createTreatment = async (treatmentData: any, patientID: string) => 
         patientId: patientID,
         RealTxPlan: {
           createMany: {
-            data: treatmentData.realTxPlan,
+            data: treatmentData.RealTxPlan,
           },
         },
         TxEvolutions: {
           createMany: {
-            data: treatmentData.txEvolutions,
+            data: treatmentData.TxEvolutions,
           },
         },
         InitialOdontogram: {
           create: {
             Tooth: {
               createMany: {
-                data: treatmentData.InitialOdontogram,
+                data: teethWithoutCavities,
               },
             },
           },
@@ -45,7 +52,26 @@ export const createTreatment = async (treatmentData: any, patientID: string) => 
       },
       select: {
         id: true,
+        InitialOdontogram: {
+          select: {
+            Tooth: {
+              select: {
+                id: true,
+                tooth: true,
+              },
+            },
+          },
+        },
       },
+    });
+
+    const newCavitiesWithToothId = onlyCavities.map((cavity: ICavities, index: number) => ({
+      ...cavity,
+      toothId: newTreatment?.InitialOdontogram?.Tooth[index].id,
+    }));
+
+    await prisma.cavities.createMany({
+      data: newCavitiesWithToothId,
     });
 
     return {

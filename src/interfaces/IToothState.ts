@@ -1,6 +1,7 @@
 export interface IToothState {
+  id: string;
   tooth: number;
-  cavities: ICavities;
+  cavities: ICavities | null;
   extract: number;
   absent: number;
   crown: number;
@@ -9,13 +10,14 @@ export interface IToothState {
   unerupted: number;
   implant: number;
   regeneration: number;
+  initialOdontogramId: string;
 }
 
-interface ICavities {
-  toothId: number;
+export interface ICavities {
   center: number;
   top: number;
   bottom: number;
   left: number;
   right: number;
+  toothId?: string;
 }

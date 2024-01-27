@@ -36,11 +36,7 @@ interface ITreatmentFormProps {
 
 type TreatmentFormData = z.infer<typeof treatmentFormSchema>;
 
-export const TreatmentForm = ({
-  odontogramState,
-  workspaceID,
-  patientID,
-}: ITreatmentFormProps) => {
+export const TreatmentForm = ({ odontogramState, workspaceID, patientID }: ITreatmentFormProps) => {
   const initialTreatment: IRealTxPlan = {
     id: uuidv4(),
     txPhase: `Fase 1`,
@@ -68,8 +64,7 @@ export const TreatmentForm = ({
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [treatmentEvolution, setTreatmentEvolution] =
-    useState<ITxEvolution>(initialEvolTreatment);
+  const [treatmentEvolution, setTreatmentEvolution] = useState<ITxEvolution>(initialEvolTreatment);
   const [treatmentsEvolutions, setTreatmentsEvolutions] = useState<ITxEvolution[]>([]);
 
   const treatmentsAndEvolutionsItems = [
@@ -107,8 +102,8 @@ export const TreatmentForm = ({
       {
         ...data,
         InitialOdontogram: odontogramState.filter((n) => n),
-        realTxPlan: treatments,
-        txEvolutions: treatmentsEvolutions,
+        RealTxPlan: treatments,
+        TxEvolutions: treatmentsEvolutions,
       },
       patientID
     );
@@ -197,9 +192,8 @@ export const TreatmentForm = ({
               <EmptyTreatmentItem evolution={isEvol} />
             ) : (
               <div className="grid md:grid-cols-2 gap-4">
-                {id === 1 ? (
-                  <>
-                    {treatments.map((item, index) => (
+                {id === 1
+                  ? treatments.map((item, index) => (
                       <TreatmentItem
                         key={item.id}
                         item={item}
@@ -209,11 +203,8 @@ export const TreatmentForm = ({
                         setTreatments={setTreatments}
                         setOpen={setOpenTreatmentModal}
                       />
-                    ))}
-                  </>
-                ) : (
-                  <>
-                    {treatmentsEvolutions.map((item, index) => (
+                    ))
+                  : treatmentsEvolutions.map((item, index) => (
                       <TreatmentEvolItem
                         key={item.id}
                         item={item}
@@ -224,8 +215,6 @@ export const TreatmentForm = ({
                         setOpenEvol={setOpenTreatmentEvolModal}
                       />
                     ))}
-                  </>
-                )}
               </div>
             )}
           </div>
@@ -234,9 +223,7 @@ export const TreatmentForm = ({
           Cancel
         </Button>
         <Button type="submit">
-          {isLoading && (
-            <Icons.Spinner className="animate-spin mr-2 h-5 w-5 text-white" />
-          )}
+          {isLoading && <Icons.Spinner className="animate-spin mr-2 h-5 w-5 text-white" />}
           Save treatment
         </Button>
       </form>
