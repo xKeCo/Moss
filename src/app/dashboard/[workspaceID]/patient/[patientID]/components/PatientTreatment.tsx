@@ -1,13 +1,9 @@
 import Link from 'next/link';
-import {
-  ArrowBottomRightIcon,
-  ArrowRightIcon,
-  FilePlusIcon,
-} from '@radix-ui/react-icons';
-import { Button } from '@/components/ui';
+import { ArrowBottomRightIcon, ArrowRightIcon, FilePlusIcon } from '@radix-ui/react-icons';
+import { Button, Skeleton } from '@/components/ui';
 import { formatCurrency, formatDate } from '@/helpers';
 import { cn } from '@/lib/utils';
-import { IPatient } from '@/interfaces';
+import type { IPatient } from '@/interfaces';
 
 interface ITreatmentInfo {
   label: string;
@@ -20,10 +16,7 @@ interface IPatientTreatmentProps {
   workspaceID: string;
 }
 
-export const PatientTreatment = ({
-  patientInfo,
-  workspaceID,
-}: IPatientTreatmentProps) => {
+export const PatientTreatment = ({ patientInfo, workspaceID }: IPatientTreatmentProps) => {
   const treatmentInformation: ITreatmentInfo[] = [
     {
       label: 'Diagnosis',
@@ -53,8 +46,8 @@ export const PatientTreatment = ({
       {!patientInfo?.Treatment ? (
         <div className="flex items-center justify-center h-full">
           <h1 className="text-2xl text-center">
-            <span className="font-semibold">{patientInfo?.name}</span> has no active
-            treatment, start a new one! <ArrowBottomRightIcon className="h-5 w-5" />
+            <span className="font-semibold">{patientInfo?.name}</span> has no active treatment,
+            start a new one! <ArrowBottomRightIcon className="h-5 w-5" />
           </h1>
         </div>
       ) : (
@@ -102,6 +95,52 @@ export const PatientTreatment = ({
           </Link>
         </Button>
       </div>
+    </div>
+  );
+};
+
+PatientTreatment.Skeleton = function PatientTreatmentSkeleton() {
+  const treatmentInformation = [
+    {
+      label: 'Diagnosis',
+      colSpan: 2,
+    },
+    {
+      label: 'Created date',
+    },
+    {
+      label: 'Last update',
+    },
+    {
+      label: 'Total price',
+    },
+    {
+      label: 'Current balance',
+    },
+  ];
+
+  return (
+    <div className="flex flex-col items-start justify-start col-span-4 md:col-span-3 lg:col-span-2 border rounded-2xl gap-3 w-full p-6 min-h-[274px]">
+      <Skeleton className="h-8 w-full" />
+
+      <div className="flex flex-col w-full">
+        <div className="grid grid-cols-2 gap-y-[18px] gap-x-2 w-full">
+          {treatmentInformation.map(({ label, colSpan }) => (
+            <div
+              className={cn(
+                'flex flex-col gap-1 items-start justify-start w-full',
+                colSpan && `col-span-${colSpan}`
+              )}
+              key={label}
+            >
+              <Skeleton className="h-5 w-28" />
+              <Skeleton className="h-5 w-full" />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <Skeleton className="h-9 w-full" />
     </div>
   );
 };

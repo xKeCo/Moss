@@ -115,7 +115,7 @@ export const PatientForm = () => {
 
   const clearEPSNameValue = (EPSActive: boolean) => {
     if (!EPSActive) {
-      form.setValue('MedicalInformation.EPSName', '');
+      form.setValue('MedicalInformation.EPSName', 'NO TIENE EPS');
     }
   };
 
@@ -216,11 +216,7 @@ export const PatientForm = () => {
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button variant={'outline'}>
-                        {field.value ? (
-                          format(field.value, 'P')
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
+                        {field.value ? format(field.value, 'P') : <span>Pick a date</span>}
                         <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                       </Button>
                     </FormControl>
@@ -234,9 +230,7 @@ export const PatientForm = () => {
                         field.onChange(date);
                         setAge(new Date().getFullYear() - date!.getFullYear());
                       }}
-                      disabled={(date) =>
-                        date > new Date() || date < new Date('1900-01-01')
-                      }
+                      disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
                       initialFocus
                       captionLayout="dropdown"
                       fromYear={1900}
@@ -386,12 +380,7 @@ export const PatientForm = () => {
               <FormItem>
                 <FormLabel>Height</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="Height"
-                    {...field}
-                    endDecorator="cm"
-                    maxLength={3}
-                  />
+                  <Input placeholder="Height" {...field} endDecorator="cm" maxLength={3} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -404,12 +393,7 @@ export const PatientForm = () => {
               <FormItem>
                 <FormLabel>Weight</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="Weight"
-                    {...field}
-                    endDecorator="kg"
-                    maxLength={3}
-                  />
+                  <Input placeholder="Weight" {...field} endDecorator="kg" maxLength={3} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -475,10 +459,7 @@ export const PatientForm = () => {
             name="MedicalInformation.visitedDoctor"
             render={({ field }) => (
               <FormItem className="flex flex-col justify-around">
-                <FormLabel
-                  className="h-[17px]"
-                  htmlFor="MedicalInformation.visitedDoctor"
-                >
+                <FormLabel className="h-[17px]" htmlFor="MedicalInformation.visitedDoctor">
                   Visited a doctor
                 </FormLabel>
                 <Switch

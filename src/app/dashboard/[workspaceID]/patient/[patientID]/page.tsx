@@ -9,9 +9,7 @@ interface IPatientInfoPageProps {
   };
 }
 
-export default async function PatientInfoPage({
-  params,
-}: Readonly<IPatientInfoPageProps>) {
+export default async function PatientInfoPage({ params }: Readonly<IPatientInfoPageProps>) {
   const { patientInfo } = await getPatientById(params.patientID);
 
   const breadcrumbValues = [
