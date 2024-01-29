@@ -2,7 +2,7 @@
 import { HTMLAttributes, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -41,13 +41,8 @@ const FormSchema = z.object({
   }),
 });
 
-export function AuthForm({
-  className,
-  isRegister,
-  ...props
-}: Readonly<UserAuthFormProps>) {
+export function AuthForm({ className, isRegister, ...props }: Readonly<UserAuthFormProps>) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const searchParams = useSearchParams();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -75,7 +70,7 @@ export function AuthForm({
         return toast.error('Invalid credentials');
       }
 
-      router.replace(searchParams?.get('from') ?? `/dashboard`);
+      router.replace('/dashboard');
     } catch (error) {
       setIsLoading(false);
       console.log('error', error);
@@ -146,11 +141,7 @@ export function AuthForm({
 
         <div className={cn('grid gap-6', className)} {...props}>
           <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="space-y-4"
-              autoComplete="off"
-            >
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" autoComplete="off">
               <FormField
                 control={form.control}
                 name="email"
@@ -172,11 +163,7 @@ export function AuthForm({
                     <FormItem>
                       <FormLabel>Username</FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder="Username"
-                          {...field}
-                          autoComplete="username"
-                        />
+                        <Input placeholder="Username" {...field} autoComplete="username" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -255,10 +242,7 @@ export function AuthForm({
             Terms of Service
           </Link>{' '}
           and{' '}
-          <Link
-            href="/privacy"
-            className="underline underline-offset-4 hover:text-primary"
-          >
+          <Link href="/privacy" className="underline underline-offset-4 hover:text-primary">
             Privacy Policy
           </Link>
           .
