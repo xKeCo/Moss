@@ -25,11 +25,11 @@ export const PatientTreatment = ({ patientInfo, workspaceID }: IPatientTreatment
     },
     {
       label: 'Created date',
-      value: formatDate(patientInfo?.Treatment?.createdAt! as string, true),
+      value: formatDate(patientInfo?.Treatment?.createdAt! as string),
     },
     {
       label: 'Last update',
-      value: formatDate(patientInfo?.Treatment?.updatedAt! as string, true),
+      value: formatDate(patientInfo?.Treatment?.updatedAt! as string),
     },
     {
       label: 'Total price',

@@ -1,9 +1,16 @@
-export const formatDate = (date: string, showTime: boolean = false) => {
+export const formatDate = (date: string) => {
   if (!date) return 'N/A';
 
-  const dateSting = date.toString();
+  const dateToDate = new Date(date);
 
-  const [_, month, day, year] = dateSting.split(' ');
+  const dateString = dateToDate.toLocaleDateString('es-ES', {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
 
-  return `${month} ${day} ${year}`;
+  const [_, day, month, year] = dateString.split(' ');
+
+  return `${day} ${month.toUpperCase()} ${year}`;
 };

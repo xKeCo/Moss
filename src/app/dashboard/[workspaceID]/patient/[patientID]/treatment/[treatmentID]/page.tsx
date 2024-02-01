@@ -1,8 +1,8 @@
+import Link from 'next/link';
+import { ArrowLeftIcon, CrossCircledIcon } from '@radix-ui/react-icons';
 import { Odontogram } from '@/components';
 import { Button, Skeleton } from '@/components/ui';
 import { TreatmentBasicInfo } from './components/TreatmentBasicInfo';
-import { ArrowLeftIcon, CrossCircledIcon } from '@radix-ui/react-icons';
-import Link from 'next/link';
 import { getTreatmentById } from '@/actions';
 
 interface TreatmentInformationProps {
@@ -17,10 +17,15 @@ export default async function TreatmentInformation({
   params,
 }: Readonly<TreatmentInformationProps>) {
   const { ok, errorMessage, treatmentInfo } = await getTreatmentById(params.treatmentID);
+  // await new Promise((resolve) => setTimeout(resolve, 1000000));
+
+  const basicInfo = [
+    { label: 'Diagnosis', value: treatmentInfo?.diagnosis },
+    { label: 'Prognosis', value: treatmentInfo?.prognosis },
+  ];
 
   return (
     <>
-      <p>{treatmentInfo?.id}</p>
       {!ok ? (
         <div className="flex flex-col items-center justify-center gap-10">
           <CrossCircledIcon className="w-24 h-24 text-red-500" />
@@ -43,6 +48,20 @@ export default async function TreatmentInformation({
 
           <Odontogram odontogramState={treatmentInfo?.InitialOdontogram?.Tooth!} readOnly />
 
+          <div>
+            <h1 className="text-xl xl:text-xl font-semibold mt-2">Basic information</h1>
+
+            <div className="mt-4 mb-6">
+              <div className="grid sm:grid-cols-2 gap-4">
+                {basicInfo.map((item) => (
+                  <div key={item.label}>
+                    <p className="text-base font-medium text-muted-foreground">{item.label}</p>
+                    <p className="text-base mt-2">{item.value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
           <TreatmentBasicInfo treatmentInfo={treatmentInfo!} />
         </>
       )}

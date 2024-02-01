@@ -1,56 +1,37 @@
-'use client';
-import { v4 as uuidv4 } from 'uuid';
 import { Pencil2Icon, TrashIcon } from '@radix-ui/react-icons';
 import { Alert, Button } from '@/components/ui';
-import { formatCurrency } from '@/helpers';
-import type { IRealTxPlan } from '@/interfaces';
+import { formatCurrency, formatDate } from '@/helpers';
+import { cn } from '@/lib/utils';
 
 interface ITretmentItemProps {
-  item: IRealTxPlan;
+  item: any;
   index: number;
-  treatments: IRealTxPlan[];
-  setTreatment: React.Dispatch<React.SetStateAction<IRealTxPlan>>;
-  setTreatments: React.Dispatch<React.SetStateAction<IRealTxPlan[]>>;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  treatments: any[];
+  setTreatment: React.Dispatch<React.SetStateAction<any>>;
+  setTreatments: React.Dispatch<React.SetStateAction<any[]>>;
+  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+  isEvol: boolean;
+  initialTreatment: any;
 }
 
 export const TreatmentItem = ({
   item,
   index,
+  setOpenModal,
   treatments,
   setTreatment,
   setTreatments,
-  setOpen,
+  isEvol,
+  initialTreatment,
 }: ITretmentItemProps) => {
-  const initialTreatment: IRealTxPlan = {
-    id: uuidv4(),
-    txPhase: `Fase 1`,
-    txActivity: '',
-    txETT: '',
-    txETTUnit: 'Months',
-    txStartDate: new Date(),
-    txPrice: '',
-  };
+  const isSaved = isEvol ? item.txEvolActive : item.txActive;
 
-  const formatDate = (date: string | Date) => {
-    return new Date(date)
-      .toLocaleDateString('es-ES', {
-        weekday: 'short',
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      })
-      .split(' ')
-      .slice(1, 4)
-      .join(' ');
-  };
-
-  const editTreatment = () => {
+  const editTreatmentItem = () => {
     setTreatment(item);
-    setOpen(true);
+    setOpenModal(true);
   };
 
-  const deleteTreatment = () => {
+  const deleteTreatmentItem = () => {
     setTreatments(treatments.filter((t) => t.id !== item.id));
     setTreatment(initialTreatment);
   };
@@ -58,35 +39,45 @@ export const TreatmentItem = ({
   return (
     <Alert className="flex flex-col">
       <div className="flex justify-between items-center mb-2">
-        <h1 className="text-sm font-semibold mb-1">{`Treatment #${index + 1}`}</h1>
+        <h1 className="text-sm font-semibold mb-1">
+          {isEvol ? 'Evolution' : 'Treatment'} #{index + 1}
+        </h1>
+
         <p className="text-sm font-medium text-muted-foreground">
-          {formatDate(item.txStartDate)} - {item.txETT} {item.txETTUnit}
+          {isEvol ? (
+            formatDate(item.txEvolDate.toString())
+          ) : (
+            <>
+              {formatDate(item.txStartDate.toString())} - {item.txETT} {item.txETTUnit}
+            </>
+          )}
         </p>
       </div>
 
-      <div className="flex items-center justify-between">
-        <div className="flex flex-col items-start justify-center gap-2">
-          <h1 className="text-xl font-semibold">{item.txActivity}</h1>
-          <p className="text-xl font-medium">{formatCurrency(Number(item.txPrice))}</p>
-        </div>
+      <div className={cn('flex items-center justify-between', isEvol && 'gap-6')}>
+        <div className={cn('flex flex-col items-start justify-center gap-2', isEvol && 'w-full')}>
+          <h1 className="text-xl font-semibold">{isEvol ? item.txEvolDesc : item.txActivity}</h1>
 
-        <div className="flex items-center justify-start gap-2">
-          {!item.txActive && (
-            <>
-              <Button type="button" size="icon" onClick={editTreatment}>
-                <Pencil2Icon className="h-4 w-4" />
-              </Button>
-              <Button
-                type="button"
-                size="icon"
-                variant="destructive"
-                onClick={deleteTreatment}
-              >
-                <TrashIcon className="h-5 w-5" />
-              </Button>
-            </>
+          {isEvol ? (
+            <div className="flex justify-between w-full">
+              <p className="text-lg font-medium">{item.txEvolDoc}</p>
+              <p className="text-xl font-medium">{formatCurrency(Number(item.txEvolPayment))}</p>
+            </div>
+          ) : (
+            <p className="text-xl font-medium">{formatCurrency(Number(item.txPrice))}</p>
           )}
         </div>
+
+        {!isSaved && (
+          <div className="flex items-center justify-start gap-2">
+            <Button type="button" size="icon" onClick={editTreatmentItem}>
+              <Pencil2Icon className="h-4 w-4" />
+            </Button>
+            <Button type="button" size="icon" variant="destructive" onClick={deleteTreatmentItem}>
+              <TrashIcon className="h-5 w-5" />
+            </Button>
+          </div>
+        )}
       </div>
     </Alert>
   );

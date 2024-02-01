@@ -16,13 +16,7 @@ import {
   FormMessage,
   Textarea,
 } from '@/components/ui';
-import {
-  AddTreatmentEvolution,
-  AddTreatmentPlan,
-  EmptyTreatmentItem,
-  TreatmentEvolItem,
-  TreatmentItem,
-} from './components';
+import { AddTreatmentItem, EmptyTreatmentItem, TreatmentItem } from './components';
 import type { IRealTxPlan, IToothState, ITxEvolution } from '@/interfaces';
 import { treatmentFormSchema } from '@/lib/validations';
 import { createTreatment, navigate } from '@/actions';
@@ -59,8 +53,8 @@ export const TreatmentForm = ({ odontogramState, workspaceID, patientID }: ITrea
   const [openTreatmentModal, setOpenTreatmentModal] = useState(false);
   const [openTreatmentEvolModal, setOpenTreatmentEvolModal] = useState(false);
 
-  const [treatment, setTreatment] = useState<IRealTxPlan>(initialTreatment);
-  const [treatments, setTreatments] = useState<IRealTxPlan[]>([]);
+  const [treatmentPlan, setTreatmentPlan] = useState<IRealTxPlan>(initialTreatment);
+  const [treatmentsPlan, setTreatmentsPlan] = useState<IRealTxPlan[]>([]);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -71,16 +65,70 @@ export const TreatmentForm = ({ odontogramState, workspaceID, patientID }: ITrea
     {
       id: 1,
       title: 'Actual treatment plan',
-      array: treatments,
+      array: treatmentsPlan,
       isEvol: false,
+      modalInformation: {
+        openModal: openTreatmentModal,
+        setOpenModal: setOpenTreatmentModal,
+        treatment: treatmentPlan,
+        setTreatment: setTreatmentPlan,
+        treatments: treatmentsPlan,
+        setTreatments: setTreatmentsPlan,
+        initialTreatment: initialTreatment,
+      },
     },
     {
       id: 2,
       title: 'Treatment evolution',
       array: treatmentsEvolutions,
       isEvol: true,
+      modalInformation: {
+        openModal: openTreatmentEvolModal,
+        setOpenModal: setOpenTreatmentEvolModal,
+        treatment: treatmentEvolution,
+        setTreatment: setTreatmentEvolution,
+        treatments: treatmentsEvolutions,
+        setTreatments: setTreatmentsEvolutions,
+        initialTreatment: initialEvolTreatment,
+      },
     },
   ];
+
+  const hasNonZeroCavities = (obj: any) => {
+    for (const key in obj) {
+      if (obj[key] !== 0) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const filterNonZeroCavities = (odontogramState: any[]) => {
+    return odontogramState.filter((n) => {
+      const {
+        cavities,
+        extract,
+        absent,
+        crown,
+        endodontics,
+        filter,
+        unerupted,
+        implant,
+        regeneration,
+      } = n;
+      return (
+        hasNonZeroCavities(cavities) ||
+        extract !== 0 ||
+        absent !== 0 ||
+        crown !== 0 ||
+        endodontics !== 0 ||
+        filter !== 0 ||
+        unerupted !== 0 ||
+        implant !== 0 ||
+        regeneration !== 0
+      );
+    });
+  };
 
   const form = useForm<TreatmentFormData>({
     resolver: zodResolver(treatmentFormSchema),
@@ -91,32 +139,33 @@ export const TreatmentForm = ({ odontogramState, workspaceID, patientID }: ITrea
   });
 
   async function onSubmit(data: TreatmentFormData) {
-    if (treatments.length === 0) {
+    if (treatmentsPlan.length === 0) {
       toast.error('You must add at least one treatment plan.');
       return;
     }
+
+    const filteredOdontogramState = filterNonZeroCavities(odontogramState);
 
     setIsLoading(true);
 
     const treatmentCreated = await createTreatment(
       {
         ...data,
-        InitialOdontogram: odontogramState.filter((n) => n),
-        RealTxPlan: treatments,
+        InitialOdontogram: filteredOdontogramState,
+        RealTxPlan: treatmentsPlan,
         TxEvolutions: treatmentsEvolutions,
       },
       patientID
     );
-
     setIsLoading(false);
-
     if (!treatmentCreated.ok) {
       toast.error(treatmentCreated.errorMessage);
       return;
     }
 
-    toast.success('Treatment created successfully.');
     await navigate(`/dashboard/${workspaceID}/patient/${patientID}`);
+
+    toast.success('Treatment created successfully.');
   }
 
   async function cancelSubmit() {
@@ -125,7 +174,7 @@ export const TreatmentForm = ({ odontogramState, workspaceID, patientID }: ITrea
       prognosis: '',
     });
 
-    setTreatments([]);
+    setTreatmentsPlan([]);
     setTreatmentsEvolutions([]);
     router.push(`/dashboard/${workspaceID}/patient/${patientID}`);
   }
@@ -162,59 +211,40 @@ export const TreatmentForm = ({ odontogramState, workspaceID, patientID }: ITrea
           />
         </div>
 
-        {treatmentsAndEvolutionsItems.map(({ id, title, array, isEvol }) => (
+        {treatmentsAndEvolutionsItems.map(({ id, title, array, isEvol, modalInformation }) => (
           <div key={id}>
             <div className="flex justify-between mb-3">
               <h1 className="text-xl xl:text-xl font-semibold">{title}</h1>
 
-              {id === 1 ? (
-                <AddTreatmentPlan
-                  openPlan={openTreatmentModal}
-                  setOpenPlan={setOpenTreatmentModal}
-                  treatmentPlan={treatment}
-                  treatmentsPlan={treatments}
-                  setTreatmentPlan={setTreatment}
-                  setTreatmentsPlan={setTreatments}
-                />
-              ) : (
-                <AddTreatmentEvolution
-                  openEvol={openTreatmentEvolModal}
-                  setOpenEvol={setOpenTreatmentEvolModal}
-                  treatmentEvol={treatmentEvolution}
-                  treatmentsEvols={treatmentsEvolutions}
-                  setTreatmentEvol={setTreatmentEvolution}
-                  setTreatmentsEvols={setTreatmentsEvolutions}
-                />
-              )}
+              <AddTreatmentItem
+                openModal={modalInformation.openModal}
+                setOpenModal={modalInformation.setOpenModal}
+                treatment={modalInformation.treatment}
+                treatments={modalInformation.treatments}
+                setTreatment={modalInformation.setTreatment}
+                setTreatments={modalInformation.setTreatments}
+                initialTreatment={modalInformation.initialTreatment}
+                isEvol={isEvol}
+              />
             </div>
 
             {array.length === 0 ? (
               <EmptyTreatmentItem evolution={isEvol} />
             ) : (
               <div className="grid md:grid-cols-2 gap-4">
-                {id === 1
-                  ? treatments.map((item, index) => (
-                      <TreatmentItem
-                        key={item.id}
-                        item={item}
-                        index={index}
-                        treatments={treatments}
-                        setTreatment={setTreatment}
-                        setTreatments={setTreatments}
-                        setOpen={setOpenTreatmentModal}
-                      />
-                    ))
-                  : treatmentsEvolutions.map((item, index) => (
-                      <TreatmentEvolItem
-                        key={item.id}
-                        item={item}
-                        index={index}
-                        treatmentsEvols={treatmentsEvolutions}
-                        setTreatmentEvol={setTreatmentEvolution}
-                        setTreatmentsEvols={setTreatmentsEvolutions}
-                        setOpenEvol={setOpenTreatmentEvolModal}
-                      />
-                    ))}
+                {modalInformation.treatments.map((item, index) => (
+                  <TreatmentItem
+                    key={item.id}
+                    item={item}
+                    index={index}
+                    treatments={modalInformation.treatments}
+                    setTreatment={modalInformation.setTreatment}
+                    setTreatments={modalInformation.setTreatments}
+                    setOpenModal={modalInformation.setOpenModal}
+                    initialTreatment={modalInformation.initialTreatment}
+                    isEvol={isEvol}
+                  />
+                ))}
               </div>
             )}
           </div>

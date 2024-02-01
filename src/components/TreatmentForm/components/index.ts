@@ -1,5 +1,3 @@
-export * from './AddTreatmentEvolution';
-export * from './AddTreatmentPlan';
+export * from './AddTreatmentItem';
 export * from './EmptyTreatmentItem';
-export * from './TreatmentEvolItem';
 export * from './TreatmentItem';
