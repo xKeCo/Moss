@@ -13,7 +13,7 @@ export const TreatmentBasicInfo = ({
   params,
 }: {
   treatmentInfo: ITreatment;
-  params: { workspaceID: string; patientID: string; treatmentID: string };
+  params?: { workspaceID: string; patientID: string; treatmentID: string };
 }) => {
   const initialTreatment: IRealTxPlan = {
     id: uuidv4(),
@@ -89,15 +89,12 @@ export const TreatmentBasicInfo = ({
       treatmentsEvolutions.length !== treatmentInfo?.TxEvolutions?.length
     ) {
       await navigate(
-        `/dashboard/${params.workspaceID}/patient/${params.patientID}/treatment/${params.treatmentID}`
+        `/dashboard/${params?.workspaceID}/patient/${params?.patientID}/treatment/${params?.treatmentID}`
       );
       return;
     }
 
-    // await navigate(`/dashboard/${params.workspaceID}/patient/${params.patientID}`);
-
     router.back();
-    // router.push(`/dashboard/${params.workspaceID}/patient/${params.patientID}`);
   };
 
   const saveTreatment = async () => {

@@ -5,6 +5,7 @@ export * from './Navbar/Navbar';
 export * from './Navbar/components/UserNav/UserNav';
 export * from './Navbar/components/WorkspaceSwitcher/WorkspaceSwitcher';
 export * from './Odontogram/Odontogram';
+export * from './Odontogram/OdontogramSkeleton';
 export * from './PatientForm/PatientForm';
 export * from './Patients/PatientsList';
 export * from './Patients/components/PatientCard';

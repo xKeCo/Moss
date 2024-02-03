@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import { ArrowLeftIcon, CrossCircledIcon } from '@radix-ui/react-icons';
+import { ArrowLeftIcon, ChevronLeftIcon, CrossCircledIcon } from '@radix-ui/react-icons';
 import { Odontogram } from '@/components';
-import { Button, Skeleton } from '@/components/ui';
+import { Button } from '@/components/ui';
 import { TreatmentBasicInfo } from './components/TreatmentBasicInfo';
 import { getTreatmentById } from '@/actions';
 
@@ -17,7 +17,6 @@ export default async function TreatmentInformation({
   params,
 }: Readonly<TreatmentInformationProps>) {
   const { ok, errorMessage, treatmentInfo } = await getTreatmentById(params.treatmentID);
-  // await new Promise((resolve) => setTimeout(resolve, 1000000));
 
   const basicInfo = [
     { label: 'Diagnosis', value: treatmentInfo?.diagnosis },
@@ -39,9 +38,18 @@ export default async function TreatmentInformation({
         </div>
       ) : (
         <>
-          <h1 className="text-2xl xl:text-3xl font-semibold mb-3 flex items-center">
-            {treatmentInfo?.Patient?.name} - Treatment Information
-          </h1>
+          <div className="flex items-center justify-start gap-4 mb-3">
+            <Button size="icon" asChild>
+              <Link href={`/dashboard/${params.workspaceID}/patient/${params.patientID}`}>
+                <ChevronLeftIcon className="h-5 w-5" />
+              </Link>
+            </Button>
+
+            <h1 className="text-2xl xl:text-3xl font-semibold flex items-center">
+              {treatmentInfo?.Patient?.name} - Treatment Information
+            </h1>
+          </div>
+
           <div className="h-[2px] bg-secondary"></div>
 
           <h1 className="text-xl xl:text-xl font-semibold mt-2">Odontogram</h1>

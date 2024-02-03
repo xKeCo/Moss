@@ -1,11 +1,10 @@
 import { OdontogramSkeleton } from '@/components';
 import { Skeleton } from '@/components/ui';
+import { TreatmentBasicInfoSkeleton } from './components/TreatmentBasicInfoSkeleton';
 
 export default function TreatmentInformationLoadingPage() {
   return (
     <>
-      <p>7bcf40a0-748c-459c-9385-2bc297f5e833</p>
-
       <Skeleton className="h-9 w-1/2 mb-3" />
 
       <div className="h-[2px] bg-secondary"></div>
@@ -14,7 +13,23 @@ export default function TreatmentInformationLoadingPage() {
 
       <OdontogramSkeleton />
 
-      {/* <TreatmentBasicInfo treatmentInfo={treatmentInfo!} /> */}
+      <div>
+        {/* <h1 className="text-xl xl:text-xl font-semibold mt-2">Basic information</h1> */}
+        <Skeleton className="h-6 w-1/6 mt-2" />
+
+        <div className="mt-4 mb-6">
+          <div className="grid sm:grid-cols-2 gap-4">
+            {Array.from({ length: 2 }).map((_, index) => (
+              <div key={index}>
+                <Skeleton className="h-6 w-1/2" />
+                <Skeleton className="h-6 w-full mt-2" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <TreatmentBasicInfoSkeleton />
     </>
   );
 }

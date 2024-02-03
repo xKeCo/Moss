@@ -1,5 +1,5 @@
 import { Pencil2Icon, TrashIcon } from '@radix-ui/react-icons';
-import { Alert, Button } from '@/components/ui';
+import { Alert, Button, Skeleton } from '@/components/ui';
 import { formatCurrency, formatDate } from '@/helpers';
 import { cn } from '@/lib/utils';
 
@@ -78,6 +78,25 @@ export const TreatmentItem = ({
             </Button>
           </div>
         )}
+      </div>
+    </Alert>
+  );
+};
+
+TreatmentItem.Skeleton = function TreatmentItemSkeleton() {
+  return (
+    <Alert className="flex flex-col">
+      <div className="flex justify-between items-center mb-3">
+        <Skeleton className="h-6 w-2/6" />
+
+        <Skeleton className="h-6 w-2/6" />
+      </div>
+
+      <div className="flex items-center justify-between">
+        <div className="flex flex-col items-start justify-center gap-3 w-full">
+          <Skeleton className="h-6 w-full" />
+          <Skeleton className="h-6 w-2/6" />
+        </div>
       </div>
     </Alert>
   );
