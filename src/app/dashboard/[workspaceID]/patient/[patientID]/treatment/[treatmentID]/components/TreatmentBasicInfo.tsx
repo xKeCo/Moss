@@ -88,9 +88,7 @@ export const TreatmentBasicInfo = ({
       treatmentsPlan.length !== treatmentInfo?.RealTxPlan?.length ||
       treatmentsEvolutions.length !== treatmentInfo?.TxEvolutions?.length
     ) {
-      await navigate(
-        `/dashboard/${params?.workspaceID}/patient/${params?.patientID}/treatment/${params?.treatmentID}`
-      );
+      await navigate(`/dashboard/${params?.workspaceID}/patient/${params?.patientID}`);
       return;
     }
 
