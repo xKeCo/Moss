@@ -6,9 +6,15 @@ import { toast } from 'sonner';
 import { AddTreatmentItem, EmptyTreatmentItem, Icons, TreatmentItem } from '@/components';
 import { Button } from '@/components/ui';
 import type { IRealTxPlan, ITreatment, ITxEvolution } from '@/interfaces';
-import { updateTreatment } from '@/actions';
+import { navigate, updateTreatment } from '@/actions';
 
-export const TreatmentBasicInfo = ({ treatmentInfo }: { treatmentInfo: ITreatment }) => {
+export const TreatmentBasicInfo = ({
+  treatmentInfo,
+  params,
+}: {
+  treatmentInfo: ITreatment;
+  params: { workspaceID: string; patientID: string; treatmentID: string };
+}) => {
   const initialTreatment: IRealTxPlan = {
     id: uuidv4(),
     txPhase: `Fase 1`,
@@ -72,12 +78,26 @@ export const TreatmentBasicInfo = ({ treatmentInfo }: { treatmentInfo: ITreatmen
     },
   ];
 
-  const cancelSubmit = () => {
+  const cancelSubmit = async () => {
     setTreatmentPlan(initialTreatment);
     setTreatmentsPlan([]);
     setTreatmentEvolution(initialEvolTreatment);
     setTreatmentsEvolutions([]);
+
+    if (
+      treatmentsPlan.length !== treatmentInfo?.RealTxPlan?.length ||
+      treatmentsEvolutions.length !== treatmentInfo?.TxEvolutions?.length
+    ) {
+      await navigate(
+        `/dashboard/${params.workspaceID}/patient/${params.patientID}/treatment/${params.treatmentID}`
+      );
+      return;
+    }
+
+    // await navigate(`/dashboard/${params.workspaceID}/patient/${params.patientID}`);
+
     router.back();
+    // router.push(`/dashboard/${params.workspaceID}/patient/${params.patientID}`);
   };
 
   const saveTreatment = async () => {
