@@ -1,7 +1,9 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 import {
+  Button,
   Select,
   SelectContent,
   SelectItem,
@@ -10,17 +12,13 @@ import {
   Skeleton,
 } from '@/components/ui';
 import { cn } from '@/lib/utils';
+import { navigate, setActiveWorkspace } from '@/actions';
 
-export const WorkspaceSwitcher = () => {
+export const WorkspaceSwitcher = ({ activeWorkspaceID }: { activeWorkspaceID: string }) => {
   const { data: session } = useSession();
   const workspaces = session?.user?.workspaces;
-  const [selectedWorkspace, setSelectedWorkspace] = useState<string>('');
 
-  useEffect(() => {
-    if (session) {
-      setSelectedWorkspace(session?.user?.workspaces[0]?.name);
-    }
-  }, [session]);
+  const [selectedWorkspace, setSelectedWorkspace] = useState<string>(activeWorkspaceID);
 
   return (
     <>
@@ -28,8 +26,12 @@ export const WorkspaceSwitcher = () => {
         <Skeleton className="w-32 h-8" />
       ) : (
         <Select
-          defaultValue={session?.user?.workspaces[0]?.name}
-          onValueChange={setSelectedWorkspace}
+          defaultValue={activeWorkspaceID}
+          onValueChange={(value) => {
+            setSelectedWorkspace(value);
+            setActiveWorkspace(value);
+            navigate(`/dashboard/${value}`);
+          }}
         >
           <SelectTrigger
             className={cn(
@@ -39,16 +41,16 @@ export const WorkspaceSwitcher = () => {
           >
             <SelectValue placeholder="Select an account">
               <span className="text-white bg-black px-[6px] ml-1 rounded font-semibold">
-                {workspaces?.findIndex(
-                  (workspace) => workspace.name === selectedWorkspace
-                )! + 1}
+                {workspaces?.findIndex((workspace) => workspace.id === selectedWorkspace)! + 1}
               </span>
-              <span className="text-sm ml-1 capitalize">{selectedWorkspace}</span>
+              <span className="text-sm ml-1 capitalize">
+                {workspaces?.find((workspace) => workspace.id === selectedWorkspace)?.name}
+              </span>
             </SelectValue>
           </SelectTrigger>
           <SelectContent>
             {session?.user?.workspaces?.map((workspace, index) => (
-              <SelectItem key={workspace.id} value={workspace.name}>
+              <SelectItem key={workspace.id} value={workspace.id}>
                 <div className="flex items-center gap-3 [&_svg]:h-4 [&_svg]:w-4 [&_svg]:shrink-0 [&_svg]:text-foreground">
                   <p className="text-white bg-black px-[6px] ml-1 rounded font-semibold">
                     {index + 1}
@@ -57,6 +59,14 @@ export const WorkspaceSwitcher = () => {
                 </div>
               </SelectItem>
             ))}
+
+            {session?.user?.workspaces?.length < 3 && (
+              <div className="flex items-center justify-center py-2 px-4 w-full">
+                <Button className="w-full" asChild>
+                  <Link href="/workspace">Create new workspace</Link>
+                </Button>
+              </div>
+            )}
           </SelectContent>
         </Select>
       )}

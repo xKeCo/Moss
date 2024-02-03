@@ -1,26 +1,28 @@
 import { getToken } from 'next-auth/jwt';
 import { withAuth } from 'next-auth/middleware';
+import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
 export default withAuth(
   async function middleware(req) {
     const token: any = await getToken({ req });
 
+    const workspaceId = cookies().get('activeWorkspace')?.value;
+
     const isAuth = !!token;
-    const emptyWorkspace =
-      (token?.user as { workspaces?: any[] })?.workspaces?.length === 0;
-    const isEmptyWorkspacePage = req.nextUrl.pathname === '/workspace';
+    const emptyWorkspace = (token?.user as { workspaces?: any[] })?.workspaces?.length === 0;
+    const maxWorkspaces = (token?.user as { workspaces?: any[] })?.workspaces?.length === 3;
     const isRestrictedPage =
       req.nextUrl.pathname.startsWith('/login') ||
       req.nextUrl.pathname.startsWith('/register') ||
       req.nextUrl.pathname === '/';
 
-    if (!isAuth) {
-      if (!isRestrictedPage) {
-        return NextResponse.redirect(new URL('/login', req.url));
-      }
+    if (!isAuth && !isRestrictedPage) {
+      return NextResponse.redirect(new URL('/login', req.url));
+    }
 
-      return null;
+    if (isAuth && req.nextUrl.pathname === '/dashboard') {
+      return NextResponse.redirect(new URL(`/dashboard/${workspaceId}`, req.url));
     }
 
     if (isAuth && emptyWorkspace) {
@@ -31,17 +33,13 @@ export default withAuth(
       return null;
     }
 
-    if (isAuth && !emptyWorkspace && isEmptyWorkspacePage) {
-      return NextResponse.redirect(
-        new URL(`/dashboard/${token.user?.workspaces[0]?.id}`, req.url)
-      );
+    if (isAuth && req.nextUrl.pathname === '/workspace' && maxWorkspaces) {
+      return NextResponse.redirect(new URL(`/dashboard/${workspaceId}`, req.url));
     }
 
-    if (isRestrictedPage || req.nextUrl.pathname === '/dashboard') {
+    if (isRestrictedPage) {
       if (isAuth) {
-        return NextResponse.redirect(
-          new URL(`/dashboard/${token.user?.workspaces[0]?.id}`, req.url)
-        );
+        return NextResponse.redirect(new URL(`/dashboard/${workspaceId}`, req.url));
       }
 
       return null;
@@ -50,9 +48,6 @@ export default withAuth(
   {
     callbacks: {
       async authorized() {
-        // This is a work-around for handling redirect on auth pages.
-        // We return true here so that the middleware function above
-        // is always called.
         return true;
       },
     },

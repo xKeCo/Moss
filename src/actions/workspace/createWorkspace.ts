@@ -1,5 +1,6 @@
 'use server';
 import prisma from '@/lib/prisma';
+import { cookies } from 'next/headers';
 
 export const createWorkspace = async (workspaceName: string, userId: any) => {
   try {
@@ -12,8 +13,7 @@ export const createWorkspace = async (workspaceName: string, userId: any) => {
     if (existingWorkspace) {
       return {
         ok: false,
-        errorMessage:
-          'A workspace with that name already exists. Please select another name.',
+        errorMessage: 'A workspace with that name already exists. Please select another name.',
         error: 'workspaceExists',
       };
     }
@@ -36,6 +36,8 @@ export const createWorkspace = async (workspaceName: string, userId: any) => {
         updatedAt: true,
       },
     });
+
+    cookies().set('activeWorkspace', newWorkspace.id);
 
     return {
       ok: true,

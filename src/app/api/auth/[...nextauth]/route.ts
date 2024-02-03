@@ -4,6 +4,7 @@ import GoogleProvider from 'next-auth/providers/google';
 
 import prisma from '@/lib/prisma';
 import bycryptjs from 'bcryptjs';
+import { cookies } from 'next/headers';
 
 const handler = NextAuth({
   providers: [
@@ -38,6 +39,16 @@ const handler = NextAuth({
         }
 
         const { password: _, ...rest } = user;
+
+        if (rest.workspaces.length > 0) {
+          const validWorkspace = rest.workspaces.find(
+            (workspace) => workspace.id === cookies().get('activeWorkspace')?.value
+          );
+
+          if (!validWorkspace) {
+            cookies().set('activeWorkspace', rest.workspaces[0].id);
+          }
+        }
 
         return rest;
       },

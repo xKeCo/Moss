@@ -24,12 +24,14 @@ import {
   FormControl,
   FormMessage,
 } from '@/components/ui';
+import Link from 'next/link';
 
 type PatientFormData = z.infer<typeof workspaceFormSchema>;
 
 export default function WorkspacePage() {
-  const { data: session, update } = useSession();
+  const { data: session, update, status } = useSession();
   const [isLoading, setIsLoading] = useState(false);
+  const alreadyHasWorkspace = session?.user?.workspaces?.length! > 0;
 
   const form = useForm<PatientFormData>({
     resolver: zodResolver(workspaceFormSchema),
@@ -38,7 +40,11 @@ export default function WorkspacePage() {
     },
   });
 
-  const onLogOut = () => {
+  const onLogOut = async () => {
+    if (alreadyHasWorkspace) {
+      return null;
+    }
+
     signOut({ callbackUrl: `/login` });
   };
 
@@ -65,20 +71,36 @@ export default function WorkspacePage() {
       ...session,
       user: {
         ...session?.user,
-        workspaces: [newWorkspace.workspace],
+        workspaces: [
+          ...(session?.user?.workspaces ?? []),
+          {
+            id: newWorkspace.workspace?.id,
+            name: newWorkspace.workspace?.name,
+          },
+        ],
       },
     });
 
     toast.success('Workspace created successfully!');
-    await navigate(`/dashboard`);
+    await navigate(`/dashboard/${newWorkspace.workspace?.id}`);
     form.reset();
   }
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <Button variant="link" className="fixed top-6 left-4 md:left-12" onClick={onLogOut}>
-        Log out
-      </Button>
+      {status === 'loading' ? (
+        <div className=" py-2 px-4 text-sm fixed top-6 left-4 md:left-12">Loading...</div>
+      ) : (
+        <Button
+          variant="link"
+          className="fixed top-6 left-4 md:left-12"
+          asChild={alreadyHasWorkspace}
+          onClick={onLogOut}
+        >
+          {alreadyHasWorkspace ? <Link href="/dashboard">Go to dashboard</Link> : 'Log out'}
+        </Button>
+      )}
+
       <div className="fixed top-6 right-4 md:right-12 px-4 py-2">
         <p className="text-xs text-muted-foreground mb-2">Logged in as:</p>
         <UserNav isDropdown={false} />

@@ -1,5 +1,6 @@
 export * from './register';
 export * from './workspace/createWorkspace';
+export * from './workspace/setActiveWorkspace';
 export * from './navigate';
 export * from './patients/createPatient';
 export * from './patients/patientsByWorkspace';
