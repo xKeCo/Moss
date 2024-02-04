@@ -9,9 +9,9 @@ export default withAuth(
 
     const workspaceId = cookies().get('activeWorkspace')?.value ?? token?.user?.workspaces[0]?.id;
 
-    const availableWorkspaces = token?.user?.workspaces?.map(
-      (workspace: any) => `/dashboard/${workspace.id}`
-    );
+    const availableWorkspaces = token?.user?.workspaces?.map((workspace: any) => {
+      return workspace.id;
+    });
 
     const isAuth = !!token;
     const emptyWorkspace = (token?.user as { workspaces?: any[] })?.workspaces?.length === 0;
@@ -25,28 +25,32 @@ export default withAuth(
       return NextResponse.redirect(new URL('/login', req.url));
     }
 
-    if (isAuth && req.nextUrl.pathname === '/dashboard') {
-      return NextResponse.redirect(new URL(`/dashboard/${workspaceId}`, req.url));
-    }
-
-    if (isAuth && !availableWorkspaces?.includes(req.nextUrl.pathname)) {
-      return NextResponse.redirect(new URL(`/dashboard/${workspaceId}`, req.url));
-    }
-
-    if (isAuth && emptyWorkspace) {
-      if (req.nextUrl.pathname.startsWith('/dashboard') || isRestrictedPage) {
-        return NextResponse.redirect(new URL('/workspace', req.url));
+    if (isAuth) {
+      if (req.nextUrl.pathname === '/dashboard') {
+        return NextResponse.redirect(new URL(`/dashboard/${workspaceId}`, req.url));
       }
 
-      return null;
-    }
+      if (!availableWorkspaces?.includes(req.nextUrl.pathname.split('/')[2])) {
+        console.log('redirecting to workspace');
+        console.log(!!availableWorkspaces?.includes(req.nextUrl.pathname.split('/')[2]));
+        return NextResponse.redirect(new URL(`/dashboard/${workspaceId}`, req.url));
+      }
 
-    if (isAuth && req.nextUrl.pathname === '/workspace' && maxWorkspaces) {
-      return NextResponse.redirect(new URL(`/dashboard/${workspaceId}`, req.url));
-    }
+      if (emptyWorkspace) {
+        if (req.nextUrl.pathname.startsWith('/dashboard') || isRestrictedPage) {
+          return NextResponse.redirect(new URL('/workspace', req.url));
+        }
 
-    if (isRestrictedPage && isAuth) {
-      return NextResponse.redirect(new URL(`/dashboard/${workspaceId}`, req.url));
+        return null;
+      }
+
+      if (req.nextUrl.pathname === '/workspace' && maxWorkspaces) {
+        return NextResponse.redirect(new URL(`/dashboard/${workspaceId}`, req.url));
+      }
+
+      if (isRestrictedPage) {
+        return NextResponse.redirect(new URL(`/dashboard/${workspaceId}`, req.url));
+      }
     }
   },
   {
