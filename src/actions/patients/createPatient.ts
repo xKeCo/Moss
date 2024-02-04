@@ -1,5 +1,4 @@
 'use server';
-import { IPatient } from '@/interfaces';
 import prisma from '@/lib/prisma';
 import { cookies } from 'next/headers';
 

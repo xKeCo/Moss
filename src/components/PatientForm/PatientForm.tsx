@@ -1,6 +1,5 @@
 'use client';
 import { useState } from 'react';
-import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -38,7 +37,6 @@ import { useRouter } from 'next/navigation';
 type PatientFormData = z.infer<typeof patientFormSchema>;
 
 export const PatientForm = () => {
-  const { data: session } = useSession();
   const [age, setAge] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -99,7 +97,6 @@ export const PatientForm = () => {
       return toast.error(patient?.errorMessage);
     }
 
-    // router.push(`/dashboard`);
     await navigate(`/dashboard`);
     toast.success('Patient created successfully!');
     form.reset();

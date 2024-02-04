@@ -39,7 +39,7 @@ export const WorkspaceSwitcher = ({ activeWorkspaceID }: { activeWorkspaceID: st
             )}
             aria-label="Select account"
           >
-            <SelectValue placeholder="Select an account">
+            <SelectValue placeholder="Select a workspace">
               <span className="text-white bg-black px-[6px] ml-1 rounded font-semibold">
                 {workspaces?.findIndex((workspace) => workspace.id === selectedWorkspace)! + 1}
               </span>

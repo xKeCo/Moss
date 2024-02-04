@@ -27,7 +27,6 @@ import {
   Textarea,
 } from '@/components/ui';
 import { cn } from '@/lib/utils';
-import type { IRealTxPlan, ITxEvolution } from '@/interfaces';
 
 interface IAddTreatmentItemProps {
   openModal: boolean;

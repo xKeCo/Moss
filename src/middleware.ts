@@ -13,8 +13,6 @@ export default withAuth(
       (workspace: any) => `/dashboard/${workspace.id}`
     );
 
-    console.log('availableWorkspaces', availableWorkspaces);
-
     const isAuth = !!token;
     const emptyWorkspace = (token?.user as { workspaces?: any[] })?.workspaces?.length === 0;
     const maxWorkspaces = (token?.user as { workspaces?: any[] })?.workspaces?.length === 3;
