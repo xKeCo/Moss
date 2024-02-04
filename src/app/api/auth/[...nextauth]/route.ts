@@ -78,6 +78,10 @@ const handler = NextAuth({
     session({ session, token, trigger }: { session: any; token: any; trigger?: any }) {
       session.user = token.user;
 
+      if (!cookies().get('activeWorkspace')?.value) {
+        cookies().set('activeWorkspace', session.user.workspaces[0].id);
+      }
+
       return session;
     },
   },

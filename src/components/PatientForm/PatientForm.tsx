@@ -84,10 +84,7 @@ export const PatientForm = () => {
   async function onSubmit(values: PatientFormData) {
     setIsLoading(true);
 
-    const patient = await createPatient(
-      { ...values, Treatment: null },
-      session?.user?.workspaces[0].id!
-    );
+    const patient = await createPatient({ ...values, Treatment: null });
 
     setIsLoading(false);
 

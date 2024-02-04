@@ -7,7 +7,13 @@ export default withAuth(
   async function middleware(req) {
     const token: any = await getToken({ req });
 
-    const workspaceId = cookies().get('activeWorkspace')?.value;
+    const workspaceId = cookies().get('activeWorkspace')?.value ?? token?.user?.workspaces[0]?.id;
+
+    const availableWorkspaces = token?.user?.workspaces?.map(
+      (workspace: any) => `/dashboard/${workspace.id}`
+    );
+
+    console.log('availableWorkspaces', availableWorkspaces);
 
     const isAuth = !!token;
     const emptyWorkspace = (token?.user as { workspaces?: any[] })?.workspaces?.length === 0;
@@ -25,6 +31,10 @@ export default withAuth(
       return NextResponse.redirect(new URL(`/dashboard/${workspaceId}`, req.url));
     }
 
+    if (isAuth && !availableWorkspaces?.includes(req.nextUrl.pathname)) {
+      return NextResponse.redirect(new URL(`/dashboard/${workspaceId}`, req.url));
+    }
+
     if (isAuth && emptyWorkspace) {
       if (req.nextUrl.pathname.startsWith('/dashboard') || isRestrictedPage) {
         return NextResponse.redirect(new URL('/workspace', req.url));
@@ -37,12 +47,8 @@ export default withAuth(
       return NextResponse.redirect(new URL(`/dashboard/${workspaceId}`, req.url));
     }
 
-    if (isRestrictedPage) {
-      if (isAuth) {
-        return NextResponse.redirect(new URL(`/dashboard/${workspaceId}`, req.url));
-      }
-
-      return null;
+    if (isRestrictedPage && isAuth) {
+      return NextResponse.redirect(new URL(`/dashboard/${workspaceId}`, req.url));
     }
   },
   {
