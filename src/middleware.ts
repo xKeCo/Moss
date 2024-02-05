@@ -30,18 +30,22 @@ export default withAuth(
         return NextResponse.redirect(new URL(`/dashboard/${workspaceId}`, req.url));
       }
 
-      if (!emptyWorkspace && !availableWorkspaces?.includes(req.nextUrl.pathname.split('/')[2])) {
-        console.log('redirecting to workspace');
-        console.log(!!availableWorkspaces?.includes(req.nextUrl.pathname.split('/')[2]));
-        return NextResponse.redirect(new URL(`/dashboard/${workspaceId}`, req.url));
-      }
-
       if (emptyWorkspace) {
         if (req.nextUrl.pathname.startsWith('/dashboard') || isRestrictedPage) {
           return NextResponse.redirect(new URL('/workspace', req.url));
         }
 
         return null;
+      }
+
+      if (
+        !emptyWorkspace &&
+        req.nextUrl.pathname.startsWith('/dashboard') &&
+        !availableWorkspaces?.includes(req.nextUrl.pathname.split('/')[2])
+      ) {
+        console.log('redirecting to workspace');
+        console.log(req.nextUrl.pathname.split('/')[2]);
+        return NextResponse.redirect(new URL(`/dashboard/${workspaceId}`, req.url));
       }
 
       if (req.nextUrl.pathname === '/workspace' && maxWorkspaces) {
