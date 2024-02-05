@@ -30,7 +30,7 @@ export default withAuth(
         return NextResponse.redirect(new URL(`/dashboard/${workspaceId}`, req.url));
       }
 
-      if (!availableWorkspaces?.includes(req.nextUrl.pathname.split('/')[2])) {
+      if (!emptyWorkspace && !availableWorkspaces?.includes(req.nextUrl.pathname.split('/')[2])) {
         console.log('redirecting to workspace');
         console.log(!!availableWorkspaces?.includes(req.nextUrl.pathname.split('/')[2]));
         return NextResponse.redirect(new URL(`/dashboard/${workspaceId}`, req.url));
