@@ -7,6 +7,9 @@ export interface IPatient {
   dniType: 'CC' | 'TI' | 'O';
   email: string;
   photoURL?: string | null;
+  reasonForConsultation: string;
+  currentIllness: string;
+
   workspaceId?: string;
   termsAndConditions: boolean;
   hasExtraInfo?: boolean;
@@ -17,7 +20,7 @@ export interface IPatient {
   ContactInformation: IContactInformation | null;
   MedicalInformation: IMedicalInformation | null;
   Treatment: ITreatment | null;
-  healthInformation?: IHealthInformation | null;
+  // healthInformation?: IHealthInformation | null;
 }
 
 interface IBasicInformation {
@@ -32,7 +35,6 @@ interface IBasicInformation {
     | 'B_NEGATIVE'
     | 'AB_POSITIVE'
     | 'AB_NEGATIVE';
-
   birthDate: string | Date;
   birthPlace: string;
   height: string;
@@ -72,16 +74,35 @@ interface IMedicalInformation {
   updatedAt?: string | Date;
 }
 
-interface IHealthInformation {
-  allergies: string[];
-  diseases: string[];
-  medications: string[];
-  surgeries: string[];
-  familyBackground: string[];
-  habits: string[];
-  observations: string[];
-  other: string[];
-}
+// interface IHealthInformation {
+//   systemReview: ISystemReview;
+//   allergies: string[];
+//   diseases: string[];
+//   medications: string[];
+//   surgeries: string[];
+//   habits: string[];
+//   familyBackground: IFamilyBackground;
+
+// }
+
+// interface ISystemReview {
+//   head?: string;
+//   neck?: string;
+//   genitourinary?: string;
+//   eyes?: string;
+//   cardiovascular?: string;
+//   locomotor?: string;
+//   ORL?: string;
+//   respiratory?: string;
+//   skin?: string;
+//   stomological?: string;
+//   gastrointestinal?: string;
+//   circulatory?: string;
+// }
+
+// interface IFamilyBackground{
+
+// }
 
 export interface IPatientCard {
   name: string;

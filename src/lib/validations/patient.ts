@@ -12,6 +12,12 @@ export const patientFormSchema = z.object({
   email: z.string().email({
     message: 'Email must be a valid email.',
   }),
+  reasonForConsultation: z.string().min(5, {
+    message: 'Reason for consultation must be at least 5 characters.',
+  }),
+  currentIllness: z.string().min(5, {
+    message: 'Current illness must be at least 5 characters.',
+  }),
 
   BasicInformation: z.object({
     gender: z.enum(['M', 'F', 'O']).refine((val) => val, 'Gender is required'),

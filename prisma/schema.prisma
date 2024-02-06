@@ -96,6 +96,17 @@ model MedicalInformation {
   updatedAt          DateTime @updatedAt
 }
 
+// model HealthInformation {
+//   id                 String   @id @default(uuid())
+ 
+
+//   Patient            Patient @relation(fields: [patientId], references: [dniNumber])
+//   patientId          String   @unique
+
+//   createdAt          DateTime @default(now())
+//   updatedAt          DateTime @updatedAt
+// }
+
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
@@ -122,25 +133,27 @@ model Workspace {
 }
 
 model Patient {
-  id                   String     @id     @default(uuid())
-  name                 String
-  dniType              DniType            @default(CC)
-  dniNumber            String             @unique
-  email                String
-  photoURL             String?            @default("https://source.boringavatars.com/marble/50/${dniNumber}")
+  id                    String     @id     @default(uuid())
+  name                  String
+  dniType               DniType            @default(CC)
+  dniNumber             String             @unique
+  email                 String
+  reasonForConsultation String             @default("")
+  currentIllness        String             @default("")
+  photoURL              String?            @default("https://source.boringavatars.com/marble/50/${dniNumber}")
+  workspace             Workspace          @relation(fields: [workspaceId], references: [id])
+  workspaceId           String             
 
-  workspace            Workspace          @relation(fields: [workspaceId], references: [id])
-  workspaceId          String             
+  BasicInformation      BasicInformation? 
+  ContactInformation    ContactInformation?
+  MedicalInformation    MedicalInformation?
+  Treatment             Treatment?         
+  // HealthInformation     HealthInformation?
 
-  BasicInformation     BasicInformation? 
-  ContactInformation   ContactInformation?
-  MedicalInformation   MedicalInformation?
-  Treatment            Treatment?         
-
-  termsAndConditions   Boolean            @default(true)
-  hasExtraInfo         Boolean            @default(false)   
-  createdAt            DateTime           @default(now())
-  updatedAt            DateTime           @updatedAt
+  termsAndConditions    Boolean            @default(true)
+  hasExtraInfo          Boolean            @default(false)   
+  createdAt             DateTime           @default(now())
+  updatedAt             DateTime           @updatedAt
 }
 
 model Cavities {

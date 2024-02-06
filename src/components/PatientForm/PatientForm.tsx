@@ -28,6 +28,7 @@ import {
   PopoverTrigger,
   Switch,
   Checkbox,
+  Textarea,
 } from '../ui';
 import { TermsAndConditionsModal } from './TermsAndConditionsModal';
 
@@ -47,6 +48,8 @@ export const PatientForm = () => {
       name: '',
       dniNumber: '',
       email: '',
+      reasonForConsultation: '',
+      currentIllness: '',
 
       BasicInformation: {
         birthDate: new Date(),
@@ -611,6 +614,43 @@ export const PatientForm = () => {
                   <FormLabel>Phone 2</FormLabel>
                   <FormControl>
                     <Input placeholder="(optional)" {...field} maxLength={10} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <h1>Anamnesis</h1>
+
+          <div className="gap-4 grid sm:grid-cols-2">
+            <FormField
+              control={form.control}
+              name="reasonForConsultation"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Reason for consultation</FormLabel>
+                  <FormControl>
+                    <Textarea placeholder="Enter reason" className="resize-none" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="currentIllness"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Current illness</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Enter current illness"
+                      className="resize-none"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
