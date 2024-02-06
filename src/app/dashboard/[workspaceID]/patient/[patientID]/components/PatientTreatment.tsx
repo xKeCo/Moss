@@ -3,7 +3,7 @@ import { ArrowBottomRightIcon, ArrowRightIcon, FilePlusIcon } from '@radix-ui/re
 import { Button, Skeleton } from '@/components/ui';
 import { formatCurrency, formatDate } from '@/helpers';
 import { cn } from '@/lib/utils';
-import type { IPatient } from '@/interfaces';
+import type { ITreatment } from '@/interfaces';
 
 interface ITreatmentInfo {
   label: string;
@@ -12,42 +12,50 @@ interface ITreatmentInfo {
 }
 
 interface IPatientTreatmentProps {
-  patientInfo: IPatient;
-  workspaceID: string;
+  treatmentInfo: ITreatment;
+  patientName: string;
+  params: {
+    workspaceID: string;
+    patientID: string;
+  };
 }
 
-export const PatientTreatment = ({ patientInfo, workspaceID }: IPatientTreatmentProps) => {
+export const PatientTreatment = ({
+  treatmentInfo,
+  params,
+  patientName,
+}: IPatientTreatmentProps) => {
   const treatmentInformation: ITreatmentInfo[] = [
     {
       label: 'Diagnosis',
-      value: patientInfo?.Treatment?.diagnosis!,
+      value: treatmentInfo?.diagnosis,
       colSpan: 2,
     },
     {
       label: 'Created date',
-      value: formatDate(patientInfo?.Treatment?.createdAt! as string),
+      value: formatDate(treatmentInfo?.createdAt as string),
     },
     {
       label: 'Last update',
-      value: formatDate(patientInfo?.Treatment?.updatedAt! as string),
+      value: formatDate(treatmentInfo?.updatedAt as string),
     },
     {
       label: 'Total price',
-      value: formatCurrency(patientInfo?.Treatment?.totalPrice!),
+      value: formatCurrency(treatmentInfo?.totalPrice),
     },
     {
       label: 'Current balance',
-      value: formatCurrency(patientInfo?.Treatment?.totalPending!),
+      value: formatCurrency(treatmentInfo?.totalPending),
     },
   ];
 
   return (
     <div className="flex flex-col items-start justify-start col-span-4 md:col-span-3 lg:col-span-2 border rounded-2xl gap-3 w-full p-6 min-h-[274px]">
-      {!patientInfo?.Treatment ? (
+      {!treatmentInfo ? (
         <div className="flex items-center justify-center h-full">
           <h1 className="text-2xl text-center">
-            <span className="font-semibold">{patientInfo?.name}</span> has no active treatment,
-            start a new one! <ArrowBottomRightIcon className="h-5 w-5" />
+            <span className="font-semibold">{patientName}</span> has no active treatment, start a
+            new one! <ArrowBottomRightIcon className="h-5 w-5" />
           </h1>
         </div>
       ) : (
@@ -76,12 +84,12 @@ export const PatientTreatment = ({ patientInfo, workspaceID }: IPatientTreatment
         <Button className="gap-2 w-full" asChild>
           <Link
             href={
-              !patientInfo?.Treatment
-                ? `/dashboard/${workspaceID}/patient/${patientInfo?.dniNumber}/treatment/new`
-                : `/dashboard/${workspaceID}/patient/${patientInfo?.dniNumber}/treatment/${patientInfo?.Treatment?.id}`
+              !treatmentInfo
+                ? `/dashboard/${params?.workspaceID}/patient/${params.patientID}/treatment/new`
+                : `/dashboard/${params?.workspaceID}/patient/${params.patientID}/treatment/${treatmentInfo?.id}`
             }
           >
-            {!patientInfo ? (
+            {!treatmentInfo ? (
               <>
                 Start new treatment
                 <FilePlusIcon className="h-5 w-5 stroke-2" />

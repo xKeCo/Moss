@@ -1,6 +1,8 @@
 import { Breadcrumb } from '@/components';
+import { InfoCircledIcon } from '@radix-ui/react-icons';
 import { PatientCard, PatientInformation, PatientTreatment } from './components';
 import { getPatientById } from '@/actions';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui';
 
 interface IPatientInfoPageProps {
   params: {
@@ -21,22 +23,23 @@ export default async function PatientInfoPage({ params }: Readonly<IPatientInfoP
     <div className="py-5 px-8 flex flex-col gap-4">
       <Breadcrumb values={breadcrumbValues} />
 
-      {/* <Alert className="text-yellow-600 border-yellow-600">
-        <InfoCircledIcon className="h-6 w-6" />
-        <AlertTitle className="text-base">Alerta!</AlertTitle>
-        <AlertDescription className="text-base">Paciente anticuagulado!</AlertDescription>
-      </Alert> */}
+      <Alert variant="warning">
+        <InfoCircledIcon className="h-5 w-5" />
+        <AlertTitle className="text-base font-semibold">Alerta!</AlertTitle>
+        <AlertDescription className="text-base font-medium">
+          Paciente anticuagulado!
+        </AlertDescription>
+      </Alert>
 
       <div className="grid md:grid-cols-6 xl:grid-cols-8 xl:grid-rows-2 gap-4">
         <PatientCard patientInfo={patientInfo!} />
         <PatientInformation patientInfo={patientInfo!} />
-        <PatientTreatment patientInfo={patientInfo!} workspaceID={params.workspaceID} />
+        <PatientTreatment
+          treatmentInfo={patientInfo?.Treatment!}
+          patientName={patientInfo?.name!}
+          params={params}
+        />
       </div>
-      {/* <div className="grid md:grid-cols-6 xl:grid-cols-8 gap-4">
-          <PatientInformation />
-          <PatientTreatment />
-          <PatientTreatment />
-        </div> */}
     </div>
   );
 }

@@ -9,12 +9,12 @@ export interface ITreatment {
   diagnosis: string;
   prognosis: string;
 
-  Patient: any;
+  Patient?: any | null;
   patientId: string;
 
-  InitialOdontogram: IInitialOdontogram | null;
-  RealTxPlan: IRealTxPlan[] | null;
-  TxEvolutions: ITxEvolution[] | null;
+  InitialOdontogram?: IInitialOdontogram | null;
+  RealTxPlan?: IRealTxPlan[] | null;
+  TxEvolutions?: ITxEvolution[] | null;
 
   totalPrice: number;
   totalPaid: number;

@@ -67,22 +67,7 @@ export const getPatientById = async (patientId: string) => {
         BasicInformation: true,
         ContactInformation: true,
         MedicalInformation: true,
-        Treatment: {
-          include: {
-            InitialOdontogram: {
-              include: {
-                Tooth: {
-                  include: {
-                    cavities: true,
-                  },
-                },
-              },
-            },
-            RealTxPlan: true,
-            TxEvolutions: true,
-            Patient: true,
-          },
-        },
+        Treatment: true,
       },
     });
 

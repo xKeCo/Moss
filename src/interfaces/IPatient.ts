@@ -17,7 +17,7 @@ export interface IPatient {
   ContactInformation: IContactInformation | null;
   MedicalInformation: IMedicalInformation | null;
   Treatment: ITreatment | null;
-  // healthInformation: IHealthInformation;
+  healthInformation?: IHealthInformation | null;
 }
 
 interface IBasicInformation {
@@ -72,16 +72,16 @@ interface IMedicalInformation {
   updatedAt?: string | Date;
 }
 
-// interface IHealthInformation {
-// allergies: string[];
-// diseases: string[];
-// medications: string[];
-// surgeries: string[];
-// familyBackground: string[];
-// habits: string[];
-// observations: string[];
-// other: string[];
-// }
+interface IHealthInformation {
+  allergies: string[];
+  diseases: string[];
+  medications: string[];
+  surgeries: string[];
+  familyBackground: string[];
+  habits: string[];
+  observations: string[];
+  other: string[];
+}
 
 export interface IPatientCard {
   name: string;

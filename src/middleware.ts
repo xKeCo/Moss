@@ -43,8 +43,6 @@ export default withAuth(
         req.nextUrl.pathname.startsWith('/dashboard') &&
         !availableWorkspaces?.includes(req.nextUrl.pathname.split('/')[2])
       ) {
-        console.log('redirecting to workspace');
-        console.log(req.nextUrl.pathname.split('/')[2]);
         return NextResponse.redirect(new URL(`/dashboard/${workspaceId}`, req.url));
       }
 
