@@ -9,10 +9,20 @@ const alertVariants = cva(
     variants: {
       variant: {
         default: 'bg-background text-foreground',
-        destructive:
-          'border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive',
+        default_filled:
+          'bg-accent1 text-accent8 border-accent1 dark:bg-accent8 dark:text-accent1 dark:border-accent8',
+        success:
+          'text-blue-600 border-blue-600 [&>svg]:text-blue-600 dark:text-[#4ca8f9] dark:border-[#10233d] dark:[&>svg]:text-[#4ca8f9]',
+        success_filled:
+          'text-blue-600 bg-sky-50 border-blue-600 [&>svg]:text-blue-600 dark:text-[#4ca8f9] dark:bg-[#10233d] dark:border-[#10233d] dark:[&>svg]:text-[#4ca8f9]',
+        error:
+          'text-destructive border-destructive/50 [&>svg]:text-destructive dark:text-[#ff5c62] dark:border-[#3c1618] dark:[&>svg]:text-[#ff5c62]',
+        error_filled:
+          'text-destructive bg-red-50 border-destructive/50 [&>svg]:text-destructive dark:text-[#ff5c62] dark:bg-[#3c1618] dark:border-[#3c1618] dark:[&>svg]:text-[#ff5c62]',
         warning:
-          'border-orange-100 text-orange-100 dark:border-orange-100 text-black border-orange-100 bg-orange-100',
+          'text-orange-500 border-orange-500 [&>svg]:text-orange-500 dark:text-[#ff9705] dark:border-[#331b00] dark:[&>svg]:text-[#ff9705]',
+        warning_filled:
+          'text-orange-500 border-orange-500 bg-orange-50 [&>svg]:text-orange-500 dark:text-[#ff9705] dark:bg-[#331b00] dark:border-[#331b00] dark:[&>svg]:text-[#ff9705]',
       },
     },
     defaultVariants: {

@@ -1,5 +1,4 @@
 import { Avatar, AvatarFallback, AvatarImage, Skeleton } from '@/components/ui';
-import { formatPhone } from '@/helpers';
 import type { IPatient } from '@/interfaces';
 
 interface IPatientCardProps {
@@ -22,9 +21,7 @@ export const PatientCard = ({ patientInfo }: IPatientCardProps) => {
       <div className="flex flex-col items-center justify-center gap-1 w-full">
         <h1 className="text-2xl font-semibold text-center">{patientInfo?.name}</h1>
         <p className="text-muted-foreground">{patientInfo?.email}</p>
-        <p className="text-muted-foreground">
-          {formatPhone(patientInfo?.ContactInformation?.phone1!)}
-        </p>
+        <p className="text-muted-foreground">{patientInfo?.reasonForConsultation}</p>
       </div>
     </div>
   );

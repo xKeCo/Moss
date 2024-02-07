@@ -12,7 +12,7 @@ interface BreadcrumbProps {
 
 export const Breadcrumb = ({ values }: BreadcrumbProps) => {
   return (
-    <div className="flex items-center justify-start gap-2 mb-8">
+    <div className="flex items-center justify-start gap-2">
       {values.map((value, index) => (
         <React.Fragment key={value.name}>
           <>
@@ -43,7 +43,7 @@ export const Breadcrumb = ({ values }: BreadcrumbProps) => {
 
 Breadcrumb.Skeleton = function BreadcrumbSkeleton({ positions = 2 }) {
   return (
-    <div className="flex items-center justify-start gap-2 mb-8">
+    <div className="flex items-center justify-start gap-2">
       {Array.from({ length: positions }).map((_, index) => (
         <Fragment key={`breadcrumb-skeleton-${index}`}>
           <Skeleton className="h-5 w-20" />
