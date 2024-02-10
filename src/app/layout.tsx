@@ -5,16 +5,17 @@ import { Providers, ThemeProvider } from '@/components';
 import { cn } from '@/lib/utils';
 import '../styles/globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({
+  display: 'swap',
+  subsets: ['latin'],
+});
 
 export const metadata: Metadata = {
   title: 'Moss - Dental Clinic Management System',
   description: 'Dental Clinic Management System',
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn(inter.className)}>

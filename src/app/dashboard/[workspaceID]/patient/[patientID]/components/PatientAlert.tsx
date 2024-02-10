@@ -9,12 +9,16 @@ interface IPatientAlertProps {
 
 export const PatientAlert = ({ allergies = [], extraInformation }: IPatientAlertProps) => {
   const alertTitle = extraInformation && allergies.length > 0 ? 'Alerta!' : 'Información';
-  const alertVariant =
-    extraInformation && allergies.length > 0
-      ? 'warning_filled'
-      : extraInformation && allergies.length === 0
-      ? 'success_filled'
-      : 'default';
+
+  const getAlertVariant = () => {
+    if (extraInformation && allergies.length > 0) {
+      return 'warning_filled';
+    }
+    if (extraInformation && allergies.length === 0) {
+      return 'success_filled';
+    }
+    return 'default';
+  };
 
   const renderAlertInformation = () => {
     if (extraInformation && allergies.length > 0) {
@@ -47,7 +51,7 @@ export const PatientAlert = ({ allergies = [], extraInformation }: IPatientAlert
   };
 
   return (
-    <Alert variant={alertVariant}>
+    <Alert variant={getAlertVariant()}>
       <InfoCircledIcon className="h-5 w-5" />
       <AlertTitle className="text-sm font-bold dark:font-medium">{alertTitle}</AlertTitle>
       <AlertDescription className="text-sm font-medium dark:font-normal">
