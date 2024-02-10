@@ -28,6 +28,8 @@ export const createPatient = async (patientData: any) => {
         name: patientData.name,
         photoURL: `https://source.boringavatars.com/marble/50/${patientData.dniNumber}`,
         workspaceId: cookies().get('activeWorkspace')?.value!,
+        currentIllness: patientData.currentIllness,
+        reasonForConsultation: patientData.reasonForConsultation,
         BasicInformation: {
           create: {
             ...BasicInformation,
