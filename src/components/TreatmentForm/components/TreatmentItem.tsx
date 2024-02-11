@@ -56,7 +56,7 @@ export const TreatmentItem = ({
 
       <div className={cn('flex items-center justify-between', isEvol && 'gap-6')}>
         <div className={cn('flex flex-col items-start justify-center gap-2', isEvol && 'w-full')}>
-          <h1 className="text-xl font-semibold">{isEvol ? item.txEvolDesc : item.txActivity}</h1>
+          <h1 className="text-lg font-semibold">{isEvol ? item.txEvolDesc : item.txActivity}</h1>
 
           {isEvol ? (
             <div className="flex justify-between w-full">

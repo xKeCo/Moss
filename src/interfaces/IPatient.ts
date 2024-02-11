@@ -20,7 +20,7 @@ export interface IPatient {
   ContactInformation: IContactInformation | null;
   MedicalInformation: IMedicalInformation | null;
   Treatment: ITreatment | null;
-  // healthInformation?: IHealthInformation | null;
+  healthInformation?: IHealthInformation | null;
 }
 
 interface IBasicInformation {
@@ -74,35 +74,85 @@ interface IMedicalInformation {
   updatedAt?: string | Date;
 }
 
-// interface IHealthInformation {
-//   systemReview: ISystemReview;
-//   allergies: string[];
-//   diseases: string[];
-//   medications: string[];
-//   surgeries: string[];
-//   habits: string[];
-//   familyBackground: IFamilyBackground;
+interface IHealthInformation {
+  systemReview: ISystemReview;
+  familyBackground: IFamilyBackground;
+  personalBackground: IPersonalBackground;
+  oralSystemReview: IOralSystemReview;
+}
 
-// }
+interface ISystemReview {
+  head?: string;
+  neck?: string;
+  genitourinary?: string;
+  eyes?: string;
+  cardiovascular?: string;
+  locomotor?: string;
+  ORL?: string;
+  respiratory?: string;
+  skin?: string;
+  stomological?: string;
+  gastrointestinal?: string;
+  circulatory?: string;
+}
 
-// interface ISystemReview {
-//   head?: string;
-//   neck?: string;
-//   genitourinary?: string;
-//   eyes?: string;
-//   cardiovascular?: string;
-//   locomotor?: string;
-//   ORL?: string;
-//   respiratory?: string;
-//   skin?: string;
-//   stomological?: string;
-//   gastrointestinal?: string;
-//   circulatory?: string;
-// }
+interface IFamilyBackground {
+  diabetes: boolean;
+  familyDiabetes?: string;
+  cancer: boolean;
+  familyCancer?: string;
+  leukemia: boolean;
+  familyLeukemia?: string;
+  heartDisease: boolean;
+  familyHeartDisease?: string;
+  hypertension: boolean;
+  familyHypertension?: string;
+  others: string;
+}
 
-// interface IFamilyBackground{
+interface IPersonalBackground {
+  allergies: string[];
+  medications: string[];
+  habits: string;
+  diseases: string;
+  diabetes: boolean;
+  cancer: boolean;
+  leukemia: boolean;
+  heartDisease: boolean;
+  surgeries: boolean;
+  surgeriesDescription: string;
+  hospitalization: boolean;
+  psychological: boolean;
+  hypertension: boolean;
+  others: string;
+}
 
-// }
+interface IOralSystemReview {
+  faneras: string;
+  oralCavity: string;
+  teeth: string;
+  tongue: string;
+  ATM: string;
+  salivaryGlands: string;
+  occlusion: string;
+  teethColor: string;
+  painThreshold: string; //Alto, Medio, Bajo
+  maxMandibularOpening: string;
+  leftLaterality: string;
+  rightLaterality: string;
+  protrusion: string;
+  jointSounds: string;
+
+  // oralMucosa: string;
+  // lips: string;
+  // palate: string;
+  // gums: string;
+  // temporomandibularJoint: string;
+  // oropharynx: string;
+  // tonsils: string;
+  // floorOfTheMouth: string;
+  // other: string;
+}
 
 export interface IPatientCard {
   name: string;

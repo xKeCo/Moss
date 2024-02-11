@@ -19,7 +19,7 @@ export const PatientCard = ({ patientInfo }: IPatientCardProps) => {
       </Avatar>
 
       <div className="flex flex-col items-center justify-center gap-1 w-full">
-        <h1 className="text-2xl font-semibold text-center">{patientInfo?.name}</h1>
+        <h1 className="text-xl font-semibold text-center capitalize">{patientInfo?.name}</h1>
         <p className="text-muted-foreground">{patientInfo?.email}</p>
         <p className="text-muted-foreground">{patientInfo?.reasonForConsultation}</p>
       </div>

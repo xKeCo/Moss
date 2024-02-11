@@ -37,7 +37,7 @@ import { useRouter } from 'next/navigation';
 
 type PatientFormData = z.infer<typeof patientFormSchema>;
 
-export const PatientForm = () => {
+export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean }) => {
   const [age, setAge] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -145,7 +145,12 @@ export const PatientForm = () => {
               <FormItem className="sm:col-span-2">
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Full name" autoComplete="name" {...field} />
+                  <Input
+                    disabled={isLoadingPage}
+                    placeholder="Full name"
+                    autoComplete="name"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -157,7 +162,11 @@ export const PatientForm = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Gender</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  disabled={isLoadingPage}
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select gender" />
@@ -179,7 +188,11 @@ export const PatientForm = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Blood type</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  disabled={isLoadingPage}
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select blood type" />
@@ -212,7 +225,7 @@ export const PatientForm = () => {
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
-                      <Button variant={'outline'}>
+                      <Button variant={'outline'} disabled={isLoadingPage}>
                         {field.value ? format(field.value, 'P') : <span>Pick a date</span>}
                         <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                       </Button>
@@ -240,7 +253,7 @@ export const PatientForm = () => {
             )}
           />
 
-          <Input placeholder="Age" value={age} disabled endDecorator="years" />
+          <Input disabled placeholder="Age" value={age} endDecorator="years" />
 
           <FormField
             control={form.control}
@@ -249,7 +262,7 @@ export const PatientForm = () => {
               <FormItem className="sm:col-span-2">
                 <FormLabel>Place of birth</FormLabel>
                 <FormControl>
-                  <Input placeholder="Place of birth" {...field} />
+                  <Input disabled={isLoadingPage} placeholder="Place of birth" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -261,7 +274,11 @@ export const PatientForm = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>DNI Type</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  disabled={isLoadingPage}
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select DNI" />
@@ -284,7 +301,7 @@ export const PatientForm = () => {
               <FormItem className="sm:col-span-2">
                 <FormLabel>DNI Number</FormLabel>
                 <FormControl>
-                  <Input placeholder="DNI Number" {...field} />
+                  <Input disabled={isLoadingPage} placeholder="DNI Number" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -296,7 +313,11 @@ export const PatientForm = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Civil Status</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  disabled={isLoadingPage}
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select Civil Status" />
@@ -325,7 +346,12 @@ export const PatientForm = () => {
               <FormItem className="sm:col-span-2">
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="Email" autoComplete="email" {...field} />
+                  <Input
+                    disabled={isLoadingPage}
+                    placeholder="Email"
+                    autoComplete="email"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -338,7 +364,7 @@ export const PatientForm = () => {
               <FormItem className="sm:col-span-2">
                 <FormLabel>Address</FormLabel>
                 <FormControl>
-                  <Input placeholder="Address" {...field} />
+                  <Input disabled={isLoadingPage} placeholder="Address" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -351,7 +377,12 @@ export const PatientForm = () => {
               <FormItem>
                 <FormLabel>Phone</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter phone" {...field} maxLength={10} />
+                  <Input
+                    disabled={isLoadingPage}
+                    placeholder="Enter phone"
+                    {...field}
+                    maxLength={10}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -364,7 +395,12 @@ export const PatientForm = () => {
               <FormItem>
                 <FormLabel>Phone 2</FormLabel>
                 <FormControl>
-                  <Input placeholder="(optional)" {...field} maxLength={10} />
+                  <Input
+                    disabled={isLoadingPage}
+                    placeholder="(optional)"
+                    {...field}
+                    maxLength={10}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -377,7 +413,13 @@ export const PatientForm = () => {
               <FormItem>
                 <FormLabel>Height</FormLabel>
                 <FormControl>
-                  <Input placeholder="Height" {...field} endDecorator="cm" maxLength={3} />
+                  <Input
+                    disabled={isLoadingPage}
+                    placeholder="Height"
+                    {...field}
+                    endDecorator="cm"
+                    maxLength={3}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -390,7 +432,13 @@ export const PatientForm = () => {
               <FormItem>
                 <FormLabel>Weight</FormLabel>
                 <FormControl>
-                  <Input placeholder="Weight" {...field} endDecorator="kg" maxLength={3} />
+                  <Input
+                    disabled={isLoadingPage}
+                    placeholder="Weight"
+                    {...field}
+                    endDecorator="kg"
+                    maxLength={3}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -405,7 +453,7 @@ export const PatientForm = () => {
             <FormItem className="sm:col-span-2">
               <FormLabel>Occupation</FormLabel>
               <FormControl>
-                <Input placeholder="Occupation" {...field} />
+                <Input disabled={isLoadingPage} placeholder="Occupation" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -429,6 +477,7 @@ export const PatientForm = () => {
                     clearEPSNameValue(value);
                   }}
                   className="mt-2 flex items-end"
+                  disabled={isLoadingPage}
                 />
                 <FormMessage />
               </FormItem>
@@ -443,7 +492,7 @@ export const PatientForm = () => {
                 <FormItem className="sm:col-span-5 lg:col-span-2">
                   <FormLabel>EPS Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="EPS Name" {...field} />
+                    <Input disabled={isLoadingPage} placeholder="EPS Name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -467,6 +516,7 @@ export const PatientForm = () => {
                     clearDoctorTypeValue(doctorType);
                   }}
                   className="mt-2 flex items-end"
+                  disabled={isLoadingPage}
                 />
                 <FormMessage />
               </FormItem>
@@ -480,7 +530,11 @@ export const PatientForm = () => {
               render={({ field }) => (
                 <FormItem className="sm:col-span-5 lg:col-span-2">
                   <FormLabel>Doctor type</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    disabled={isLoadingPage}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select Doctor type" />
@@ -515,6 +569,7 @@ export const PatientForm = () => {
                     clearTreatmentValue(inTreatment);
                   }}
                   className="mt-2 flex items-end"
+                  disabled={isLoadingPage}
                 />
                 <FormMessage />
               </FormItem>
@@ -529,7 +584,7 @@ export const PatientForm = () => {
                 <FormItem className="sm:col-span-5 lg:col-span-2">
                   <FormLabel>Treatment</FormLabel>
                   <FormControl>
-                    <Input placeholder="Treatment" {...field} />
+                    <Input disabled={isLoadingPage} placeholder="Treatment" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -553,6 +608,7 @@ export const PatientForm = () => {
                     clearBoneScanTypeValue(boneScan);
                   }}
                   className="mt-2 flex items-end"
+                  disabled={isLoadingPage}
                 />
                 <FormMessage />
               </FormItem>
@@ -567,7 +623,7 @@ export const PatientForm = () => {
                 <FormItem className="sm:col-span-5 lg:col-span-2">
                   <FormLabel>Bone scan type</FormLabel>
                   <FormControl>
-                    <Input placeholder="Bone scan type" {...field} />
+                    <Input disabled={isLoadingPage} placeholder="Bone scan type" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -587,7 +643,7 @@ export const PatientForm = () => {
                 <FormItem className="sm:col-span-2">
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Full name" {...field} />
+                    <Input disabled={isLoadingPage} placeholder="Full name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -600,7 +656,12 @@ export const PatientForm = () => {
                 <FormItem>
                   <FormLabel>Phone</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter phone" {...field} maxLength={10} />
+                    <Input
+                      disabled={isLoadingPage}
+                      placeholder="Enter phone"
+                      {...field}
+                      maxLength={10}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -613,7 +674,12 @@ export const PatientForm = () => {
                 <FormItem>
                   <FormLabel>Phone 2</FormLabel>
                   <FormControl>
-                    <Input placeholder="(optional)" {...field} maxLength={10} />
+                    <Input
+                      disabled={isLoadingPage}
+                      placeholder="(optional)"
+                      {...field}
+                      maxLength={10}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -633,7 +699,12 @@ export const PatientForm = () => {
                 <FormItem>
                   <FormLabel>Reason for consultation</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="Enter reason" className="resize-none" {...field} />
+                    <Textarea
+                      placeholder="Enter reason"
+                      className="resize-none"
+                      {...field}
+                      disabled={isLoadingPage}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -650,6 +721,7 @@ export const PatientForm = () => {
                       placeholder="Enter current illness"
                       className="resize-none"
                       {...field}
+                      disabled={isLoadingPage}
                     />
                   </FormControl>
                   <FormMessage />
@@ -669,6 +741,7 @@ export const PatientForm = () => {
                   checked={field.value}
                   onCheckedChange={field.onChange}
                   id="termsAndConditions"
+                  disabled={isLoadingPage}
                 />
               </FormControl>
               <TermsAndConditionsModal />

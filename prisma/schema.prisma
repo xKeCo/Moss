@@ -96,16 +96,218 @@ model MedicalInformation {
   updatedAt          DateTime @updatedAt
 }
 
-// model HealthInformation {
-//   id                 String   @id @default(uuid())
- 
 
-//   Patient            Patient @relation(fields: [patientId], references: [dniNumber])
-//   patientId          String   @unique
+model SystemReview {
+  id                     String    @id @default(uuid())
+  head                   String?
+  neck                   String?
+  genitourinary          String?
+  eyes                   String?
+  cardiovascular         String?
+  locomotor              String?
+  ORL                    String?
+  respiratory            String?
+  skin                   String?
+  stomological           String?
+  gastrointestinal       String?
+  circulatory            String?
 
-//   createdAt          DateTime @default(now())
-//   updatedAt          DateTime @updatedAt
-// }
+  HealthInformation      HealthInformation @relation(fields: [HealthInformationId], references: [id])
+  HealthInformationId    String @unique
+
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt  
+}
+
+model FamilyBackground {
+  id                   String    @id @default(uuid())
+  diabetes             Boolean   @default(false)    
+  familyDiabetes       String?
+  cancer               Boolean   @default(false)
+  familyCancer         String?
+  leukemia             Boolean   @default(false)
+  familyLeukemia       String?
+  heartDisease         Boolean   @default(false)
+  familyHeartDisease   String?
+  hypertension         Boolean   @default(false)
+  familyHypertension   String?
+  others               String
+
+  HealthInformation    HealthInformation @relation(fields: [HealthInformationId], references: [id])
+  HealthInformationId  String @unique
+
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt  
+}
+
+enum HabitsType {
+  Saludables
+  SuccionLingual
+  SuccionDigital
+  Onicofagia
+  Bruxismo
+  Tabaco
+  ModerObjetos
+  Otros
+}
+
+model PersonalBackground {
+  id                     String    @id @default(uuid())
+  allergies              String
+  medications            String
+  habits                 HabitsType @default(Saludables)
+  habitsDescription      String?
+  diseases               String
+  diabetes               Boolean    @default(false)
+  cancer                 Boolean    @default(false)
+  leukemia               Boolean    @default(false)
+  heartDisease           Boolean    @default(false)
+  surgeries              Boolean    @default(false)
+  surgeriesDescription   String?
+  hospitalization        Boolean    @default(false)
+  psychological          Boolean    @default(false)
+  hypertension           Boolean    @default(false)
+  others                 String
+
+  HealthInformation      HealthInformation @relation(fields: [HealthInformationId], references: [id])
+  HealthInformationId    String @unique
+
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt  
+}
+
+enum TeethType {
+  Temporales
+  Mixto
+  Permanentes
+  EdentuloTotal
+  EdentuloParcial
+  Agenesias
+  Anodoncia
+}
+
+enum TongueType {
+  SinAlteraciones
+  Bifida
+  Geografica
+  Fisurada
+  Macroglosia
+  Microglosia
+  Pliegues
+  Frenillos
+  Ulceras
+  Quemaduras
+  Mordeduras
+  Tumores
+  Crecimiento
+  Atrofia
+  Hipertrofia   
+}
+
+
+enum ATMType {
+  SinAlteraciones
+  Brinco
+  Subluxacion
+  Luxacion
+  Retrodisquitis
+  Sinovitis
+  Artrosis
+  Anquilosis
+  Fractura
+  Tumores
+  Crecimiento
+  Atrofia
+  Hipertrofia
+}
+
+enum SalivaryGlandsType {
+  SinAlteraciones
+  Sialorrea
+  Xerostomia
+  Sialolitiasis
+  Sialoadenitis
+  Tumores
+  Crecimiento
+  Atrofia
+  Hipertrofia
+  Fistulas
+  Quistes
+  Sialocele
+  Ranula
+  Mucocele
+  Sialadenosis
+  Sialosis
+}
+
+enum OcclusionType {
+  ClaseI
+  ClaseII
+  ClaseIII
+  MordidaAbierta
+  MordidaCruzada
+  MordidaProfunda
+  Organica
+  EnGrupo
+  BilateralBalanceada
+}
+
+enum PainThresholdType {
+  Normal
+  Hipersensibilidad
+  Hiposensibilidad
+  Anestesia
+  Parestesia
+  Alto
+  Bajo
+}
+
+enum JointSoundsType {
+  SinAlteraciones
+  Click
+  Brinco
+  Crepitacion
+}
+
+model OralSystemReview {
+  id                     String    @id @default(uuid())
+  faneras                String
+  oralCavity             String
+  teeth                  TeethType          @default(Permanentes)
+  tongue                 TongueType         @default(SinAlteraciones)
+  ATMLeft                ATMType            @default(SinAlteraciones)
+  ATMRight               ATMType            @default(SinAlteraciones)
+  salivaryGlands         SalivaryGlandsType @default(SinAlteraciones)
+  occlusion              OcclusionType      @default(ClaseI)
+  teethColor             String
+  painThreshold          PainThresholdType  @default(Normal)
+  maxMandibularOpening   String
+  leftLaterality         String
+  rightLaterality        String
+  protrusion             String
+  jointSounds            JointSoundsType    @default(SinAlteraciones)
+
+  HealthInformation      HealthInformation @relation(fields: [HealthInformationId], references: [id])
+  HealthInformationId    String @unique
+
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt  
+}
+
+model HealthInformation {
+  id                 String   @id @default(uuid())
+  
+  SystemReview       SystemReview?
+  FamilyBackground   FamilyBackground?
+  PersonalBackground PersonalBackground?
+  OralSystemReview   OralSystemReview?
+
+  Patient            Patient @relation(fields: [patientId], references: [dniNumber])
+  patientId          String   @unique
+
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
 
 model User {
   id        String   @id @default(uuid())
@@ -148,7 +350,7 @@ model Patient {
   ContactInformation    ContactInformation?
   MedicalInformation    MedicalInformation?
   Treatment             Treatment?         
-  // HealthInformation     HealthInformation?
+  HealthInformation     HealthInformation?
 
   termsAndConditions    Boolean            @default(true)
   hasExtraInfo          Boolean            @default(false)   
