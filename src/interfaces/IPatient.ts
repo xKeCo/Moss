@@ -136,7 +136,7 @@ interface IOralSystemReview {
   salivaryGlands: string;
   occlusion: string;
   teethColor: string;
-  painThreshold: string; //Alto, Medio, Bajo
+  painThreshold: string;
   maxMandibularOpening: string;
   leftLaterality: string;
   rightLaterality: string;

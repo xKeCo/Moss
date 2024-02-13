@@ -136,7 +136,7 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <div className="grid sm:grid-cols-4 gap-4 mt-6">
           <FormField
             control={form.control}
@@ -633,7 +633,8 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
         </div>
 
         <div className="flex flex-col gap-4">
-          <h1>Emergency contact information</h1>
+          <h1 className="font-semibold">Emergency contact information</h1>
+          <div className="h-[2px] bg-secondary"></div>
 
           <div className="gap-4 grid sm:grid-cols-4">
             <FormField
@@ -689,7 +690,8 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
         </div>
 
         <div className="flex flex-col gap-4">
-          <h1>Anamnesis</h1>
+          <h1 className="font-semibold">Anamnesis</h1>
+          <div className="h-[2px] bg-secondary"></div>
 
           <div className="gap-4 grid sm:grid-cols-2">
             <FormField
@@ -744,7 +746,11 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
                   disabled={isLoadingPage}
                 />
               </FormControl>
-              <TermsAndConditionsModal />
+              <TermsAndConditionsModal
+                fullName={form.getValues('name')}
+                dniType={form.getValues('dniType')}
+                dniNumber={form.getValues('dniNumber')}
+              />
             </FormItem>
           )}
         />
@@ -759,7 +765,7 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
           Cancel
         </Button>
         <Button type="submit" disabled={isLoading}>
-          Save patient
+          Save information
           {isLoading && <Icons.Spinner className="ml-2 h-4 w-4 animate-spin" />}
         </Button>
       </form>
