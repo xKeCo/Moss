@@ -16,11 +16,10 @@ import {
   FormMessage,
   Textarea,
 } from '@/components/ui';
-import { AddTreatmentItem, EmptyTreatmentItem, TreatmentItem } from './components';
+import { AddTreatmentItem, EmptyTreatmentItem, Icons, TreatmentItem } from '@/components';
 import type { IRealTxPlan, IToothState, ITxEvolution } from '@/interfaces';
 import { treatmentFormSchema } from '@/lib/validations';
 import { createTreatment, navigate } from '@/actions';
-import { Icons } from '..';
 
 interface ITreatmentFormProps {
   odontogramState: IToothState[];

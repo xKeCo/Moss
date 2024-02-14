@@ -9,7 +9,7 @@ import {
   Label,
   DialogFooter,
   DialogClose,
-} from '../ui';
+} from '@/components/ui';
 
 interface ITermsAndConditionsModal {
   fullName: string;
