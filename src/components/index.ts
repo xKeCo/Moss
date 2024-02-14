@@ -1,4 +1,4 @@
-export * from './Forms/TreatmentForm/TreatmentForm';
+export * from './Forms/AuthForm/AuthForm';
 export * from './Breadcrumb/Breadcrumb';
 export * from './Icons/Icons';
 export * from './Navbar/Navbar';
