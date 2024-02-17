@@ -82,18 +82,18 @@ interface IHealthInformation {
 }
 
 interface ISystemReview {
-  head?: string;
-  neck?: string;
-  genitourinary?: string;
-  eyes?: string;
-  cardiovascular?: string;
-  locomotor?: string;
-  ORL?: string;
-  respiratory?: string;
-  skin?: string;
-  stomological?: string;
-  gastrointestinal?: string;
-  circulatory?: string;
+  head: string;
+  neck: string;
+  genitourinary: string;
+  eyes: string;
+  cardiovascular: string;
+  locomotor: string;
+  ORL: string;
+  respiratory: string;
+  skin: string;
+  stomological: string;
+  gastrointestinal: string;
+  circulatory: string;
 }
 
 interface IFamilyBackground {
@@ -107,13 +107,15 @@ interface IFamilyBackground {
   familyHeartDisease?: string;
   hypertension: boolean;
   familyHypertension?: string;
-  others: string;
+  others: boolean;
+  familyOthers?: string;
 }
 
 interface IPersonalBackground {
   allergies: string[];
   medications: string[];
   habits: string;
+  habitsDescription: string;
   diseases: string;
   diabetes: boolean;
   cancer: boolean;
@@ -142,16 +144,6 @@ interface IOralSystemReview {
   rightLaterality: string;
   protrusion: string;
   jointSounds: string;
-
-  // oralMucosa: string;
-  // lips: string;
-  // palate: string;
-  // gums: string;
-  // temporomandibularJoint: string;
-  // oropharynx: string;
-  // tonsils: string;
-  // floorOfTheMouth: string;
-  // other: string;
 }
 
 export interface IPatientCard {

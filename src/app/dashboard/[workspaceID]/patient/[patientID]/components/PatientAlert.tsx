@@ -5,9 +5,13 @@ import Link from 'next/link';
 interface IPatientAlertProps {
   allergies?: Array<{ name: string }>;
   extraInformation: boolean;
+  params: {
+    workspaceID: string;
+    patientID: string;
+  };
 }
 
-export const PatientAlert = ({ allergies = [], extraInformation }: IPatientAlertProps) => {
+export const PatientAlert = ({ allergies = [], extraInformation, params }: IPatientAlertProps) => {
   const alertTitle = extraInformation && allergies.length > 0 ? 'Alerta!' : 'Información';
 
   const getAlertVariant = () => {
@@ -39,8 +43,7 @@ export const PatientAlert = ({ allergies = [], extraInformation }: IPatientAlert
         <>
           Este paciente no tiene información adicional.{' '}
           <Link
-            href=""
-            // href={`/dashboard/${workspaceID}/patient/new`}
+            href={`/dashboard/${params.workspaceID}/patient/${params.patientID}/health-info`}
             className="font-bold hover:text-primary/80"
           >
             Agregar información adicional aquí.

@@ -3,6 +3,7 @@ export * from './workspace/createWorkspace';
 export * from './workspace/setActiveWorkspace';
 export * from './navigate';
 export * from './patients/createPatient';
+export * from './patients/createHealthInfo';
 export * from './patients/patientsByWorkspace';
 export * from './treatments/createTreatment';
 export * from './treatments/updateTreatment';

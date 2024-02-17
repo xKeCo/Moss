@@ -99,18 +99,18 @@ model MedicalInformation {
 
 model SystemReview {
   id                     String    @id @default(uuid())
-  head                   String?
-  neck                   String?
-  genitourinary          String?
-  eyes                   String?
-  cardiovascular         String?
-  locomotor              String?
-  ORL                    String?
-  respiratory            String?
-  skin                   String?
-  stomological           String?
-  gastrointestinal       String?
-  circulatory            String?
+  head                   String    @default("Sano")
+  neck                   String    @default("Sano")
+  genitourinary          String    @default("Sano")
+  eyes                   String    @default("Sano")
+  cardiovascular         String    @default("Sano")
+  locomotor              String    @default("Sano")
+  ORL                    String    @default("Sano")
+  respiratory            String    @default("Sano")
+  skin                   String    @default("Sano")
+  stomological           String    @default("Sano")
+  gastrointestinal       String    @default("Sano")
+  circulatory            String    @default("Sano")
 
   HealthInformation      HealthInformation @relation(fields: [HealthInformationId], references: [id])
   HealthInformationId    String @unique
@@ -131,7 +131,8 @@ model FamilyBackground {
   familyHeartDisease   String?
   hypertension         Boolean   @default(false)
   familyHypertension   String?
-  others               String
+  others               Boolean   @default(false)
+  familyOthers         String?
 
   HealthInformation    HealthInformation @relation(fields: [HealthInformationId], references: [id])
   HealthInformationId  String @unique
@@ -153,11 +154,10 @@ enum HabitsType {
 
 model PersonalBackground {
   id                     String    @id @default(uuid())
-  allergies              String
-  medications            String
+  allergies              String[]  @default(["No hay alergias"])
+  medications            String[]  @default(["No hay medicamentos"])
   habits                 HabitsType @default(Saludables)
   habitsDescription      String?
-  diseases               String
   diabetes               Boolean    @default(false)
   cancer                 Boolean    @default(false)
   leukemia               Boolean    @default(false)
@@ -167,7 +167,8 @@ model PersonalBackground {
   hospitalization        Boolean    @default(false)
   psychological          Boolean    @default(false)
   hypertension           Boolean    @default(false)
-  others                 String
+  others                 Boolean    @default(false)
+  othersDescription      String?
 
   HealthInformation      HealthInformation @relation(fields: [HealthInformationId], references: [id])
   HealthInformationId    String @unique

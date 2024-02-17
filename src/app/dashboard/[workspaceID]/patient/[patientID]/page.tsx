@@ -22,7 +22,11 @@ export default async function PatientInfoPage({ params }: Readonly<IPatientInfoP
     <div className="py-5 px-8 flex flex-col gap-4">
       <Breadcrumb values={breadcrumbValues} />
 
-      <PatientAlert allergies={mockAllergies} extraInformation={patientInfo?.hasExtraInfo!} />
+      <PatientAlert
+        allergies={mockAllergies}
+        extraInformation={patientInfo?.hasExtraInfo!}
+        params={params}
+      />
 
       <div className="grid md:grid-cols-6 xl:grid-cols-8 xl:grid-rows-2 gap-4">
         <PatientCard patientInfo={patientInfo!} />
