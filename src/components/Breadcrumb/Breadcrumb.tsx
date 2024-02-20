@@ -23,7 +23,7 @@ export const Breadcrumb = ({ values }: BreadcrumbProps) => {
             ) : (
               <p
                 className={cn(
-                  'text-muted-foreground',
+                  'text-muted-foreground capitalize',
                   index === values.length - 1 && 'text-primary'
                 )}
               >

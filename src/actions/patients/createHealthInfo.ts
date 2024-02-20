@@ -25,8 +25,8 @@ export const createHealthInfo = async (
         PersonalBackground: {
           create: {
             ...PersonalBackground,
-            allergies: allergies.length > 0 ? allergies : undefined,
-            medications: medications.length > 0 ? medications : undefined,
+            allergies: allergies.length,
+            medications: medications.length,
           },
         },
         OralSystemReview: {

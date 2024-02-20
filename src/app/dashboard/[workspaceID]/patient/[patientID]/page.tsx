@@ -12,7 +12,6 @@ interface IPatientInfoPageProps {
 export default async function PatientInfoPage({ params }: Readonly<IPatientInfoPageProps>) {
   const { patientInfo } = await getPatientById(params.patientID);
 
-  const mockAllergies = [{ name: 'Penicilina' }, { name: 'Polen' }, { name: 'Ácaros' }];
   const breadcrumbValues = [
     { name: 'Patients', href: '/dashboard' },
     { name: patientInfo?.name ?? 'Loading..' },
@@ -23,7 +22,7 @@ export default async function PatientInfoPage({ params }: Readonly<IPatientInfoP
       <Breadcrumb values={breadcrumbValues} />
 
       <PatientAlert
-        allergies={mockAllergies}
+        personalBackground={patientInfo?.HealthInformation?.PersonalBackground!}
         extraInformation={patientInfo?.hasExtraInfo!}
         params={params}
       />

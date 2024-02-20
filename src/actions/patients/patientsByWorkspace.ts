@@ -25,9 +25,6 @@ export const getPatientsByWorkspaceThatNotHaveExtraInfo = async (workspaceId: st
       where: { id: workspaceId },
       include: {
         patients: {
-          where: {
-            hasExtraInfo: false,
-          },
           select: {
             name: true,
             email: true,
@@ -67,6 +64,14 @@ export const getPatientById = async (patientId: string) => {
         BasicInformation: true,
         ContactInformation: true,
         MedicalInformation: true,
+        HealthInformation: {
+          include: {
+            SystemReview: true,
+            FamilyBackground: true,
+            PersonalBackground: true,
+            OralSystemReview: true,
+          },
+        },
         Treatment: true,
       },
     });

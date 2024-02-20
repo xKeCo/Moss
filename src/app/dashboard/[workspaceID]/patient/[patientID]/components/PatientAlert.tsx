@@ -1,9 +1,10 @@
 import { Alert, AlertDescription, AlertTitle, Skeleton } from '@/components/ui';
+import { IPersonalBackground } from '@/interfaces';
 import { InfoCircledIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 
 interface IPatientAlertProps {
-  allergies?: Array<{ name: string }>;
+  personalBackground: IPersonalBackground;
   extraInformation: boolean;
   params: {
     workspaceID: string;
@@ -11,46 +12,62 @@ interface IPatientAlertProps {
   };
 }
 
-export const PatientAlert = ({ allergies = [], extraInformation, params }: IPatientAlertProps) => {
-  const alertTitle = extraInformation && allergies.length > 0 ? 'Alerta!' : 'Información';
+export const PatientAlert = ({
+  personalBackground,
+  extraInformation,
+  params,
+}: IPatientAlertProps) => {
+  const diseases = [
+    {
+      name: 'Diabetes',
+      value: personalBackground?.diabetes,
+    },
+    {
+      name: 'Cáncer',
+      value: personalBackground?.cancer,
+    },
+    {
+      name: 'Leucemia',
+      value: personalBackground?.leukemia,
+    },
+    {
+      name: 'Enfermedad cardíaca',
+      value: personalBackground?.heartDisease,
+    },
+    {
+      name: 'Enfermedad(es) hospitalaria(s)',
+      value: personalBackground?.hospitalization,
+    },
+    {
+      name: 'Enfermedad(es) psicológica(s)',
+      value: personalBackground?.psychological,
+    },
+    {
+      name: 'Hipertensión',
+      value: personalBackground?.hypertension,
+    },
+    // {
+    //   name: `Cirugía(s) previa(s): ${personalBackground?.surgeriesDescription}`,
+    //   value: personalBackground?.surgeries,
+    // },
+    // {
+    //   name: `Otras enfermedades: ${personalBackground?.othersDescription}`,
+    //   value: personalBackground?.others,
+    // },
+  ];
+
+  const hasDisease = diseases.some((disease) => disease.value);
+  const hasAllergies = personalBackground?.allergies.length > 0;
+  const alertTitle = extraInformation && (hasDisease || hasAllergies) ? 'Alerta!' : 'Información';
 
   const getAlertVariant = () => {
-    if (extraInformation && allergies.length > 0) {
+    if (extraInformation && (hasDisease || hasAllergies)) {
       return 'warning_filled';
     }
-    if (extraInformation && allergies.length === 0) {
+    if (extraInformation && !(hasDisease || hasAllergies)) {
       return 'success_filled';
     }
     return 'default';
-  };
-
-  const renderAlertInformation = () => {
-    if (extraInformation && allergies.length > 0) {
-      return allergies.map((allergy, index) => (
-        <span key={allergy.name}>
-          {allergy.name}
-          {index !== allergies.length - 1 ? ', ' : ''}
-        </span>
-      ));
-    }
-
-    if (extraInformation && !allergies.length) {
-      return 'El paciente no tiene ninguna restricción.';
-    }
-
-    if (!extraInformation) {
-      return (
-        <>
-          Este paciente no tiene información adicional.{' '}
-          <Link
-            href={`/dashboard/${params.workspaceID}/patient/${params.patientID}/health-info`}
-            className="font-bold hover:text-primary/80"
-          >
-            Agregar información adicional aquí.
-          </Link>
-        </>
-      );
-    }
   };
 
   return (
@@ -58,7 +75,47 @@ export const PatientAlert = ({ allergies = [], extraInformation, params }: IPati
       <InfoCircledIcon className="h-5 w-5" />
       <AlertTitle className="text-sm font-bold dark:font-medium">{alertTitle}</AlertTitle>
       <AlertDescription className="text-sm font-medium dark:font-normal">
-        {renderAlertInformation()}
+        {extraInformation && hasDisease && (
+          <p>
+            Compromisos sistémicos:{' '}
+            <span className="text-primary font-bold capitalize">
+              {diseases
+                .filter((disease) => disease.value)
+                .map((disease) => disease.name.toLowerCase())
+                .join(', ')}
+            </span>
+            {''}.
+          </p>
+        )}
+
+        {extraInformation && hasAllergies && (
+          <p>
+            Alergias:{' '}
+            {personalBackground?.allergies.map((allergy, index) => (
+              <span key={allergy.toString()} className="text-primary font-bold capitalize">
+                {allergy}
+                {index !== personalBackground?.allergies.length - 1 ? ', ' : ''}
+              </span>
+            ))}
+            .
+          </p>
+        )}
+
+        {extraInformation && !(hasDisease || hasAllergies) && (
+          <p>El paciente no tiene ninguna restricción.</p>
+        )}
+
+        {!extraInformation && (
+          <>
+            Este paciente no tiene información adicional.{' '}
+            <Link
+              href={`/dashboard/${params.workspaceID}/patient/${params.patientID}/health-info`}
+              className="font-bold hover:text-primary/80"
+            >
+              Agregar información adicional aquí.
+            </Link>
+          </>
+        )}
       </AlertDescription>
     </Alert>
   );

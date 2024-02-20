@@ -23,7 +23,7 @@ export interface IPatient {
   healthInformation?: IHealthInformation | null;
 }
 
-interface IBasicInformation {
+export interface IBasicInformation {
   id?: string;
   gender: 'M' | 'F' | 'O';
   bloodType:
@@ -46,7 +46,7 @@ interface IBasicInformation {
   updatedAt?: string | Date;
 }
 
-interface IContactInformation {
+export interface IContactInformation {
   id?: string;
   address: string;
   phone1: string;
@@ -59,7 +59,7 @@ interface IContactInformation {
   updatedAt?: string | Date;
 }
 
-interface IMedicalInformation {
+export interface IMedicalInformation {
   id?: string;
   EPSActive: boolean;
   EPSName?: string | null;
@@ -74,14 +74,14 @@ interface IMedicalInformation {
   updatedAt?: string | Date;
 }
 
-interface IHealthInformation {
+export interface IHealthInformation {
   systemReview: ISystemReview;
   familyBackground: IFamilyBackground;
   personalBackground: IPersonalBackground;
   oralSystemReview: IOralSystemReview;
 }
 
-interface ISystemReview {
+export interface ISystemReview {
   head: string;
   neck: string;
   genitourinary: string;
@@ -96,45 +96,46 @@ interface ISystemReview {
   circulatory: string;
 }
 
-interface IFamilyBackground {
+export interface IFamilyBackground {
   diabetes: boolean;
-  familyDiabetes?: string;
+  familyDiabetes?: string | null;
   cancer: boolean;
-  familyCancer?: string;
+  familyCancer?: string | null;
   leukemia: boolean;
-  familyLeukemia?: string;
+  familyLeukemia?: string | null;
   heartDisease: boolean;
-  familyHeartDisease?: string;
+  familyHeartDisease?: string | null;
   hypertension: boolean;
-  familyHypertension?: string;
+  familyHypertension?: string | null;
   others: boolean;
-  familyOthers?: string;
+  familyOthers?: string | null;
 }
 
-interface IPersonalBackground {
+export interface IPersonalBackground {
   allergies: string[];
   medications: string[];
   habits: string;
-  habitsDescription: string;
-  diseases: string;
+  habitsDescription?: string | null;
   diabetes: boolean;
   cancer: boolean;
   leukemia: boolean;
   heartDisease: boolean;
   surgeries: boolean;
-  surgeriesDescription: string;
+  surgeriesDescription?: string | null;
   hospitalization: boolean;
   psychological: boolean;
   hypertension: boolean;
-  others: string;
+  others: boolean;
+  othersDescription?: string | null;
 }
 
-interface IOralSystemReview {
+export interface IOralSystemReview {
   faneras: string;
   oralCavity: string;
   teeth: string;
   tongue: string;
-  ATM: string;
+  ATMLeft: string;
+  ATMRight: string;
   salivaryGlands: string;
   occlusion: string;
   teethColor: string;
