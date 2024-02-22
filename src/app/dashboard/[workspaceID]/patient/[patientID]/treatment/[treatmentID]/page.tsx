@@ -19,8 +19,8 @@ export default async function TreatmentInformation({
   const { ok, errorMessage, treatmentInfo } = await getTreatmentById(params.treatmentID);
 
   const basicInfo = [
-    { label: 'Diagnosis', value: treatmentInfo?.diagnosis },
-    { label: 'Prognosis', value: treatmentInfo?.prognosis },
+    { label: 'Diagnóstico', value: treatmentInfo?.diagnosis },
+    { label: 'Pronóstico', value: treatmentInfo?.prognosis },
   ];
 
   return (
@@ -46,18 +46,20 @@ export default async function TreatmentInformation({
             </Button>
 
             <h1 className="text-2xl xl:text-3xl font-semibold flex items-center">
-              {treatmentInfo?.Patient?.name} - Treatment Information
+              {treatmentInfo?.Patient?.name} - Información del tratamiento
             </h1>
           </div>
 
           <div className="h-[2px] bg-secondary"></div>
 
-          <h1 className="text-xl xl:text-xl font-semibold mt-2">Odontogram</h1>
+          <h1 className="text-xl xl:text-xl font-semibold mt-2">Odontograma</h1>
 
           <Odontogram odontogramState={treatmentInfo?.InitialOdontogram?.Tooth!} readOnly />
 
           <div>
-            <h1 className="text-xl xl:text-xl font-semibold mt-2">Basic information</h1>
+            <h1 className="text-xl xl:text-xl font-semibold mt-2">
+              Información básica del tratamiento
+            </h1>
 
             <div className="mt-4 mb-6">
               <div className="grid sm:grid-cols-2 gap-4">

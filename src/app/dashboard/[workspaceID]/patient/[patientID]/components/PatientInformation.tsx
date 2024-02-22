@@ -8,8 +8,8 @@ import {
   formatPhone,
   getAge,
 } from '@/helpers';
-import type { IPatient } from '@/interfaces';
 import { Skeleton } from '@/components/ui';
+import type { IPatient } from '@/interfaces';
 
 interface IInformationValues {
   label: string;
@@ -25,17 +25,17 @@ interface IPatientInformationProps {
 export const PatientInformation = ({ patientInfo }: IPatientInformationProps) => {
   const informationValues: IInformationValues[] = [
     {
-      label: 'Gender',
+      label: 'Género',
       value: formatGender(patientInfo?.BasicInformation?.gender!),
       show: true,
     },
     {
-      label: 'Date of birth',
+      label: 'F. Nacimiento',
       value: formatDate(patientInfo?.BasicInformation?.birthDate! as string),
       show: true,
     },
     {
-      label: 'Age',
+      label: 'Edad',
       value: getAge(patientInfo?.BasicInformation?.birthDate! as string),
       show: true,
     },
@@ -45,17 +45,17 @@ export const PatientInformation = ({ patientInfo }: IPatientInformationProps) =>
       show: true,
     },
     {
-      label: 'Height',
+      label: 'Altura',
       value: patientInfo?.BasicInformation?.height! + ' cm',
       show: true,
     },
     {
-      label: 'Weight',
+      label: 'Peso',
       value: patientInfo?.BasicInformation?.weight! + ' kg',
       show: true,
     },
     {
-      label: 'Blood type',
+      label: 'Tipo de sangre',
       value: formatBloodType(patientInfo?.BasicInformation?.bloodType!),
       show: true,
     },
@@ -65,39 +65,39 @@ export const PatientInformation = ({ patientInfo }: IPatientInformationProps) =>
       show: true,
     },
     {
-      label: 'Address',
+      label: 'Dirección',
       value: patientInfo?.ContactInformation?.address!,
       show: true,
       colSpan: 2,
     },
     {
-      label: 'Phone',
+      label: 'Telefono',
       value: formatPhone(patientInfo?.ContactInformation?.phone1!),
       show: true,
     },
     {
-      label: 'Phone 2',
+      label: 'Telefono 2',
       value: formatPhone(patientInfo?.ContactInformation?.phone2!),
       show: patientInfo?.ContactInformation?.phone2 !== '',
     },
     {
-      label: 'Marital status',
+      label: 'Estado civil',
       value: formatMaritalStatus(patientInfo?.BasicInformation?.maritalStatus!),
       show: patientInfo?.ContactInformation?.phone2 === '',
     },
     {
-      label: 'Emergency contact name',
+      label: 'Contacto de emergencia',
       value: patientInfo?.ContactInformation?.emergencyContactName!,
       show: true,
       colSpan: 2,
     },
     {
-      label: 'E. Phone',
+      label: 'E. Telefono',
       value: formatPhone(patientInfo?.ContactInformation?.emergencyContactPhone!),
       show: true,
     },
     {
-      label: 'E. Phone 2',
+      label: 'E. Telefono 2',
       value: formatPhone(patientInfo?.ContactInformation?.emergencyContactPhone2!),
       show: true,
     },
@@ -119,15 +119,15 @@ export const PatientInformation = ({ patientInfo }: IPatientInformationProps) =>
 PatientInformation.Skeleton = function PatientInformationSkeleton() {
   const informationValues = [
     {
-      label: 'Gender',
+      label: 'Género',
       show: true,
     },
     {
-      label: 'Date of birth',
+      label: 'Fecha de nacimiento',
       show: true,
     },
     {
-      label: 'Age',
+      label: 'Edad',
       show: true,
     },
     {
@@ -135,15 +135,15 @@ PatientInformation.Skeleton = function PatientInformationSkeleton() {
       show: true,
     },
     {
-      label: 'Height',
+      label: 'Altura',
       show: true,
     },
     {
-      label: 'Weight',
+      label: 'Peso',
       show: true,
     },
     {
-      label: 'Blood type',
+      label: 'Tipo de sangre',
       show: true,
     },
     {
@@ -151,29 +151,29 @@ PatientInformation.Skeleton = function PatientInformationSkeleton() {
       show: true,
     },
     {
-      label: 'Address',
+      label: 'Dirección',
       show: true,
       colSpan: 2,
     },
     {
-      label: 'Phone',
+      label: 'Telefono',
       show: true,
     },
     {
-      label: 'Phone 2',
+      label: 'Telefono 2',
       show: false,
     },
     {
-      label: 'Emergency contact name',
+      label: 'Contacto de emergencia',
       show: true,
       colSpan: 2,
     },
     {
-      label: 'E. Phone',
+      label: 'E. Telefono',
       show: true,
     },
     {
-      label: 'E. Phone 2',
+      label: 'E. Telefono 2',
       show: true,
     },
   ];

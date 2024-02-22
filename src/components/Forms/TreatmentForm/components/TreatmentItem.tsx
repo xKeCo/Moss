@@ -40,7 +40,7 @@ export const TreatmentItem = ({
     <Alert className="flex flex-col">
       <div className="flex justify-between items-center mb-2">
         <h1 className="text-sm font-semibold mb-1">
-          {isEvol ? 'Evolution' : 'Treatment'} #{index + 1}
+          {isEvol ? 'Evolución' : 'Tratamiento'} #{index + 1}
         </h1>
 
         <p className="text-sm font-medium text-muted-foreground">

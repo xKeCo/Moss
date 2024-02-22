@@ -17,9 +17,9 @@ import {
   Textarea,
 } from '@/components/ui';
 import { AddTreatmentItem, EmptyTreatmentItem, Icons, TreatmentItem } from '@/components';
-import type { IRealTxPlan, IToothState, ITxEvolution } from '@/interfaces';
 import { treatmentFormSchema } from '@/lib/validations';
 import { createTreatment, navigate } from '@/actions';
+import type { IRealTxPlan, IToothState, ITxEvolution } from '@/interfaces';
 
 interface ITreatmentFormProps {
   odontogramState: IToothState[];
@@ -44,7 +44,7 @@ export const TreatmentForm = ({ odontogramState, workspaceID, patientID }: ITrea
     id: uuidv4(),
     txEvolDate: new Date(),
     txEvolDesc: '',
-    txEvolDoc: '',
+    txEvolDoc: 'Dra. Sandra Peña',
     txEvolPayment: '',
   };
   const router = useRouter();
@@ -63,7 +63,7 @@ export const TreatmentForm = ({ odontogramState, workspaceID, patientID }: ITrea
   const treatmentsAndEvolutionsItems = [
     {
       id: 1,
-      title: 'Actual treatment plan',
+      title: 'Plan de tratamiento actual',
       array: treatmentsPlan,
       isEvol: false,
       modalInformation: {
@@ -78,7 +78,7 @@ export const TreatmentForm = ({ odontogramState, workspaceID, patientID }: ITrea
     },
     {
       id: 2,
-      title: 'Treatment evolution',
+      title: 'Evolución del tratamiento',
       array: treatmentsEvolutions,
       isEvol: true,
       modalInformation: {
@@ -139,7 +139,7 @@ export const TreatmentForm = ({ odontogramState, workspaceID, patientID }: ITrea
 
   async function onSubmit(data: TreatmentFormData) {
     if (treatmentsPlan.length === 0) {
-      toast.error('You must add at least one treatment plan.');
+      toast.error('Debe agregar al menos un plan de tratamiento.');
       return;
     }
 
@@ -164,7 +164,7 @@ export const TreatmentForm = ({ odontogramState, workspaceID, patientID }: ITrea
 
     await navigate(`/dashboard/${workspaceID}/patient/${patientID}`);
 
-    toast.success('Treatment created successfully.');
+    toast.success('Tratamiento creado con éxito.');
   }
 
   async function cancelSubmit() {
@@ -187,7 +187,7 @@ export const TreatmentForm = ({ odontogramState, workspaceID, patientID }: ITrea
             name="diagnosis"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-base">Diagnosis</FormLabel>
+                <FormLabel className="text-base">Diagnóstico</FormLabel>
                 <FormControl>
                   <Textarea {...field} className="resize-none" />
                 </FormControl>
@@ -200,7 +200,7 @@ export const TreatmentForm = ({ odontogramState, workspaceID, patientID }: ITrea
             name="prognosis"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-base">Prognosis</FormLabel>
+                <FormLabel className="text-base">Pronóstico</FormLabel>
                 <FormControl>
                   <Textarea {...field} className="resize-none" />
                 </FormControl>
@@ -228,7 +228,7 @@ export const TreatmentForm = ({ odontogramState, workspaceID, patientID }: ITrea
             </div>
 
             {array.length === 0 ? (
-              <EmptyTreatmentItem evolution={isEvol} />
+              <EmptyTreatmentItem isEvol={isEvol} />
             ) : (
               <div className="grid md:grid-cols-2 gap-4">
                 {modalInformation.treatments.map((item, index) => (
@@ -249,11 +249,11 @@ export const TreatmentForm = ({ odontogramState, workspaceID, patientID }: ITrea
           </div>
         ))}
         <Button type="button" variant="secondary" className="mr-4" onClick={cancelSubmit}>
-          Cancel
+          Cancelar
         </Button>
         <Button type="submit">
           {isLoading && <Icons.Spinner className="animate-spin mr-2 h-5 w-5 text-white" />}
-          Save treatment
+          Guardar tratamiento
         </Button>
       </form>
     </Form>

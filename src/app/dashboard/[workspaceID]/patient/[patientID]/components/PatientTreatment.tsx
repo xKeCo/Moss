@@ -27,24 +27,24 @@ export const PatientTreatment = ({
 }: IPatientTreatmentProps) => {
   const treatmentInformation: ITreatmentInfo[] = [
     {
-      label: 'Diagnosis',
+      label: 'Diagnóstico',
       value: treatmentInfo?.diagnosis,
       colSpan: 2,
     },
     {
-      label: 'Created date',
+      label: 'F. de creación',
       value: formatDate(treatmentInfo?.createdAt as string),
     },
     {
-      label: 'Last update',
+      label: 'Últimos cambios',
       value: formatDate(treatmentInfo?.updatedAt as string),
     },
     {
-      label: 'Total price',
+      label: 'Precio total',
       value: formatCurrency(treatmentInfo?.totalPrice),
     },
     {
-      label: 'Current balance',
+      label: 'Saldo actual',
       value: formatCurrency(treatmentInfo?.totalPending),
     },
   ];
@@ -53,9 +53,10 @@ export const PatientTreatment = ({
     <div className="flex flex-col items-start justify-start col-span-4 md:col-span-3 lg:col-span-2 border rounded-2xl gap-3 w-full p-6 min-h-[274px]">
       {!treatmentInfo ? (
         <div className="flex items-center justify-center h-full">
-          <h1 className="text-2xl text-center">
-            <span className="font-semibold">{patientName}</span> has no active treatment, start a
-            new one! <ArrowBottomRightIcon className="h-5 w-5" />
+          <h1 className="text-2xl text-center text-balance">
+            <span className="font-semibold">{patientName}</span> no tiene un tratamiento, empieza
+            uno nuevo!
+            <ArrowBottomRightIcon className="h-5 w-5" />
           </h1>
         </div>
       ) : (
@@ -91,12 +92,12 @@ export const PatientTreatment = ({
           >
             {!treatmentInfo ? (
               <>
-                Start new treatment
+                Empezar tratamiento
                 <FilePlusIcon className="h-5 w-5 stroke-2" />
               </>
             ) : (
               <>
-                See treatment history
+                Ver tratamiento
                 <ArrowRightIcon className="h-5 w-5 stroke-2" />
               </>
             )}
@@ -110,20 +111,20 @@ export const PatientTreatment = ({
 PatientTreatment.Skeleton = function PatientTreatmentSkeleton() {
   const treatmentInformation = [
     {
-      label: 'Diagnosis',
+      label: 'Diagnóstico',
       colSpan: 2,
     },
     {
-      label: 'Created date',
+      label: 'Fecha de creación',
     },
     {
-      label: 'Last update',
+      label: 'Última actualización',
     },
     {
-      label: 'Total price',
+      label: 'Precio total',
     },
     {
-      label: 'Current balance',
+      label: 'Saldo actual',
     },
   ];
 

@@ -1,9 +1,9 @@
 'use client';
+import Link from 'next/link';
+import { ChevronLeftIcon } from '@radix-ui/react-icons';
 import { Odontogram, TreatmentForm } from '@/components';
 import { Button } from '@/components/ui';
 import type { IToothState } from '@/interfaces';
-import { ChevronLeftIcon } from '@radix-ui/react-icons';
-import Link from 'next/link';
 
 interface INewTreatmentPageProps {
   params: {
@@ -24,13 +24,13 @@ export default function NewTreatmentPage({ params }: Readonly<INewTreatmentPageP
           </Link>
         </Button>
 
-        <h1 className="text-2xl xl:text-3xl font-semibold">Odontogram</h1>
+        <h1 className="text-2xl xl:text-3xl font-semibold">Odontograma</h1>
       </div>
 
       <div className="h-[2px] bg-secondary"></div>
       <Odontogram odontogramState={initialOdontogram} />
 
-      <h1 className="text-2xl xl:text-3xl font-semibold mb-3">Treatment Information</h1>
+      <h1 className="text-2xl xl:text-3xl font-semibold mb-3">Información del tratamiento</h1>
       <div className="h-[2px] bg-secondary"></div>
 
       <TreatmentForm

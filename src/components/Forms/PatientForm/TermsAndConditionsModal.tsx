@@ -29,13 +29,14 @@ export const TermsAndConditionsModal = ({
           className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
           htmlFor="termsAndConditions"
         >
-          Accept terms and conditions
+          Acepto los términos y condiciones
         </Label>
         <p className="text-sm text-muted-foreground">
-          You agree to our{' '}
+          Aceptas nuestros{' '}
           <DialogTrigger asChild>
             <span className="font-semibold cursor-pointer hover:text-muted-foreground/80">
-              Terms of Service and Privacy Policy.
+              {/* Terms of Service and Privacy Policy. */}
+              Términos y condiciones.
             </span>
           </DialogTrigger>
         </p>

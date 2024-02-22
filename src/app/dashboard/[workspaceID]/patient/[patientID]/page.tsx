@@ -13,7 +13,7 @@ export default async function PatientInfoPage({ params }: Readonly<IPatientInfoP
   const { patientInfo } = await getPatientById(params.patientID);
 
   const breadcrumbValues = [
-    { name: 'Patients', href: '/dashboard' },
+    { name: 'Pacientes', href: '/dashboard' },
     { name: patientInfo?.name ?? 'Loading..' },
   ];
 

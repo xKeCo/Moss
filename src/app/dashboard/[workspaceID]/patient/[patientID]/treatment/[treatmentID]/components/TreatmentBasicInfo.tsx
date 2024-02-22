@@ -29,7 +29,7 @@ export const TreatmentBasicInfo = ({
     id: uuidv4(),
     txEvolDate: new Date(),
     txEvolDesc: '',
-    txEvolDoc: '',
+    txEvolDoc: 'Dra. Sandra Peña',
     txEvolPayment: '',
   };
   const router = useRouter();
@@ -48,7 +48,7 @@ export const TreatmentBasicInfo = ({
   const treatmentsAndEvolutionsItems = [
     {
       id: 1,
-      title: 'Actual treatment plan',
+      title: 'Plan de tratamiento actual',
       array: treatmentsPlan,
       isEvol: false,
       modalInformation: {
@@ -63,7 +63,7 @@ export const TreatmentBasicInfo = ({
     },
     {
       id: 2,
-      title: 'Treatment evolution',
+      title: 'Evolución del tratamiento',
       array: treatmentsEvolutions,
       isEvol: true,
       modalInformation: {
@@ -128,7 +128,7 @@ export const TreatmentBasicInfo = ({
       setTreatmentsPlan(updatedTreatment?.RealTxPlan!);
       setTreatmentsEvolutions(updatedTreatment?.TxEvolutions!);
 
-      toast.success('Treatment updated successfully.');
+      toast.success('Tratamiento actualizado correctamente.');
     }
   };
 
@@ -169,7 +169,7 @@ export const TreatmentBasicInfo = ({
           </div>
 
           {array.length === 0 ? (
-            <EmptyTreatmentItem evolution={isEvol} />
+            <EmptyTreatmentItem isEvol={isEvol} />
           ) : (
             <div className="grid md:grid-cols-2 gap-4">
               {modalInformation.treatments.map((item, index) => (
@@ -191,13 +191,13 @@ export const TreatmentBasicInfo = ({
       ))}
 
       <Button type="button" variant="secondary" className="mr-4" onClick={cancelSubmit}>
-        Cancel
+        Cancelar
       </Button>
 
       {validateShowSaveButton() && (
         <Button type="button" onClick={saveTreatment} disabled={isLoading}>
           {isLoading && <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />}
-          Save treatment
+          Guardar tratamiento
         </Button>
       )}
     </div>

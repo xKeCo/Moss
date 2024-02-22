@@ -16,7 +16,7 @@ export default function Dashboard({ params }: Readonly<IDashboardProps>) {
         <Link href={`/dashboard/${params.workspaceID}/patient/new`}>
           <Button className="text-sm">
             <Icons.Add className="mr-2 h-4 w-4" />
-            Add Patient
+            Añadir paciente
           </Button>
         </Link>
       </div>

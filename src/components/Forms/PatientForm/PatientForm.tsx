@@ -92,7 +92,7 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
       if (patient?.error === 'patientExists') {
         form.setError('dniNumber', {
           type: 'manual',
-          message: 'Patient id already exists. Please try another one.',
+          message: 'El paciente ya existe. Por favor, intente con otro.',
         });
       }
 
@@ -100,7 +100,7 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
     }
 
     await navigate(`/dashboard`);
-    toast.success('Patient created successfully!');
+    toast.success('Paciente creado correctamente.');
     form.reset();
   }
 
@@ -142,11 +142,11 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
             name="name"
             render={({ field }) => (
               <FormItem className="sm:col-span-2">
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Nombre completo</FormLabel>
                 <FormControl>
                   <Input
                     disabled={isLoadingPage}
-                    placeholder="Full name"
+                    placeholder="Nombre completo"
                     autoComplete="name"
                     {...field}
                   />
@@ -160,7 +160,7 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
             name="BasicInformation.gender"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Gender</FormLabel>
+                <FormLabel>Género</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -168,7 +168,7 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
                 >
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select gender" />
+                      <SelectValue placeholder="Seleccionar genero" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -186,7 +186,7 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
             name="BasicInformation.bloodType"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Blood type</FormLabel>
+                <FormLabel>Tipo de sangre</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -194,7 +194,7 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
                 >
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select blood type" />
+                      <SelectValue placeholder="Seleccionar tipo de sangre" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -220,12 +220,12 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
             name="BasicInformation.birthDate"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel className="h-[17px] mt-[6px]">Date of birth</FormLabel>
+                <FormLabel className="h-[17px] mt-[6px]">Fecha de nacimiento</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button variant={'outline'} disabled={isLoadingPage}>
-                        {field.value ? format(field.value, 'P') : <span>Pick a date</span>}
+                        {field.value ? format(field.value, 'P') : <span>Seleccione una fecha</span>}
                         <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                       </Button>
                     </FormControl>
@@ -252,16 +252,16 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
             )}
           />
 
-          <Input disabled placeholder="Age" value={age} endDecorator="years" />
+          <Input disabled placeholder="Edad" value={age} endDecorator="años" />
 
           <FormField
             control={form.control}
             name="BasicInformation.birthPlace"
             render={({ field }) => (
               <FormItem className="sm:col-span-2">
-                <FormLabel>Place of birth</FormLabel>
+                <FormLabel>Lugar de nacimiento</FormLabel>
                 <FormControl>
-                  <Input disabled={isLoadingPage} placeholder="Place of birth" {...field} />
+                  <Input disabled={isLoadingPage} placeholder="Lugar de nacimiento" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -272,7 +272,7 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
             name="dniType"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>DNI Type</FormLabel>
+                <FormLabel>Tipo de documento</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -280,7 +280,7 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
                 >
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select DNI" />
+                      <SelectValue placeholder="Seleccionar tipo de documento" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -298,9 +298,9 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
             name="dniNumber"
             render={({ field }) => (
               <FormItem className="sm:col-span-2">
-                <FormLabel>DNI Number</FormLabel>
+                <FormLabel>Número de documento</FormLabel>
                 <FormControl>
-                  <Input disabled={isLoadingPage} placeholder="DNI Number" {...field} />
+                  <Input disabled={isLoadingPage} placeholder="Número de documento" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -311,7 +311,7 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
             name="BasicInformation.maritalStatus"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Civil Status</FormLabel>
+                <FormLabel>Estado civil</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -319,7 +319,7 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
                 >
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select Civil Status" />
+                      <SelectValue placeholder="Seleccionar estado civil" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -343,11 +343,11 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
             name="email"
             render={({ field }) => (
               <FormItem className="sm:col-span-2">
-                <FormLabel>Email</FormLabel>
+                <FormLabel>Correo electrónico</FormLabel>
                 <FormControl>
                   <Input
                     disabled={isLoadingPage}
-                    placeholder="Email"
+                    placeholder="Correo electrónico"
                     autoComplete="email"
                     {...field}
                   />
@@ -361,9 +361,9 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
             name="ContactInformation.address"
             render={({ field }) => (
               <FormItem className="sm:col-span-2">
-                <FormLabel>Address</FormLabel>
+                <FormLabel>Dirección</FormLabel>
                 <FormControl>
-                  <Input disabled={isLoadingPage} placeholder="Address" {...field} />
+                  <Input disabled={isLoadingPage} placeholder="Dirección" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -374,11 +374,11 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
             name="ContactInformation.phone1"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Phone</FormLabel>
+                <FormLabel>Teléfono</FormLabel>
                 <FormControl>
                   <Input
                     disabled={isLoadingPage}
-                    placeholder="Enter phone"
+                    placeholder="Teléfono"
                     {...field}
                     maxLength={10}
                   />
@@ -392,7 +392,7 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
             name="ContactInformation.phone2"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Phone 2</FormLabel>
+                <FormLabel>Teléfono 2</FormLabel>
                 <FormControl>
                   <Input
                     disabled={isLoadingPage}
@@ -410,11 +410,11 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
             name="BasicInformation.height"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Height</FormLabel>
+                <FormLabel>Altura</FormLabel>
                 <FormControl>
                   <Input
                     disabled={isLoadingPage}
-                    placeholder="Height"
+                    placeholder="Altura"
                     {...field}
                     endDecorator="cm"
                     maxLength={3}
@@ -429,14 +429,14 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
             name="BasicInformation.weight"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Weight</FormLabel>
+                <FormLabel>Peso</FormLabel>
                 <FormControl>
                   <Input
                     disabled={isLoadingPage}
-                    placeholder="Weight"
-                    {...field}
+                    placeholder="Peso"
                     endDecorator="kg"
                     maxLength={3}
+                    {...field}
                   />
                 </FormControl>
                 <FormMessage />
@@ -450,9 +450,9 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
           name="BasicInformation.occupation"
           render={({ field }) => (
             <FormItem className="sm:col-span-2">
-              <FormLabel>Occupation</FormLabel>
+              <FormLabel>Ocupación</FormLabel>
               <FormControl>
-                <Input disabled={isLoadingPage} placeholder="Occupation" {...field} />
+                <Input disabled={isLoadingPage} placeholder="Ocupación" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -466,7 +466,7 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
             render={({ field }) => (
               <FormItem className="flex flex-col justify-around">
                 <FormLabel className="h-[17px]" htmlFor="MedicalInformation.EPSActive">
-                  EPS Active
+                  ¿Tiene EPS activa?
                 </FormLabel>
                 <Switch
                   id="MedicalInformation.EPSActive"
@@ -489,9 +489,9 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
               name="MedicalInformation.EPSName"
               render={({ field }) => (
                 <FormItem className="sm:col-span-5 lg:col-span-2">
-                  <FormLabel>EPS Name</FormLabel>
+                  <FormLabel>Nombre de la EPS</FormLabel>
                   <FormControl>
-                    <Input disabled={isLoadingPage} placeholder="EPS Name" {...field} />
+                    <Input disabled={isLoadingPage} placeholder="Nombre de la EPS" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -505,7 +505,7 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
             render={({ field }) => (
               <FormItem className="flex flex-col justify-around">
                 <FormLabel className="h-[17px]" htmlFor="MedicalInformation.visitedDoctor">
-                  Visited a doctor
+                  ¿Ha visitado al médico recientemente?
                 </FormLabel>
                 <Switch
                   id="MedicalInformation.visitedDoctor"
@@ -528,7 +528,7 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
               name="MedicalInformation.doctorType"
               render={({ field }) => (
                 <FormItem className="sm:col-span-5 lg:col-span-2">
-                  <FormLabel>Doctor type</FormLabel>
+                  <FormLabel>Tipo de médico</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
@@ -536,7 +536,7 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select Doctor type" />
+                        <SelectValue placeholder="Seleccionar tipo de médico" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -558,7 +558,7 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
             render={({ field }) => (
               <FormItem className="flex flex-col justify-around">
                 <FormLabel className="h-[17px]" htmlFor="MedicalInformation.inTreatment">
-                  In treatment
+                  ¿Se encuentra en tratamiento?
                 </FormLabel>
                 <Switch
                   id="MedicalInformation.inTreatment"
@@ -581,9 +581,9 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
               name="MedicalInformation.treatmentName"
               render={({ field }) => (
                 <FormItem className="sm:col-span-5 lg:col-span-2">
-                  <FormLabel>Treatment</FormLabel>
+                  <FormLabel>Tratamiento</FormLabel>
                   <FormControl>
-                    <Input disabled={isLoadingPage} placeholder="Treatment" {...field} />
+                    <Input disabled={isLoadingPage} placeholder="Tratamiento" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -597,7 +597,7 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
             render={({ field }) => (
               <FormItem className="flex flex-col justify-around">
                 <FormLabel className="h-[17px]" htmlFor="MedicalInformation.boneScan">
-                  Bone scan
+                  ¿Se ha realizado una radiografía?
                 </FormLabel>
                 <Switch
                   id="MedicalInformation.boneScan"
@@ -620,9 +620,9 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
               name="MedicalInformation.boneScanType"
               render={({ field }) => (
                 <FormItem className="sm:col-span-5 lg:col-span-2">
-                  <FormLabel>Bone scan type</FormLabel>
+                  <FormLabel>Tipo de radiografía</FormLabel>
                   <FormControl>
-                    <Input disabled={isLoadingPage} placeholder="Bone scan type" {...field} />
+                    <Input disabled={isLoadingPage} placeholder="Tipo de radiografía" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -632,7 +632,7 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
         </div>
 
         <div className="flex flex-col gap-4">
-          <h1 className="font-semibold">Emergency contact information</h1>
+          <h1 className="font-semibold">Contacto de emergencia</h1>
           <div className="h-[2px] bg-secondary"></div>
 
           <div className="gap-4 grid sm:grid-cols-4">
@@ -641,9 +641,9 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
               name="ContactInformation.emergencyContactName"
               render={({ field }) => (
                 <FormItem className="sm:col-span-2">
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Nombre completo</FormLabel>
                   <FormControl>
-                    <Input disabled={isLoadingPage} placeholder="Full name" {...field} />
+                    <Input disabled={isLoadingPage} placeholder="Nombre completo" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -654,11 +654,11 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
               name="ContactInformation.emergencyContactPhone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Phone</FormLabel>
+                  <FormLabel>Teléfono</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isLoadingPage}
-                      placeholder="Enter phone"
+                      placeholder="Teléfono"
                       {...field}
                       maxLength={10}
                     />
@@ -672,7 +672,7 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
               name="ContactInformation.emergencyContactPhone2"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Phone 2</FormLabel>
+                  <FormLabel>Teléfono 2</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isLoadingPage}
@@ -698,10 +698,10 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
               name="reasonForConsultation"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Reason for consultation</FormLabel>
+                  <FormLabel>Motivo de consulta</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Enter reason"
+                      placeholder="Ingrese el motivo de consulta"
                       className="resize-none"
                       {...field}
                       disabled={isLoadingPage}
@@ -716,10 +716,10 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
               name="currentIllness"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Current illness</FormLabel>
+                  <FormLabel>Enfermedad actual</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Enter current illness"
+                      placeholder="Ingrese la enfermedad actual"
                       className="resize-none"
                       {...field}
                       disabled={isLoadingPage}
@@ -761,10 +761,10 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
           onClick={cancelSubmit}
           disabled={isLoading}
         >
-          Cancel
+          Cancelar
         </Button>
         <Button type="submit" disabled={isLoading}>
-          Save information
+          Guardar información
           {isLoading && <Icons.Spinner className="ml-2 h-4 w-4 animate-spin" />}
         </Button>
       </form>

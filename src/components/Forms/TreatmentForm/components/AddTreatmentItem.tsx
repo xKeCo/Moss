@@ -65,21 +65,24 @@ export const AddTreatmentItem = ({
   const checkRequiredFields = () => {
     const requiredFields = isEvol
       ? [
-          { field: 'txEvolDesc', fieldName: 'evolution' },
-          { field: 'txEvolDoc', fieldName: 'evolution doctor' },
-          { field: 'txEvolDate', fieldName: 'evolution date' },
-          { field: 'txEvolPayment', fieldName: 'amount paid' },
+          { field: 'txEvolDesc', errorMessage: 'La descripción de la evolución del tratamiento' },
+          { field: 'txEvolDoc', errorMessage: 'El doctor de la evolución del tratamiento' },
+          { field: 'txEvolDate', errorMessage: 'La fecha de la evolución del tratamiento' },
+          {
+            field: 'txEvolPayment',
+            errorMessage: 'El valor pagado por la evolución del tratamiento',
+          },
         ]
       : [
-          { field: 'txActivity', fieldName: 'activity' },
-          { field: 'txETT', fieldName: 'estimated time of treatment' },
-          { field: 'txStartDate', fieldName: 'start date' },
-          { field: 'txPrice', fieldName: 'price' },
+          { field: 'txActivity', errorMessage: 'La actividad del tratamiento (descripción)' },
+          { field: 'txETT', errorMessage: 'El tiempo estimado de tratamiento' },
+          { field: 'txStartDate', errorMessage: 'La fecha de inicio del tratamiento' },
+          { field: 'txPrice', errorMessage: 'El precio del tratamiento' },
         ];
 
     for (const field of requiredFields) {
       if (!treatment[field.field]) {
-        toast.error(`Treatment ${field.fieldName} is required.`);
+        toast.error(`${field.errorMessage} es requerido.`);
         return false;
       }
     }
@@ -129,32 +132,34 @@ export const AddTreatmentItem = ({
       <DialogTrigger asChild>
         <Button type="button">
           <PlusIcon className="mr-2 h-4 w-4" />
-          {isEvol ? 'Add treatment evolution' : 'Add treatment plan'}
+          {isEvol ? 'Añadir evolución del tratamiento' : 'Añadir plan de tratamiento'}
         </Button>
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>
-            {isEvol ? 'Add a new treatment evolution' : 'Add a new treatment plan'}
+            {isEvol ? 'Añadir evolución del tratamiento' : 'Añadir plan de tratamiento'}
           </DialogTitle>
           <DialogDescription>
             {isEvol
-              ? 'Add a new treatment evolution to your patient.'
-              : 'Add a new treatment plan to your patient.'}
+              ? 'Añade una nueva evolución del tratamiento a tu paciente.'
+              : 'Añade un nuevo plan de tratamiento a tu paciente.'}
           </DialogDescription>
         </DialogHeader>
 
         <div className="grid gap-4">
           <div className="flex flex-col">
             <Label htmlFor={isEvol ? 'txEvolDesc' : 'txActivity'}>
-              {isEvol ? 'Treatment evolution description' : 'Treatment activity (Description)'}
+              {isEvol
+                ? 'Evolución del tratamiento (descripción)'
+                : 'Actividad del tratamiento (descripción)'}
             </Label>
 
             <Textarea
               id={isEvol ? 'txEvolDesc' : 'txActivity'}
               name={isEvol ? 'txEvolDesc' : 'txActivity'}
-              placeholder="tooth extraction, dental cleaning, etc."
+              placeholder="ej. Limpieza dental, extracción de muela, etc."
               value={isEvol ? treatment.txEvolDesc : treatment.txActivity}
               onChange={handleTreatmentEvolChange}
               rows={3}
@@ -163,16 +168,18 @@ export const AddTreatmentItem = ({
           </div>
 
           <div className="flex flex-col">
-            <Label htmlFor={isEvol ? '' : 'txETT'}>
-              {isEvol ? 'Treatment evolution doctor' : 'Estimated time of treatment'}
+            <Label htmlFor={isEvol ? 'txEvolDoc' : 'txETT'}>
+              {isEvol
+                ? 'Doctor de la evolución del tratamiento'
+                : 'Tiempo estimado de tratamiento (ETT)'}
             </Label>
 
             <div className="flex items-center gap-2 mt-2">
               {!isEvol && (
                 <Input
                   id="txETT"
-                  type="number"
                   min={0}
+                  maxLength={3}
                   name="txETT"
                   placeholder="ej. 12"
                   value={treatment.txETT}
@@ -191,25 +198,23 @@ export const AddTreatmentItem = ({
                 }}
               >
                 <SelectTrigger className={isEvol ? 'w-full' : 'w-[180px]'}>
-                  <SelectValue placeholder={isEvol ? 'Select a doctor' : 'Select a unit'} />
+                  <SelectValue
+                    placeholder={isEvol ? 'Seleccione un doctor' : 'Seleccione una unidad'}
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectLabel>{isEvol ? 'Doctors' : 'Time (Unit)'}</SelectLabel>
+                    <SelectLabel>{isEvol ? 'Doctores' : 'Tiempo (Unidad)'}</SelectLabel>
 
                     {isEvol ? (
-                      <>
-                        <SelectItem value="Dra. Sandra Peña">Dra. Sandra Peña</SelectItem>
-                        <SelectItem value="Dra. Paola Urbina">Dra. Paola Urbina</SelectItem>
-                        <SelectItem value="Dr. Kevin Collazos">Dr. Kevin Collazos</SelectItem>
-                      </>
+                      <SelectItem value="Dra. Sandra Peña">Dra. Sandra Peña</SelectItem>
                     ) : (
                       <>
-                        <SelectItem value="Years">Years</SelectItem>
-                        <SelectItem value="Months">Months</SelectItem>
-                        <SelectItem value="Days">Days</SelectItem>
-                        <SelectItem value="Hours">Hours</SelectItem>
-                        <SelectItem value="Minutes">Minutes</SelectItem>
+                        <SelectItem value="Years">Años</SelectItem>
+                        <SelectItem value="Months">Meses</SelectItem>
+                        <SelectItem value="Days">Dias</SelectItem>
+                        <SelectItem value="Hours">Horas</SelectItem>
+                        <SelectItem value="Minutes">Minutos</SelectItem>
                       </>
                     )}
                   </SelectGroup>
@@ -221,7 +226,7 @@ export const AddTreatmentItem = ({
 
         <div className="flex flex-col">
           <Label htmlFor={isEvol ? 'txEvolDate' : 'txStartDate'}>
-            {isEvol ? 'Treatment evolution date' : 'Treatment start date'}
+            {isEvol ? 'Fecha de realización de la evolución' : 'Fecha de inicio del tratamiento'}
           </Label>
 
           <Popover>
@@ -236,7 +241,7 @@ export const AddTreatmentItem = ({
                 )}
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
-                {selectedDate ? format(selectedDate, 'P') : <span>Pick a date</span>}
+                {selectedDate ? format(selectedDate, 'P') : <span>Selecciona una fecha</span>}
               </Button>
             </PopoverTrigger>
 
@@ -258,7 +263,7 @@ export const AddTreatmentItem = ({
 
         <div className="flex flex-col">
           <Label htmlFor={isEvol ? 'txEvolPayment' : 'txPrice'}>
-            {isEvol ? 'Treatment evolution amount paid' : 'Treatment price'} (COP)
+            {isEvol ? 'Valor pagado por la evolución' : 'Precio del tratamiento'} (COP)
           </Label>
 
           <Input
@@ -276,7 +281,7 @@ export const AddTreatmentItem = ({
 
         <DialogFooter>
           <Button type="button" onClick={addNew}>
-            Save changes
+            Guardar
           </Button>
         </DialogFooter>
       </DialogContent>
