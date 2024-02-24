@@ -67,7 +67,7 @@ export const PatientAlert = ({
     if (extraInformation && !(hasDisease || hasAllergies)) {
       return 'success_filled';
     }
-    return 'default';
+    return 'default_filled';
   };
 
   return (
@@ -102,7 +102,7 @@ export const PatientAlert = ({
         )}
 
         {extraInformation && !(hasDisease || hasAllergies) && (
-          <p>El paciente no tiene ninguna restricción.</p>
+          <>El paciente no tiene ninguna restricción.</>
         )}
 
         {!extraInformation && (

@@ -51,7 +51,7 @@ export default async function PatientInfoPage({ params }: Readonly<IPatientInfoP
         params={params}
       />
 
-      <div className="grid md:grid-cols-6 xl:grid-cols-8 xl:grid-rows-2 gap-4">
+      <div className="grid md:grid-cols-6 xl:grid-cols-8 gap-4">
         <PatientCard patientInfo={patientInfo!} />
         <PatientInformation patientInfo={patientInfo!} />
         <PatientTreatment

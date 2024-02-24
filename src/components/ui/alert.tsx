@@ -10,7 +10,7 @@ const alertVariants = cva(
       variant: {
         default: 'bg-background text-foreground',
         default_filled:
-          'bg-accent1 text-accent8 border-accent1 dark:bg-accent8 dark:text-accent1 dark:border-accent8',
+          'bg-white text-foreground dark:bg-zinc-900 dark:text-accent1 dark:border-[#29292f]',
         success:
           'text-blue-600 border-blue-600 [&>svg]:text-blue-600 dark:text-[#4ca8f9] dark:border-[#10233d] dark:[&>svg]:text-[#4ca8f9]',
         success_filled:

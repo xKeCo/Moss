@@ -37,12 +37,12 @@ export const WorkspaceSwitcher = ({ activeWorkspaceID }: { activeWorkspaceID: st
         >
           <SelectTrigger
             className={cn(
-              'flex items-center gap-2 [&>span]:line-clamp-1 [&>span]:flex [&>span]:w-full [&>span]:items-center [&>span]:gap-1 [&>span]:truncate [&_svg]:h-4 [&_svg]:w-4 [&_svg]:shrink-0'
+              'flex items-center gap-2 [&>span]:line-clamp-1 [&>span]:flex [&>span]:w-full [&>span]:items-center [&>span]:gap-1 [&>span]:truncate [&_svg]:h-4 [&_svg]:w-4 [&_svg]:shrink-0 dark:bg-zinc-900'
             )}
             aria-label="Select account"
           >
             <SelectValue placeholder="Select a workspace">
-              <span className="text-white bg-black px-[6px] ml-1 rounded font-semibold">
+              <span className="text-white bg-black dark:text-black dark:bg-white px-[6px] ml-1 rounded font-semibold">
                 {workspaces?.findIndex((workspace) => workspace.id === selectedWorkspace)! + 1}
               </span>
               <span className="text-sm ml-1 capitalize">

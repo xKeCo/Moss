@@ -50,7 +50,7 @@ export const PatientTreatment = ({
   ];
 
   return (
-    <div className="flex flex-col items-start justify-start col-span-4 md:col-span-3 lg:col-span-2 border rounded-2xl gap-3 w-full p-6 min-h-[274px]">
+    <div className="flex flex-col items-start justify-start col-span-4 md:col-span-3 lg:col-span-2 border rounded-2xl gap-3 w-full p-6 min-h-[274px] dark:border-[#29292f] dark:bg-zinc-900">
       {!treatmentInfo ? (
         <div className="flex items-center justify-center h-full">
           <h1 className="text-2xl text-center text-balance">
@@ -129,7 +129,7 @@ PatientTreatment.Skeleton = function PatientTreatmentSkeleton() {
   ];
 
   return (
-    <div className="flex flex-col items-start justify-start col-span-4 md:col-span-3 lg:col-span-2 border rounded-2xl gap-3 w-full p-6 min-h-[274px]">
+    <div className="flex flex-col items-start justify-start col-span-4 md:col-span-3 lg:col-span-2 border rounded-2xl gap-3 w-full p-6 min-h-[274px] dark:border-[#29292f] dark:bg-zinc-900">
       <Skeleton className="h-8 w-full" />
 
       <div className="flex flex-col w-full">

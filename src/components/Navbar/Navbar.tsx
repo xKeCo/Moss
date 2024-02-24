@@ -8,7 +8,7 @@ export const Navbar = async () => {
   const activeWorkspaceID = await getActiveWorkspace();
 
   return (
-    <div className="w-full p-4 px-8 border-b border-secondary flex items-center">
+    <div className="w-full p-4 px-8 border-b border-secondary flex items-center dark:bg-[#0e0e0f]">
       <div className="flex justify-start items-center gap-6">
         <Link className="w-9" href="/dashboard">
           <Image src="/logo.svg" alt="logo" width={100} height={100} />
