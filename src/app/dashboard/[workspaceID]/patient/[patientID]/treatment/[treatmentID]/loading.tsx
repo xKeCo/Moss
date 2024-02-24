@@ -9,12 +9,11 @@ export default function TreatmentInformationLoadingPage() {
 
       <div className="h-[2px] bg-secondary"></div>
 
-      <h1 className="text-xl xl:text-xl font-semibold mt-2">Odontogram</h1>
+      <h1 className="text-xl xl:text-xl font-semibold mt-2">Odontograma</h1>
 
       <OdontogramSkeleton />
 
       <div>
-        {/* <h1 className="text-xl xl:text-xl font-semibold mt-2">Basic information</h1> */}
         <Skeleton className="h-6 w-1/6 mt-2" />
 
         <div className="mt-4 mb-6">

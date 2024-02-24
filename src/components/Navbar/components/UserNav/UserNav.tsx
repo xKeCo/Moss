@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useTheme } from 'next-themes';
 import { signOut, useSession } from 'next-auth/react';
-import { GearIcon } from '@radix-ui/react-icons';
+// import { GearIcon } from '@radix-ui/react-icons';
 import {
   Button,
   Avatar,
@@ -19,7 +19,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
+  // DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui';
 import { cn } from '@/lib/utils';
@@ -38,18 +38,18 @@ export const UserNav = ({
     {
       label: 'Dashboard',
       href: '/dashboard',
-      // shortcut:  ,
+      shortcut: '',
     },
     // {
     //   label: 'Profile',
     //   href: `/profile/${session?.user?.username}`,
     //   shortcut: <PersonIcon className="h-[18px] w-[18px]" />,
     // },
-    {
-      label: 'Settings',
-      href: '/settings',
-      shortcut: <GearIcon className="h-[18px] w-[18px]" />,
-    },
+    // {
+    //   label: 'Settings',
+    //   href: '/settings',
+    //   shortcut: <GearIcon className="h-[18px] w-[18px]" />,
+    // },
   ];
 
   const onLogOut = () => {
@@ -68,9 +68,7 @@ export const UserNav = ({
             <p className="text-sm font-medium leading-none">
               {session?.user?.name ?? session?.user?.username}
             </p>
-            <p className="text-xs leading-none text-muted-foreground">
-              {session?.user?.email}
-            </p>
+            <p className="text-xs leading-none text-muted-foreground">{session?.user?.email}</p>
           </div>
         </div>
       )}
@@ -81,9 +79,7 @@ export const UserNav = ({
             <Button variant="ghost" className="relative h-9 w-9 rounded-full">
               <Avatar>
                 <AvatarImage src={session?.user?.photoURL} alt="@kevcollazos" />
-                <AvatarFallback>
-                  {session?.user?.username.charAt(0).toUpperCase()}
-                </AvatarFallback>
+                <AvatarFallback>{session?.user?.username.charAt(0).toUpperCase()}</AvatarFallback>
               </Avatar>
             </Button>
           </DropdownMenuTrigger>
@@ -93,9 +89,7 @@ export const UserNav = ({
                 <p className="text-sm font-medium leading-none">
                   {session?.user?.name ?? session?.user?.username}
                 </p>
-                <p className="text-xs leading-none text-muted-foreground">
-                  {session?.user?.email}
-                </p>
+                <p className="text-xs leading-none text-muted-foreground">{session?.user?.email}</p>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
@@ -111,7 +105,7 @@ export const UserNav = ({
             </DropdownMenuGroup>
 
             <DropdownMenuGroup className="flex justify-between items-center">
-              <DropdownMenuLabel className="font-normal">Theme</DropdownMenuLabel>
+              <DropdownMenuLabel className="font-normal">Tema</DropdownMenuLabel>
 
               <Select
                 onValueChange={(value) => {
@@ -120,20 +114,20 @@ export const UserNav = ({
                 value={theme}
               >
                 <SelectTrigger className="w-[90px] h-7">
-                  <SelectValue placeholder="Theme" />
+                  <SelectValue placeholder="Tema" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="light">Light</SelectItem>
-                  <SelectItem value="dark">Dark</SelectItem>
-                  <SelectItem value="system">System</SelectItem>
+                  <SelectItem value="light">Claro</SelectItem>
+                  <SelectItem value="dark">Oscuro</SelectItem>
+                  <SelectItem value="system">Sistema</SelectItem>
                 </SelectContent>
               </Select>
             </DropdownMenuGroup>
 
             <DropdownMenuSeparator className="my-2" />
             <DropdownMenuItem onClick={onLogOut}>
-              Log out
-              <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+              Cerrar sesión
+              {/* <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut> */}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

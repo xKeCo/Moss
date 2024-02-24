@@ -16,6 +16,7 @@ interface IInformationValues {
   value: string;
   colSpan?: number;
   show?: boolean;
+  className?: string;
 }
 
 interface IPatientInformationProps {
@@ -63,12 +64,14 @@ export const PatientInformation = ({ patientInfo }: IPatientInformationProps) =>
       label: 'EPS',
       value: patientInfo?.MedicalInformation?.EPSName?.toUpperCase()!,
       show: true,
+      className: 'uppercase',
     },
     {
       label: 'Dirección',
       value: patientInfo?.ContactInformation?.address!,
       show: true,
       colSpan: 2,
+      className: 'capitalize',
     },
     {
       label: 'Telefono',
@@ -90,6 +93,7 @@ export const PatientInformation = ({ patientInfo }: IPatientInformationProps) =>
       value: patientInfo?.ContactInformation?.emergencyContactName!,
       show: true,
       colSpan: 2,
+      className: 'capitalize',
     },
     {
       label: 'E. Telefono',
@@ -108,10 +112,21 @@ export const PatientInformation = ({ patientInfo }: IPatientInformationProps) =>
       {informationValues.map((value) => (
         <Fragment key={value.label}>
           {value.show && (
-            <PatientInfoItem label={value.label} value={value.value} colSpan={value.colSpan} />
+            <PatientInfoItem
+              label={value.label}
+              value={value.value}
+              colSpan={value.colSpan}
+              className={value.className}
+            />
           )}
         </Fragment>
       ))}
+      {/* <div className="flex flex-col gap-1 items-start justify-start">
+        <h1 className="text-sm font-medium text-muted-foreground">Toda la información</h1>
+        <Button type="button" className="w-full">
+          Ver más
+        </Button>
+      </div> */}
     </div>
   );
 };

@@ -130,12 +130,12 @@ export function AuthForm({ className, isRegister, ...props }: Readonly<UserAuthF
             <Image src="/logo.svg" alt="logo" width={100} height={100} />
           </div>
           <h1 className="text-2xl font-semibold tracking-tight">
-            {isRegister ? 'Create your Moss account' : 'Log In to Moss'}
+            {isRegister ? 'Crea una cuenta en Moss' : 'Inicia sesión en Moss'}
           </h1>
           <p className="text-sm text-muted-foreground">
             {isRegister
-              ? 'Enter your email below to create your account'
-              : 'Enter your credentials below to continue'}
+              ? 'Ingresa tus datos para crear una cuenta en Moss'
+              : 'Ingresa tus datos para iniciar sesión en Moss'}
           </p>
         </div>
 
@@ -147,9 +147,9 @@ export function AuthForm({ className, isRegister, ...props }: Readonly<UserAuthF
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>Correo electrónico</FormLabel>
                     <FormControl>
-                      <Input placeholder="Email" {...field} autoComplete="email" />
+                      <Input placeholder="Correo electrónico" {...field} autoComplete="email" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -161,9 +161,9 @@ export function AuthForm({ className, isRegister, ...props }: Readonly<UserAuthF
                   name="username"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Username</FormLabel>
+                      <FormLabel>Nombre de usuario</FormLabel>
                       <FormControl>
-                        <Input placeholder="Username" {...field} autoComplete="username" />
+                        <Input placeholder="Nombre de usuario" {...field} autoComplete="username" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -175,10 +175,10 @@ export function AuthForm({ className, isRegister, ...props }: Readonly<UserAuthF
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>Contraseña</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter password"
+                        placeholder="Contraseña"
                         {...field}
                         type="password"
                         autoComplete="current-password"
@@ -227,23 +227,23 @@ export function AuthForm({ className, isRegister, ...props }: Readonly<UserAuthF
         </div>
 
         <p className="text-sm text-muted-foreground">
-          {isRegister ? 'Already have an account? ' : 'Don’t have an account? '}
+          {isRegister ? 'Ya tienes una cuenta? ' : 'No tienes una cuenta? '}
           <Link
             href={isRegister ? '/login' : '/register'}
             className="underline underline-offset-4 hover:text-primary"
           >
-            {isRegister ? 'Login' : 'Register'}
+            {isRegister ? 'Iniciar sesión' : 'Crear una cuenta'}
           </Link>
         </p>
 
         <p className="text-center text-sm text-muted-foreground">
-          By clicking continue, you agree to our{' '}
+          Al hacer clic en continuar, aceptas nuestros{' '}
           <Link href="/terms" className="underline underline-offset-4 hover:text-primary">
-            Terms of Service
+            Términos de servicio
           </Link>{' '}
-          and{' '}
+          y{' '}
           <Link href="/privacy" className="underline underline-offset-4 hover:text-primary">
-            Privacy Policy
+            Política de privacidad
           </Link>
           .
         </p>

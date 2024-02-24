@@ -5,6 +5,7 @@ interface PatientInfoItemProps {
   value: string;
   colSpan?: number;
   loading?: boolean;
+  className?: string;
 }
 
 export const PatientInfoItem = ({
@@ -12,6 +13,7 @@ export const PatientInfoItem = ({
   value,
   colSpan = 1,
   loading,
+  className,
 }: PatientInfoItemProps) => {
   return (
     <div className={`flex flex-col gap-1 items-start justify-start col-span-${colSpan}`}>
@@ -23,7 +25,7 @@ export const PatientInfoItem = ({
       ) : (
         <>
           <h1 className="text-sm font-medium text-muted-foreground">{label}</h1>
-          <p>{value}</p>
+          <p className={className}>{value}</p>
         </>
       )}
     </div>
