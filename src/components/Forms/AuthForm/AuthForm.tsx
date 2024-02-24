@@ -190,7 +190,7 @@ export function AuthForm({ className, isRegister, ...props }: Readonly<UserAuthF
               />
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading && <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />}
-                {isRegister ? 'Create account' : 'Login'}
+                {isRegister ? 'Crear cuenta' : 'Iniciar sesión'}
               </Button>
             </form>
           </Form>

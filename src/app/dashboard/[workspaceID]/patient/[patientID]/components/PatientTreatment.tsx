@@ -61,7 +61,7 @@ export const PatientTreatment = ({
         </div>
       ) : (
         <>
-          <h1 className="text-2xl font-semibold">Treatment</h1>
+          <h1 className="text-xl font-semibold">Tratamiento actual</h1>
           <div className="flex flex-col w-full">
             <div className="grid grid-cols-2 gap-y-3 gap-x-2 w-full">
               {treatmentInformation.map(({ label, colSpan, value }) => (
