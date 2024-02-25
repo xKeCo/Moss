@@ -229,7 +229,8 @@ export const HealthForm = ({
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>
-                    Alergias <span className="text-xs text-gray-400">(Separado por comas)</span>
+                    Alergias{' '}
+                    <span className="text-xs text-muted-foreground">(Separado por comas)</span>
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -269,7 +270,8 @@ export const HealthForm = ({
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>
-                    Medicamentos <span className="text-xs text-gray-400">(Separado por comas)</span>
+                    Medicamentos{' '}
+                    <span className="text-xs text-muted-foreground">(Separado por comas)</span>
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -459,7 +461,7 @@ export const HealthForm = ({
         <div>
           <h1 className="font-semibold">
             Inspección por sistemas{' '}
-            <span className="text-xs text-gray-400">
+            <span className="text-xs text-muted-foreground">
               (Solo se escribe lo más relevante. Ej. Anormalidades, tamaño, etc.)
             </span>
           </h1>
@@ -473,7 +475,7 @@ export const HealthForm = ({
             render={({ field }) => (
               <FormItem className="sm:col-span-2">
                 <FormLabel>
-                  Faneras <span className="text-xs text-gray-400">(Pelo, uñas, etc.)</span>
+                  Faneras <span className="text-xs text-muted-foreground">(Pelo, uñas, etc.)</span>
                 </FormLabel>
                 <FormControl>
                   <Textarea

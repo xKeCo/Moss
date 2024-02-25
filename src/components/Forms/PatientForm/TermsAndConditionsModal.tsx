@@ -133,7 +133,7 @@ export const TermsAndConditionsModal = ({
         <DialogFooter className="mt-4">
           <DialogClose asChild>
             <Button type="button" variant="secondary">
-              Close
+              Cerrar
             </Button>
           </DialogClose>
         </DialogFooter>

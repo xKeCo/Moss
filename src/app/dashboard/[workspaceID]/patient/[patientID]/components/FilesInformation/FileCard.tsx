@@ -1,5 +1,11 @@
 import { EyeOpenIcon, FileIcon, ImageIcon, PinBottomIcon, TrashIcon } from '@radix-ui/react-icons';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui';
+import {
+  Skeleton,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui';
 
 export interface IFileProps {
   name: string;
@@ -47,6 +53,28 @@ export const FileCard = ({ file }: { file: IFileProps }) => {
             </Tooltip>
           </TooltipProvider>
         ))}
+      </div>
+    </div>
+  );
+};
+
+FileCard.Skeleton = function FileCardSkeleton() {
+  return (
+    <div className="flex items-center justify-between gap-2 w-full">
+      <div className="flex items-center justify-start gap-2 overflow-hidden w-full">
+        {/* <div className="h-4 w-4 bg-zinc-400 rounded-md" /> */}
+        {/* <div className="h-4 w-24 bg-zinc-400 rounded-md" /> */}
+        <Skeleton className="h-4 w-4" />
+        <Skeleton className="h-5 w-full" />
+      </div>
+
+      <div className="flex items-center justify-between gap-2">
+        {/* <div className="h-4 w-4 bg-zinc-400 rounded-md" /> */}
+        {/* <div className="h-4 w-4 bg-zinc-400 rounded-md" /> */}
+        {/* <div className="h-4 w-4 bg-zinc-400 rounded-md" /> */}
+        <Skeleton className="h-4 w-4" />
+        <Skeleton className="h-4 w-4" />
+        <Skeleton className="h-4 w-4" />
       </div>
     </div>
   );

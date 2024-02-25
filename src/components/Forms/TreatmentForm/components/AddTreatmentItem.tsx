@@ -136,7 +136,7 @@ export const AddTreatmentItem = ({
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] dark:bg-zinc-900">
         <DialogHeader>
           <DialogTitle>
             {isEvol ? 'Añadir evolución del tratamiento' : 'Añadir plan de tratamiento'}

@@ -37,7 +37,7 @@ export const TreatmentItem = ({
   };
 
   return (
-    <Alert className="flex flex-col">
+    <Alert className="flex flex-col dark:bg-zinc-900">
       <div className="flex justify-between items-center mb-2">
         <h1 className="text-sm font-semibold mb-1">
           {isEvol ? 'Evolución' : 'Tratamiento'} #{index + 1}
@@ -85,7 +85,7 @@ export const TreatmentItem = ({
 
 TreatmentItem.Skeleton = function TreatmentItemSkeleton() {
   return (
-    <Alert className="flex flex-col">
+    <Alert className="flex flex-col dark:bg-zinc-900">
       <div className="flex justify-between items-center mb-3">
         <Skeleton className="h-6 w-2/6" />
 
