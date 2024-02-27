@@ -1,48 +1,103 @@
 'use server';
-import { PutObjectCommand } from '@aws-sdk/client-s3';
+import { DeleteObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
 import { v4 as uuid } from 'uuid';
 import { endpoint, s3Client } from '@/lib/s3Client';
+import prisma from '@/lib/prisma';
 
-export const uploadFiles = async (formData: FormData) => {
-  const files = formData.getAll('files');
+interface FileUploadResult {
+  ok: boolean;
+  name: string;
+  url?: string;
+  extension?: string;
+  size?: number;
+  type?: string;
+  ETag?: string;
+}
 
-  if (!files) return;
+const getFileExtension = (fileName: string): string => fileName.split('.').pop() ?? '';
 
-  const filesArray = Array.from(files);
+const createFileRecord = async (
+  file: File,
+  fileKey: string,
+  ETag: string,
+  patientId: string
+): Promise<void> => {
+  await prisma.files.create({
+    data: {
+      name: file.name,
+      url: `${endpoint}/${process.env.DO_BUCKET_NAME}/${fileKey}`,
+      extension: getFileExtension(file.name),
+      size: file.size,
+      type: file.type,
+      ETag: ETag,
+      patientId,
+    },
+  });
+};
 
-  const filesPromises = filesArray.map(async (file: any) => {
+const deleteFileFromS3 = async (fileKey: string): Promise<void> => {
+  await s3Client.send(
+    new DeleteObjectCommand({
+      Bucket: process.env.DO_BUCKET_NAME!,
+      Key: fileKey,
+    })
+  );
+};
+
+const uploadFileToS3 = async (file: File, patientId: string): Promise<FileUploadResult> => {
+  try {
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+    const fileExtension = getFileExtension(file.name);
+    const fileKey = `${uuid()}.${fileExtension}`;
+
+    const uploadResult = await s3Client.send(
+      new PutObjectCommand({
+        Bucket: process.env.DO_BUCKET_NAME!,
+        Key: fileKey,
+        Body: buffer,
+        ACL: 'public-read',
+      })
+    );
+
     try {
-      const bytes = await file.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-      const fileExtension = file.name.split('.').pop();
-      const fileKey = `${uuid()}.${fileExtension}`;
-
-      const uploadResult = await s3Client.send(
-        new PutObjectCommand({
-          // Bucket: 'mossdental',
-          Bucket: process.env.DO_BUCKET_NAME!,
-          Key: fileKey,
-          Body: buffer,
-          ACL: 'public-read',
-        })
-      );
-
-      return {
-        ok: true,
-        name: file.name,
-        url: `${endpoint}/${process.env.DO_BUCKET_NAME}/${fileKey}`,
-        ETag: uploadResult.ETag,
-      };
+      await createFileRecord(file, fileKey, uploadResult.ETag!, patientId);
     } catch (error) {
+      console.log('prisma error', error);
+      await deleteFileFromS3(fileKey);
       return {
         ok: false,
         name: file.name,
-        error,
       };
     }
-  });
 
-  const uploadedFiles = await Promise.all(filesPromises);
+    return {
+      ok: true,
+      name: file.name,
+      url: `${endpoint}/${process.env.DO_BUCKET_NAME}/${fileKey}`,
+      extension: fileExtension,
+      size: file.size,
+      type: file.type,
+      ETag: uploadResult.ETag,
+    };
+  } catch (error) {
+    console.log('s3 error', error);
+    return {
+      ok: false,
+      name: file.name,
+    };
+  }
+};
 
-  return uploadedFiles;
+export const uploadFiles = async (
+  formData: FormData,
+  patientId: string
+): Promise<FileUploadResult[]> => {
+  const files = formData.getAll('files') as File[];
+
+  if (!files.length) return [];
+
+  const filesPromises = files.map((file) => uploadFileToS3(file, patientId));
+
+  return await Promise.all(filesPromises);
 };

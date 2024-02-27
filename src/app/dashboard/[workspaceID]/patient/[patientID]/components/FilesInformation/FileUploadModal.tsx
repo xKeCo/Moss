@@ -17,7 +17,14 @@ import { uploadFiles } from '@/actions';
 import { Icons } from '@/components';
 import { toast } from 'sonner';
 
-export const FileUploadModal = () => {
+interface IFileUploadModalProps {
+  params: {
+    workspaceID: string;
+    patientID: string;
+  };
+}
+
+export const FileUploadModal = ({ params }: IFileUploadModalProps) => {
   const [filesUpload, setFilesUpload] = useState<File[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
@@ -57,13 +64,11 @@ export const FileUploadModal = () => {
 
     setLoading(true);
 
-    const fileRes = await uploadFiles(formData);
-
-    console.log('fileRes', fileRes);
+    const fileRes = await uploadFiles(formData, params.patientID);
 
     setLoading(false);
 
-    fileRes!.forEach((file) => {
+    fileRes.forEach((file) => {
       if (file.ok) {
         toast.success(`Archivo ${file.name} subido correctamente`);
       } else {

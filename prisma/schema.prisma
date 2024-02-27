@@ -335,6 +335,22 @@ model Workspace {
   updatedAt DateTime @updatedAt
 }
 
+model Files {
+  id           String   @id @default(uuid())
+  ETag         String
+  name         String
+  extension    String
+  url          String
+  type         String
+  size         Int
+
+  Patient      Patient @relation(fields: [patientId], references: [dniNumber])
+  patientId    String
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
 model Patient {
   id                    String     @id     @default(uuid())
   name                  String
@@ -352,6 +368,7 @@ model Patient {
   MedicalInformation    MedicalInformation?
   Treatment             Treatment?         
   HealthInformation     HealthInformation?
+  Files                 Files[]
 
   termsAndConditions    Boolean            @default(true)
   hasExtraInfo          Boolean            @default(false)   
@@ -441,7 +458,7 @@ model Treatment {
   patientId           String            @unique
   InitialOdontogram   InitialOdontogram?
   RealTxPlan          RealTxPlan[]
-  TxEvolutions         TxEvolution[]
+  TxEvolutions        TxEvolution[]
 
   totalPrice          Float              @default(0)
   totalPaid           Float              @default(0)
