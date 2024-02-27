@@ -8,3 +8,4 @@ export * from './patients/patientsByWorkspace';
 export * from './treatments/createTreatment';
 export * from './treatments/updateTreatment';
 export * from './treatments/treatmentByPatients';
+export * from './files/uploadFiles';

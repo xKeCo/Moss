@@ -30,9 +30,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           </ThemeProvider>
         </Providers>
         <Toaster
-          toastOptions={{
-            style: { background: '#18222d', color: '#fff', borderColor: '#18222d' },
-          }}
+          richColors
+          // toastOptions={{
+          //   style: { background: '#18222d', color: '#fff', borderColor: '#18222d' },
+          // }}
         />
       </body>
     </html>
