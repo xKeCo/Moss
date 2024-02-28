@@ -1,4 +1,5 @@
 export * from './formatBloodType';
+export * from './formatByte';
 export * from './formatCurrency';
 export * from './formatDate';
 export * from './formatDniType';

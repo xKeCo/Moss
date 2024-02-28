@@ -13,7 +13,6 @@ export const FileDeleteButton = ({ fileId }: { fileId: string }) => {
   const router = useRouter();
 
   const handleDelete = async () => {
-    console.log(fileId);
     setLoading(true);
 
     const deletedFile = await deleteFiles(fileId);

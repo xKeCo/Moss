@@ -132,7 +132,7 @@ export const FileUploadModal = ({ params }: IFileUploadModalProps) => {
             </div>
           ))}
 
-          <DialogFooter className="mt-4">
+          <DialogFooter className="mt-4 flex flex-row justify-end gap-2 sm:gap-0">
             <DialogClose asChild>
               <Button type="button" variant="secondary" onClick={() => setFilesUpload([])}>
                 Cancelar
