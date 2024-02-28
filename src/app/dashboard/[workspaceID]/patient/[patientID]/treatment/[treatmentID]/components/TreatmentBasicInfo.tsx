@@ -153,7 +153,7 @@ export const TreatmentBasicInfo = ({
     <div className="space-y-6">
       {treatmentsAndEvolutionsItems.map(({ id, title, array, isEvol, modalInformation }) => (
         <div key={id}>
-          <div className="flex justify-between mb-3">
+          <div className="flex flex-col mb-3 gap-2 sm:flex-row sm:justify-between">
             <h1 className="text-xl xl:text-xl font-semibold">{title}</h1>
 
             <AddTreatmentItem

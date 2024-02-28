@@ -11,14 +11,15 @@ interface IDashboardProps {
 export default function Dashboard({ params }: Readonly<IDashboardProps>) {
   return (
     <main className="py-5 px-8">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-4xl font-semibold">Dashboard</h1>
-        <Link href={`/dashboard/${params.workspaceID}/patient/new`}>
-          <Button className="text-sm">
+
+        <Button className="text-sm" asChild>
+          <Link href={`/dashboard/${params.workspaceID}/patient/new`}>
             <Icons.Add className="mr-2 h-4 w-4" />
             Añadir paciente
-          </Button>
-        </Link>
+          </Link>
+        </Button>
       </div>
 
       <div className="mt-8 space-y-4">

@@ -39,13 +39,13 @@ export default async function TreatmentInformation({
       ) : (
         <>
           <div className="flex items-center justify-start gap-4 mb-3">
-            <Button size="icon" asChild>
+            <Button size="icon" asChild className="min-w-9">
               <Link href={`/dashboard/${params.workspaceID}/patient/${params.patientID}`}>
                 <ChevronLeftIcon className="h-5 w-5" />
               </Link>
             </Button>
 
-            <h1 className="text-2xl xl:text-3xl font-semibold flex items-center">
+            <h1 className="text-2xl xl:text-3xl font-semibold truncate">
               {treatmentInfo?.Patient?.name} - Información del tratamiento
             </h1>
           </div>
@@ -54,7 +54,9 @@ export default async function TreatmentInformation({
 
           <h1 className="text-xl xl:text-xl font-semibold mt-2">Odontograma</h1>
 
-          <Odontogram odontogramState={treatmentInfo?.InitialOdontogram?.Tooth!} readOnly />
+          <div className="overflow-x-auto">
+            <Odontogram odontogramState={treatmentInfo?.InitialOdontogram?.Tooth!} readOnly />
+          </div>
 
           <div>
             <h1 className="text-xl xl:text-xl font-semibold mt-2">

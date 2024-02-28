@@ -23,24 +23,6 @@ export default async function PatientInfoPage({ params }: Readonly<IPatientInfoP
     { name: patientInfo?.name ?? 'Loading..' },
   ];
 
-  const filesInformation = [
-    {
-      name: 'Achivo 1 aisdnasljkdal asdiasdjbnas dbnasidjbn asidbnklsajdbnlasjkdjkasbdkasbjkdb a sddsasd',
-      extension: 'pdf',
-      size: '1.2MB',
-    },
-    {
-      name: 'Achivo 2 ',
-      extension: 'png',
-      size: '1.2MB',
-    },
-    {
-      name: 'Achivo 3 aisdnasljkdal ',
-      extension: 'jpg',
-      size: '1.2MB',
-    },
-  ];
-
   return (
     <div className="py-5 px-8 flex flex-col gap-4">
       <Breadcrumb values={breadcrumbValues} />

@@ -33,7 +33,7 @@ export const FilesViewAll = ({ files }: IFilesViewAllProps) => {
         </DialogHeader>
 
         <ScrollArea className="max-h-96 flex">
-          <div className="flex flex-col justify-start items-start gap-2 w-full pr-2">
+          <div className="flex flex-col justify-start items-start gap-2 w-full pr-4">
             {files.map((file) => (
               <>
                 <FileCard file={file} key={file.id} />
