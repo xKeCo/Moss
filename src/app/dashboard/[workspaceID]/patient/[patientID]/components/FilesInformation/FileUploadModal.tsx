@@ -1,5 +1,6 @@
 'use client';
 import { FormEvent, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { EyeOpenIcon, PinTopIcon, TrashIcon } from '@radix-ui/react-icons';
 import {
   Button,
@@ -29,6 +30,8 @@ export const FileUploadModal = ({ params }: IFileUploadModalProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const fileInput = useRef<HTMLInputElement>(null);
+
+  const router = useRouter();
 
   const onFileInputChange = async (e: FormEvent<HTMLInputElement>) => {
     const { files } = e.currentTarget;
@@ -78,6 +81,8 @@ export const FileUploadModal = ({ params }: IFileUploadModalProps) => {
 
     setFilesUpload([]);
     setOpen(false);
+
+    router.refresh();
   };
 
   return (

@@ -12,6 +12,7 @@ interface FileUploadResult {
   size?: number;
   type?: string;
   ETag?: string;
+  fileKey?: string;
 }
 
 const getFileExtension = (fileName: string): string => fileName.split('.').pop() ?? '';
@@ -30,6 +31,7 @@ const createFileRecord = async (
       size: file.size,
       type: file.type,
       ETag: ETag,
+      fileKey,
       patientId,
     },
   });
@@ -79,6 +81,7 @@ const uploadFileToS3 = async (file: File, patientId: string): Promise<FileUpload
       size: file.size,
       type: file.type,
       ETag: uploadResult.ETag,
+      fileKey,
     };
   } catch (error) {
     console.log('s3 error', error);

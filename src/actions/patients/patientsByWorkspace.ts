@@ -72,6 +72,7 @@ export const getPatientById = async (patientId: string) => {
             OralSystemReview: true,
           },
         },
+        Files: true,
         Treatment: true,
       },
     });

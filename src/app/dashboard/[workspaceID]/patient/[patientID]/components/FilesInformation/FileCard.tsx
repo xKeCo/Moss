@@ -6,19 +6,28 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui';
+import { FileDeleteButton } from './FileDeleteButton';
 
 export interface IFileProps {
+  id: string;
   name: string;
   extension: string;
-  size: string;
+  size: number;
+  ETag: string;
+  url: string;
+  type: string;
+  fileKey: string;
+  patientId: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export const FileCard = ({ file }: { file: IFileProps }) => {
   const filesActions = [
-    {
-      name: 'Ver documento',
-      icon: <EyeOpenIcon className="h-4 w-4 cursor-pointer" />,
-    },
+    // {
+    //   name: 'Ver documento',
+    //   icon: <EyeOpenIcon className="h-4 w-4 cursor-pointer" />,
+    // },
     {
       name: 'Descargar documento',
       icon: <PinBottomIcon className="h-4 w-4 cursor-pointer" />,
@@ -41,18 +50,22 @@ export const FileCard = ({ file }: { file: IFileProps }) => {
       </div>
 
       <div className="flex items-center justify-between gap-2">
-        {filesActions.map((action) => (
-          <TooltipProvider key={action.name}>
-            <Tooltip delayDuration={350}>
-              <TooltipTrigger asChild>
-                <div className="hover:text-muted-foreground transition-colors">{action.icon}</div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{action.name}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        ))}
+        <TooltipProvider>
+          <Tooltip delayDuration={350}>
+            <TooltipTrigger asChild>
+              <a href={file.url}>
+                <div className="hover:text-muted-foreground transition-colors">
+                  <PinBottomIcon className="h-4 w-4 cursor-pointer" />
+                </div>
+              </a>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Descargar documento</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+
+        <FileDeleteButton fileId={file.id} />
       </div>
     </div>
   );

@@ -343,6 +343,7 @@ model Files {
   url          String
   type         String
   size         Int
+  fileKey      String
 
   Patient      Patient @relation(fields: [patientId], references: [dniNumber])
   patientId    String
