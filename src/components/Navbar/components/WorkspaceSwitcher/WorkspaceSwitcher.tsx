@@ -19,7 +19,7 @@ export const WorkspaceSwitcher = ({ activeWorkspaceID }: { activeWorkspaceID: st
   const workspaces = session?.user?.workspaces;
 
   const [selectedWorkspace, setSelectedWorkspace] = useState<string>(
-    activeWorkspaceID || workspaces?.[0]?.id!
+    activeWorkspaceID ?? workspaces?.[0]?.id!
   );
 
   return (
