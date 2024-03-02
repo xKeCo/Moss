@@ -27,16 +27,20 @@ import {
   Textarea,
 } from '@/components/ui';
 import { cn } from '@/lib/utils';
+import type { IRealTxPlan, ITxEvolution } from '@/interfaces';
 
 interface IAddTreatmentItemProps {
   openModal: boolean;
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
   treatment: any;
-  treatments: any[];
+  treatments: ITxEvolution[] | IRealTxPlan[];
   setTreatment: React.Dispatch<React.SetStateAction<any>>;
-  setTreatments: React.Dispatch<React.SetStateAction<any[]>>;
+  setTreatments:
+    | React.Dispatch<React.SetStateAction<IRealTxPlan[]>>
+    | React.Dispatch<React.SetStateAction<ITxEvolution[]>>;
+
   isEvol: boolean;
-  initialTreatment: any;
+  initialTreatment: IRealTxPlan | ITxEvolution;
 }
 
 export const AddTreatmentItem = ({
@@ -127,6 +131,7 @@ export const AddTreatmentItem = ({
       open={openModal}
       onOpenChange={(openModal) => {
         setOpenModal(openModal);
+        setTreatment(initialTreatment);
       }}
     >
       <DialogTrigger asChild>
