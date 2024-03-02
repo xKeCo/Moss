@@ -74,6 +74,7 @@ export default async function TreatmentInformation({
               </div>
             </div>
           </div>
+
           <TreatmentBasicInfo treatmentInfo={treatmentInfo!} params={params} />
         </>
       )}

@@ -88,7 +88,7 @@ export const TreatmentBasicInfo = ({
       treatmentsPlan.length !== treatmentInfo?.RealTxPlan?.length ||
       treatmentsEvolutions.length !== treatmentInfo?.TxEvolutions?.length
     ) {
-      await navigate(`/dashboard/${params?.workspaceID}/patient/${params?.patientID}`);
+      navigate(`/dashboard/${params?.workspaceID}/patient/${params?.patientID}`);
       return;
     }
 
@@ -128,6 +128,7 @@ export const TreatmentBasicInfo = ({
       setTreatmentsPlan(updatedTreatment?.RealTxPlan!);
       setTreatmentsEvolutions(updatedTreatment?.TxEvolutions!);
 
+      navigate(`/dashboard/${params?.workspaceID}/patient/${params?.patientID}`);
       toast.success('Tratamiento actualizado correctamente.');
     }
   };

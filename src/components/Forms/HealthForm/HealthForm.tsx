@@ -132,7 +132,7 @@ export const HealthForm = ({
       return toast.error(healtInfo?.errorMessage);
     }
 
-    await navigate(cancelUrl);
+    navigate(cancelUrl);
     toast.success('Información guardada con éxito!');
     form.reset();
   }

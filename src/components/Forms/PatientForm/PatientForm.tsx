@@ -98,7 +98,7 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
       return toast.error(patient?.errorMessage);
     }
 
-    await navigate(`/dashboard`);
+    navigate(`/dashboard`);
     toast.success('Paciente creado correctamente.');
     form.reset();
   }

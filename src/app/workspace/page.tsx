@@ -82,7 +82,7 @@ export default function WorkspacePage() {
     });
 
     toast.success('Workspace created successfully!');
-    await navigate(`/dashboard/${newWorkspace.workspace?.id}`);
+    navigate(`/dashboard/${newWorkspace.workspace?.id}`);
     form.reset();
   }
 

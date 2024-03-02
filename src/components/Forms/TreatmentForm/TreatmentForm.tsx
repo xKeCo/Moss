@@ -162,7 +162,7 @@ export const TreatmentForm = ({ odontogramState, workspaceID, patientID }: ITrea
       return;
     }
 
-    await navigate(`/dashboard/${workspaceID}/patient/${patientID}`);
+    navigate(`/dashboard/${workspaceID}/patient/${patientID}`);
 
     toast.success('Tratamiento creado con éxito.');
   }

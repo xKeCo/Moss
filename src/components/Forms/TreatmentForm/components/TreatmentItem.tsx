@@ -2,16 +2,19 @@ import { Pencil2Icon, TrashIcon } from '@radix-ui/react-icons';
 import { Alert, Button, Skeleton } from '@/components/ui';
 import { formatCurrency, formatDate } from '@/helpers';
 import { cn } from '@/lib/utils';
+import type { IRealTxPlan, ITxEvolution } from '@/interfaces';
 
 interface ITretmentItemProps {
   item: any;
   index: number;
+  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
   treatments: any[];
   setTreatment: React.Dispatch<React.SetStateAction<any>>;
-  setTreatments: React.Dispatch<React.SetStateAction<any[]>>;
-  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setTreatments:
+    | React.Dispatch<React.SetStateAction<IRealTxPlan[]>>
+    | React.Dispatch<React.SetStateAction<ITxEvolution[]>>;
   isEvol: boolean;
-  initialTreatment: any;
+  initialTreatment: IRealTxPlan | ITxEvolution;
 }
 
 export const TreatmentItem = ({
