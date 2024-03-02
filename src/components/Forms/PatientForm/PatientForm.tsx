@@ -462,6 +462,11 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
           )}
         />
 
+        <div className="flex flex-col gap-4">
+          <h1 className="font-semibold">Información médica basica</h1>
+          <div className="h-[2px] bg-secondary"></div>
+        </div>
+
         <div className="gap-4 grid sm:grid-cols-2 lg:grid-cols-4">
           <div className="flex flex-col gap-3">
             <FormField
