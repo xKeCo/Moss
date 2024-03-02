@@ -2,25 +2,25 @@ import { z } from 'zod';
 import { format } from 'date-fns';
 
 export const patientFormSchema = z.object({
-  name: z.string().min(5, {
-    message: 'Name must be at least 5 characters.',
+  name: z.string().min(4, {
+    message: 'Nombre completo debe tener al menos 4 caracteres.',
   }),
   dniType: z.enum(['CC', 'TI', 'O']).refine((val) => val, 'DNI type is required'),
   dniNumber: z.string().min(8, {
-    message: 'DNI number must be at least 8 characters.',
+    message: 'El número de documento debe tener al menos 8 caracteres.',
   }),
   email: z.string().email({
-    message: 'Email must be a valid email.',
+    message: 'Email inválido.',
   }),
-  reasonForConsultation: z.string().min(5, {
-    message: 'Reason for consultation must be at least 5 characters.',
+  reasonForConsultation: z.string().min(4, {
+    message: 'Motivo de consulta  debe tener al menos 4 caracteres.',
   }),
-  currentIllness: z.string().min(5, {
-    message: 'Current illness must be at least 5 characters.',
+  currentIllness: z.string().min(4, {
+    message: 'Enfermedad actual debe tener al menos 4 caracteres.',
   }),
 
   BasicInformation: z.object({
-    gender: z.enum(['M', 'F', 'O']).refine((val) => val, 'Gender is required'),
+    gender: z.enum(['M', 'F', 'O']).refine((val) => val, 'Género es requerido'),
     bloodType: z
       .enum([
         'O_POSITIVE',
@@ -32,54 +32,54 @@ export const patientFormSchema = z.object({
         'AB_POSITIVE',
         'AB_NEGATIVE',
       ])
-      .refine((val) => val, 'Blood type is required'),
+      .refine((val) => val, 'Tipo de sangre es requerido'),
     birthDate: z
       .date({
-        required_error: 'Birth date is required.',
+        required_error: 'Fecha de nacimiento es requerida.',
       })
       .refine((val) => format(val, 'P') !== format(new Date(), 'P'), {
-        message: 'Birth date cannot be today.',
+        message: 'Fecha de nacimiento no puede ser hoy.',
       }),
-    birthPlace: z.string().min(5, {
-      message: 'Birth place must be at least 5 characters.',
+    birthPlace: z.string().min(4, {
+      message: 'Lugar de nacimiento debe tener al menos 4 caracteres.',
     }),
     height: z.string().min(1, {
-      message: 'Height is required.',
+      message: 'Altura es requerida.',
     }),
     weight: z.string().min(1, {
-      message: 'Weight is required.',
+      message: 'Peso es requerido.',
     }),
     maritalStatus: z
       .enum(['S', 'U', 'C', 'V', 'D', 'M'])
       .refine((val) => val, 'Civil status is required'),
-    occupation: z.string().min(5, {
-      message: 'Occupation must be at least 5 characters.',
+    occupation: z.string().min(4, {
+      message: 'Ocupación debe tener al menos 4 caracteres.',
     }),
   }),
 
   ContactInformation: z
     .object({
-      address: z.string().min(5, {
-        message: 'Address must be at least 5 characters.',
+      address: z.string().min(4, {
+        message: 'Dirección debe tener al menos 4 caracteres.',
       }),
       phone1: z.string().min(10, {
-        message: 'Phone must be 10 characters.',
+        message: 'Teléfono debe tener al menos 10 caracteres.',
       }),
       phone2: z.string().optional(),
-      emergencyContactName: z.string().min(5, {
-        message: 'Emergency contact name must be at least 5 characters.',
+      emergencyContactName: z.string().min(4, {
+        message: 'Nombre de contacto de emergencia debe tener al menos 4 caracteres.',
       }),
       emergencyContactPhone: z.string().min(10, {
-        message: 'Emergency contact phone must be 10 characters.',
+        message: 'Teléfono de contacto de emergencia debe tener al menos 10 caracteres.',
       }),
       emergencyContactPhone2: z.string().optional(),
     })
     .refine((data) => data.phone1 !== data.phone2, {
-      message: 'Phone 2 cannot be equal to phone 1.',
+      message: 'Teléfono 2 no puede ser igual a teléfono.',
       path: ['phone2'],
     })
     .refine((data) => data.emergencyContactPhone !== data.emergencyContactPhone2, {
-      message: 'Emergency contact phone 2 cannot be equal to emergency contact phone 1.',
+      message: 'Teléfono 2 no puede ser igual a teléfono de contacto de emergencia.',
       path: ['emergencyContactPhone2'],
     }),
 
@@ -102,7 +102,7 @@ export const patientFormSchema = z.object({
         return true;
       },
       {
-        message: 'EPS name is required if EPS is active.',
+        message: 'Nombre de la EPS es requerido si tiene EPS activa.',
         path: ['EPSName'],
       }
     )
@@ -114,7 +114,7 @@ export const patientFormSchema = z.object({
         return true;
       },
       {
-        message: 'Doctor type is required if visited doctor is true.',
+        message: 'Tipo de doctor es requerido si ha visitado un doctor.',
         path: ['doctorType'],
       }
     )
@@ -126,7 +126,7 @@ export const patientFormSchema = z.object({
         return true;
       },
       {
-        message: 'Treatment is required if in treatment is true.',
+        message: 'Nombre del tratamiento es requerido si está en tratamiento.',
         path: ['treatment'],
       }
     )
@@ -138,12 +138,12 @@ export const patientFormSchema = z.object({
         return true;
       },
       {
-        message: 'Bone scan type is required if bone scan is true.',
+        message: 'Tipo de radiografía es requerido si se ha realizado una radiografía.',
         path: ['boneScanType'],
       }
     ),
 
   termsAndConditions: z.boolean().refine((val) => val === true, {
-    message: 'You must accept the terms and conditions.',
+    message: 'Debes aceptar los términos y condiciones.',
   }),
 });

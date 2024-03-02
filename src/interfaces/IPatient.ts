@@ -1,4 +1,4 @@
-import { ITreatment } from '.';
+import { IFile, ITreatment } from '.';
 
 export interface IPatient {
   id?: string;
@@ -20,7 +20,8 @@ export interface IPatient {
   ContactInformation: IContactInformation | null;
   MedicalInformation: IMedicalInformation | null;
   Treatment: ITreatment | null;
-  healthInformation?: IHealthInformation | null;
+  HealthInformation: IHealthInformation | null;
+  Files: IFile[] | null;
 }
 
 export interface IBasicInformation {
@@ -75,13 +76,14 @@ export interface IMedicalInformation {
 }
 
 export interface IHealthInformation {
-  systemReview: ISystemReview;
-  familyBackground: IFamilyBackground;
-  personalBackground: IPersonalBackground;
-  oralSystemReview: IOralSystemReview;
+  SystemReview?: ISystemReview | null;
+  FamilyBackground?: IFamilyBackground | null;
+  PersonalBackground?: IPersonalBackground | null;
+  OralSystemReview?: IOralSystemReview | null;
 }
 
 export interface ISystemReview {
+  id?: string;
   head: string;
   neck: string;
   genitourinary: string;
@@ -94,9 +96,13 @@ export interface ISystemReview {
   stomological: string;
   gastrointestinal: string;
   circulatory: string;
+  HealthInformationId?: string;
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
 }
 
 export interface IFamilyBackground {
+  id?: string;
   diabetes: boolean;
   familyDiabetes?: string | null;
   cancer: boolean;
@@ -109,9 +115,13 @@ export interface IFamilyBackground {
   familyHypertension?: string | null;
   others: boolean;
   familyOthers?: string | null;
+  HealthInformationId?: string;
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
 }
 
 export interface IPersonalBackground {
+  id?: string;
   allergies: string[];
   medications: string[];
   habits: string;
@@ -127,9 +137,13 @@ export interface IPersonalBackground {
   hypertension: boolean;
   others: boolean;
   othersDescription?: string | null;
+  HealthInformationId?: string;
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
 }
 
 export interface IOralSystemReview {
+  id?: string;
   faneras: string;
   oralCavity: string;
   teeth: string;
@@ -145,6 +159,9 @@ export interface IOralSystemReview {
   rightLaterality: string;
   protrusion: string;
   jointSounds: string;
+  HealthInformationId?: string;
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
 }
 
 export interface IPatientCard {

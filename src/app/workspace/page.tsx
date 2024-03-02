@@ -60,7 +60,7 @@ export default function WorkspacePage() {
       if (newWorkspace?.error === 'workspaceExists') {
         form.setError('workspaceName', {
           type: 'manual',
-          message: 'Workspace name already exists. Please try another one.',
+          message: 'Un workspace con ese nombre ya existe. Por favor selecciona otro nombre.',
         });
       }
 
@@ -89,7 +89,10 @@ export default function WorkspacePage() {
   return (
     <div className="flex justify-center items-center h-screen">
       {status === 'loading' ? (
-        <div className=" py-2 px-4 text-sm fixed top-6 left-4 md:left-12">Loading...</div>
+        <div className="flex items-center justify-start gap-2 py-2 px-4 text-sm fixed top-6 left-4 md:left-12">
+          <Icons.Spinner className="h-5 w-5 animate-spin" />
+          Cargando...
+        </div>
       ) : (
         <Button
           variant="link"
@@ -97,20 +100,21 @@ export default function WorkspacePage() {
           asChild={alreadyHasWorkspace}
           onClick={onLogOut}
         >
-          {alreadyHasWorkspace ? <Link href="/dashboard">Go to dashboard</Link> : 'Log out'}
+          {alreadyHasWorkspace ? <Link href="/dashboard">Ir al dashboard</Link> : 'Log out'}
         </Button>
       )}
 
       <div className="fixed top-6 right-4 md:right-12 px-4 py-2">
-        <p className="text-xs text-muted-foreground mb-2">Logged in as:</p>
+        <p className="text-xs text-muted-foreground mb-2">Iniciaste sesión como:</p>
         <UserNav isDropdown={false} />
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Create a new workspace</CardTitle>
-          <CardDescription>
-            Workspaces are where your team communicates and collaborates.
+          <CardTitle>Crea un nueva sucursal</CardTitle>
+          <CardDescription className="max-w-lg">
+            Las sucursales son espacios de trabajo independientes para organizar todo lo relacionado
+            con tu pacientes.
           </CardDescription>
         </CardHeader>
 
@@ -122,7 +126,7 @@ export default function WorkspacePage() {
                 name="workspaceName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="workspaceName">Workspace name</FormLabel>
+                    <FormLabel htmlFor="workspaceName">Nombre de la sucursal</FormLabel>
                     <FormControl>
                       <Input id="workspaceName" autoFocus autoComplete="off" {...field} />
                     </FormControl>
@@ -135,7 +139,7 @@ export default function WorkspacePage() {
             <CardFooter className="flex justify-between">
               <Button type="submit">
                 {isLoading && <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />}
-                Create workspace
+                Crear sucursal
               </Button>
             </CardFooter>
           </form>

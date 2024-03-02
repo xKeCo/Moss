@@ -527,7 +527,7 @@ export const HealthForm = ({
               <FormItem>
                 <FormLabel>Color de dientes</FormLabel>
                 <FormControl>
-                  <Input placeholder="Ej. Amarillo" disabled={isLoadingPage} {...field} />
+                  <Input placeholder="Ej. A1" disabled={isLoadingPage} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

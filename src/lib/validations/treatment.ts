@@ -3,18 +3,18 @@ import { z } from 'zod';
 export const treatmentFormSchema = z.object({
   diagnosis: z
     .string()
-    .min(5, {
-      message: 'Diagnosis must be at least 5 characters.',
+    .min(4, {
+      message: 'Diagnóstico debe tener al menos 4 caracteres.',
     })
     .max(100, {
-      message: 'Diagnosis must be at most 100 characters.',
+      message: 'Diagnóstico debe tener como máximo 100 caracteres.',
     }),
   prognosis: z
     .string()
-    .min(5, {
-      message: 'Prognosis must be at least 5 characters.',
+    .min(4, {
+      message: 'Pronóstico debe tener al menos 4 caracteres.',
     })
     .max(100, {
-      message: 'Prognosis must be at most 100 characters.',
+      message: 'Pronóstico debe tener como máximo 100 caracteres.',
     }),
 });

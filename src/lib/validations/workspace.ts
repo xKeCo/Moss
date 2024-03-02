@@ -2,6 +2,6 @@ import { z } from 'zod';
 
 export const workspaceFormSchema = z.object({
   workspaceName: z.string().min(5, {
-    message: 'Workspace name must be at least 5 characters long.',
+    message: 'El nombre del workspace debe tener al menos 5 caracteres',
   }),
 });

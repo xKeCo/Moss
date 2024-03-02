@@ -3,40 +3,40 @@ import { z } from 'zod';
 export const HealthFormSchema = z.object({
   SystemReview: z.object({
     head: z.string().min(4, {
-      message: 'Head review must be at least 4 characters.',
+      message: 'Revision de cabeza debe tener al menos 4 caracteres.',
     }),
     neck: z.string().min(4, {
-      message: 'Neck review must be at least 4 characters.',
+      message: 'Revision de cuello debe tener al menos 4 caracteres.',
     }),
     genitourinary: z.string().min(4, {
-      message: 'Genitourinary review must be at least 4 characters.',
+      message: 'Revision genitourinaria debe tener al menos 4 caracteres.',
     }),
     eyes: z.string().min(4, {
-      message: 'Eyes review must be at least 4 characters.',
+      message: 'Revision de ojos debe tener al menos 4 caracteres.',
     }),
     cardiovascular: z.string().min(4, {
-      message: 'Cardiovascular review must be at least 4 characters.',
+      message: 'Revision cardiovascular debe tener al menos 4 caracteres.',
     }),
     locomotor: z.string().min(4, {
-      message: 'Locomotor review must be at least 4 characters.',
+      message: 'Revision locomotora debe tener al menos 4 caracteres.',
     }),
     ORL: z.string().min(4, {
-      message: 'ORL review must be at least 4 characters.',
+      message: 'Revision de ORL debe tener al menos 4 caracteres.',
     }),
     respiratory: z.string().min(4, {
-      message: 'Respiratory review must be at least 4 characters.',
+      message: 'Revision respiratoria debe tener al menos 4 caracteres.',
     }),
     skin: z.string().min(4, {
-      message: 'Skin review must be at least 4 characters.',
+      message: 'Revision de piel debe tener al menos 4 caracteres.',
     }),
     stomological: z.string().min(4, {
-      message: 'Stomological review must be at least 4 characters.',
+      message: 'Revision estomológica debe tener al menos 4 caracteres.',
     }),
     gastrointestinal: z.string().min(4, {
-      message: 'Gastrointestinal review must be at least 4 characters.',
+      message: 'Revision gastrointestinal debe tener al menos 4 caracteres.',
     }),
     circulatory: z.string().min(4, {
-      message: 'Circulatory review must be at least 4 characters.',
+      message: 'Revision circulatoria debe tener al menos 4 caracteres.',
     }),
   }),
 
@@ -63,7 +63,7 @@ export const HealthFormSchema = z.object({
         return true;
       },
       {
-        message: 'Family diabetes description is required if diabetes is true.',
+        message: 'La descripción familiar es requerida si diabetes es verdadero.',
         path: ['familyDiabetes'],
       }
     )
@@ -75,7 +75,7 @@ export const HealthFormSchema = z.object({
         return true;
       },
       {
-        message: 'Family cancer description is required if diabetes is true.',
+        message: 'La descripción familiar es requerida si cancer es verdadero.',
         path: ['familyCancer'],
       }
     )
@@ -87,7 +87,7 @@ export const HealthFormSchema = z.object({
         return true;
       },
       {
-        message: 'Family leukemia description is required if diabetes is true.',
+        message: 'La descripción familiar es requerida si leucemia es verdadero.',
         path: ['familyLeukemia'],
       }
     )
@@ -99,7 +99,7 @@ export const HealthFormSchema = z.object({
         return true;
       },
       {
-        message: 'Family heart disease description is required if diabetes is true.',
+        message: 'La descripción familiar es requerida si enfermedad cardiaca es verdadero.',
         path: ['familyHeartDisease'],
       }
     )
@@ -111,7 +111,7 @@ export const HealthFormSchema = z.object({
         return true;
       },
       {
-        message: 'Family hypertension description is required if diabetes is true.',
+        message: 'La descripción familiar es requerida si hipertensión es verdadero.',
         path: ['familyHypertension'],
       }
     )
@@ -123,7 +123,7 @@ export const HealthFormSchema = z.object({
         return true;
       },
       {
-        message: 'Family others description is required if others is true.',
+        message: 'La descripción familiar es requerida si otros es verdadero.',
         path: ['familyOthers'],
       }
     ),
@@ -133,7 +133,7 @@ export const HealthFormSchema = z.object({
       allergies: z.string(),
       medications: z.string(),
       habits: z.string().min(4, {
-        message: 'Habits must be at least 4 characters.',
+        message: 'Hábitos debe tener al menos 4 caracteres.',
       }),
       habitsDescription: z.string().optional(),
 
@@ -158,7 +158,7 @@ export const HealthFormSchema = z.object({
         return true;
       },
       {
-        message: 'Habits description is required if habits is "Otros".',
+        message: 'La descripción de hábitos es requerida si hábitos es "otros".',
         path: ['habitsDescription'],
       }
     )
@@ -170,7 +170,7 @@ export const HealthFormSchema = z.object({
         return true;
       },
       {
-        message: 'Surgeries description is required if surgeries option is true.',
+        message: 'La descripción de cirugías es requerida si cirugías es verdadero.',
         path: ['surgeriesDescription'],
       }
     )
@@ -182,17 +182,17 @@ export const HealthFormSchema = z.object({
         return true;
       },
       {
-        message: 'Others description is required if others option is true.',
+        message: 'La descripción de otros es requerida si otros es verdadero.',
         path: ['othersDescription'],
       }
     ),
 
   OralSystemReview: z.object({
     faneras: z.string().min(4, {
-      message: 'Faneras must be at least 4 characters.',
+      message: 'Faneras debe tener al menos 4 caracteres.',
     }),
     oralCavity: z.string().min(4, {
-      message: 'Oral cavity must be at least 4 characters.',
+      message: 'Cavidad oral debe tener al menos 4 caracteres.',
     }),
     teeth: z.enum([
       'Temporales',
@@ -279,8 +279,8 @@ export const HealthFormSchema = z.object({
       'EnGrupo',
       'BilateralBalanceada',
     ]),
-    teethColor: z.string().min(4, {
-      message: 'Teeth color must be at least 4 characters.',
+    teethColor: z.string().min(2, {
+      message: 'Color de dientes debe tener al menos 2 caracteres.',
     }),
     painThreshold: z.enum([
       'Normal',
@@ -292,16 +292,16 @@ export const HealthFormSchema = z.object({
       'Bajo',
     ]),
     maxMandibularOpening: z.string().min(1, {
-      message: 'Max mandibular opening must be at least 1 characters.',
+      message: 'Max. mandibular debe tener al menos 1 caracter.',
     }),
     leftLaterality: z.string().min(1, {
-      message: 'Left laterality must be at least 1 characters.',
+      message: 'Lateridad izquierda debe tener al menos 1 caracter.',
     }),
     rightLaterality: z.string().min(1, {
-      message: 'Right laterality must be at least 1 characters.',
+      message: 'Lateridad derecha debe tener al menos 1 caracter.',
     }),
     protrusion: z.string().min(1, {
-      message: 'Protrusion must be at least 1 characters.',
+      message: 'Protrusión debe tener al menos 1 caracter.',
     }),
     jointSounds: z.enum(['SinAlteraciones', 'Click', 'Brinco', 'Crepitacion']),
   }),

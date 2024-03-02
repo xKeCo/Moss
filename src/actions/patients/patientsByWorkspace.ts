@@ -1,4 +1,5 @@
 'use server';
+import { IPatient } from '@/interfaces';
 import prisma from '@/lib/prisma';
 
 export const getPatientsByWorkspace = async (workspaceId: string) => {
