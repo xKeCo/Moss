@@ -27,7 +27,6 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-  Switch,
   Checkbox,
   Textarea,
 } from '@/components/ui';
@@ -109,25 +108,28 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
     router.push(`/dashboard`);
   };
 
-  const clearEPSNameValue = (EPSActive: boolean) => {
+  const clearEPSNameValue = (EPSActive: string | boolean) => {
     if (!EPSActive) {
       form.setValue('MedicalInformation.EPSName', 'NO TIENE EPS');
+      return;
     }
+
+    form.setValue('MedicalInformation.EPSName', '');
   };
 
-  const clearDoctorTypeValue = (visitedDoctor: boolean) => {
+  const clearDoctorTypeValue = (visitedDoctor: string | boolean) => {
     if (!visitedDoctor) {
       form.setValue('MedicalInformation.doctorType', undefined);
     }
   };
 
-  const clearTreatmentValue = (inTreatment: boolean) => {
+  const clearTreatmentValue = (inTreatment: string | boolean) => {
     if (!inTreatment) {
       form.setValue('MedicalInformation.treatmentName', '');
     }
   };
 
-  const clearBoneScanTypeValue = (boneScan: boolean) => {
+  const clearBoneScanTypeValue = (boneScan: string | boolean) => {
     if (!boneScan) {
       form.setValue('MedicalInformation.boneScanType', '');
     }
@@ -214,59 +216,7 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
           />
         </div>
 
-        <div className="gap-4 grid sm:grid-cols-4 lg:grid-cols-8">
-          <FormField
-            control={form.control}
-            name="BasicInformation.birthDate"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel className="h-[17px] mt-[6px]">Fecha de nacimiento</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button variant={'outline'} disabled={isLoadingPage}>
-                        {field.value ? format(field.value, 'P') : <span>Seleccione una fecha</span>}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      required
-                      selected={field.value}
-                      onSelect={(date) => {
-                        field.onChange(date);
-                        setAge(new Date().getFullYear() - date!.getFullYear());
-                      }}
-                      disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
-                      initialFocus
-                      captionLayout="dropdown"
-                      fromYear={1900}
-                      toYear={new Date().getFullYear()}
-                    />
-                  </PopoverContent>
-                </Popover>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <Input disabled placeholder="Edad" value={age} endDecorator="años" />
-
-          <FormField
-            control={form.control}
-            name="BasicInformation.birthPlace"
-            render={({ field }) => (
-              <FormItem className="sm:col-span-2">
-                <FormLabel>Lugar de nacimiento</FormLabel>
-                <FormControl>
-                  <Input disabled={isLoadingPage} placeholder="Lugar de nacimiento" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <div className="gap-4 grid sm:grid-cols-4 xl:grid-cols-8">
           <FormField
             control={form.control}
             name="dniType"
@@ -331,6 +281,59 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
                     <SelectItem value="M">Menor de edad</SelectItem>
                   </SelectContent>
                 </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="BasicInformation.birthDate"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel className="h-[17px] mt-[6px]">F. de nacimiento</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button variant={'outline'} disabled={isLoadingPage}>
+                        {field.value ? format(field.value, 'P') : <span>Seleccione una fecha</span>}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      required
+                      selected={field.value}
+                      onSelect={(date) => {
+                        field.onChange(date);
+                        setAge(new Date().getFullYear() - date!.getFullYear());
+                      }}
+                      disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
+                      initialFocus
+                      captionLayout="dropdown"
+                      fromYear={1900}
+                      toYear={new Date().getFullYear()}
+                    />
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <Input disabled placeholder="Edad" value={age} endDecorator="años" />
+
+          <FormField
+            control={form.control}
+            name="BasicInformation.birthPlace"
+            render={({ field }) => (
+              <FormItem className="sm:col-span-2">
+                <FormLabel>Lugar de nacimiento</FormLabel>
+                <FormControl>
+                  <Input disabled={isLoadingPage} placeholder="Lugar de nacimiento" {...field} />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
@@ -459,80 +462,81 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
           )}
         />
 
-        <div className="gap-4 grid sm:grid-cols-6 lg:grid-cols-6">
-          <FormField
-            control={form.control}
-            name="MedicalInformation.EPSActive"
-            render={({ field }) => (
-              <FormItem className="flex flex-col justify-around">
-                <FormLabel className="h-[17px]" htmlFor="MedicalInformation.EPSActive">
-                  ¿Tiene EPS activa?
-                </FormLabel>
-                <Switch
-                  id="MedicalInformation.EPSActive"
-                  checked={field.value}
-                  onCheckedChange={(value: boolean) => {
-                    field.onChange(value);
-                    clearEPSNameValue(value);
-                  }}
-                  className="mt-2 flex items-end"
-                  disabled={isLoadingPage}
-                />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {form.watch('MedicalInformation.EPSActive') && (
+        <div className="gap-4 grid sm:grid-cols-2 lg:grid-cols-4">
+          <div className="flex flex-col gap-3">
+            <FormField
+              control={form.control}
+              name="MedicalInformation.EPSActive"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center space-x-3 space-y-0 rounded-md">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={(value) => {
+                        field.onChange(value);
+                        clearEPSNameValue(value);
+                      }}
+                      id="MedicalInformation.EPSActive"
+                      disabled={isLoadingPage}
+                    />
+                  </FormControl>
+                  <FormLabel className="font-normal" htmlFor="MedicalInformation.EPSActive">
+                    ¿Tiene EPS activa?
+                  </FormLabel>
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="MedicalInformation.EPSName"
               render={({ field }) => (
-                <FormItem className="sm:col-span-5 lg:col-span-2">
-                  <FormLabel>Nombre de la EPS</FormLabel>
+                <FormItem>
                   <FormControl>
-                    <Input disabled={isLoadingPage} placeholder="Nombre de la EPS" {...field} />
+                    <Input
+                      placeholder="Nombre de la EPS"
+                      disabled={isLoadingPage || !form.watch('MedicalInformation.EPSActive')}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-          )}
+          </div>
 
-          <FormField
-            control={form.control}
-            name="MedicalInformation.visitedDoctor"
-            render={({ field }) => (
-              <FormItem className="flex flex-col justify-around">
-                <FormLabel className="h-[17px]" htmlFor="MedicalInformation.visitedDoctor">
-                  ¿Ha visitado al médico recientemente?
-                </FormLabel>
-                <Switch
-                  id="MedicalInformation.visitedDoctor"
-                  checked={field.value}
-                  onCheckedChange={(doctorType: boolean) => {
-                    field.onChange(doctorType);
-                    clearDoctorTypeValue(doctorType);
-                  }}
-                  className="mt-2 flex items-end"
-                  disabled={isLoadingPage}
-                />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="flex flex-col gap-3">
+            <FormField
+              control={form.control}
+              name="MedicalInformation.visitedDoctor"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center space-x-3 space-y-0 rounded-md">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={(value) => {
+                        field.onChange(value);
+                        clearDoctorTypeValue(value);
+                      }}
+                      id="MedicalInformation.visitedDoctor"
+                      disabled={isLoadingPage}
+                    />
+                  </FormControl>
+                  <FormLabel className="font-normal" htmlFor="MedicalInformation.visitedDoctor">
+                    ¿Ha visitado al médico recientemente?
+                  </FormLabel>
+                </FormItem>
+              )}
+            />
 
-          {form.watch('MedicalInformation.visitedDoctor') && (
             <FormField
               control={form.control}
               name="MedicalInformation.doctorType"
               render={({ field }) => (
-                <FormItem className="sm:col-span-5 lg:col-span-2">
-                  <FormLabel>Tipo de médico</FormLabel>
+                <FormItem>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
-                    disabled={isLoadingPage}
+                    disabled={isLoadingPage || !form.watch('MedicalInformation.visitedDoctor')}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -548,87 +552,89 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
                 </FormItem>
               )}
             />
-          )}
-        </div>
+          </div>
 
-        <div className="gap-4 grid sm:grid-cols-6 lg:grid-cols-6">
-          <FormField
-            control={form.control}
-            name="MedicalInformation.inTreatment"
-            render={({ field }) => (
-              <FormItem className="flex flex-col justify-around">
-                <FormLabel className="h-[17px]" htmlFor="MedicalInformation.inTreatment">
-                  ¿Se encuentra en tratamiento?
-                </FormLabel>
-                <Switch
-                  id="MedicalInformation.inTreatment"
-                  checked={field.value}
-                  onCheckedChange={(inTreatment: boolean) => {
-                    field.onChange(inTreatment);
-                    clearTreatmentValue(inTreatment);
-                  }}
-                  className="mt-2 flex items-end"
-                  disabled={isLoadingPage}
-                />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {form.watch('MedicalInformation.inTreatment') && (
+          <div className="flex flex-col gap-3">
+            <FormField
+              control={form.control}
+              name="MedicalInformation.inTreatment"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center space-x-3 space-y-0 rounded-md">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={(value) => {
+                        field.onChange(value);
+                        clearTreatmentValue(value);
+                      }}
+                      id="MedicalInformation.inTreatment"
+                      disabled={isLoadingPage}
+                    />
+                  </FormControl>
+                  <FormLabel className="font-normal" htmlFor="MedicalInformation.inTreatment">
+                    ¿Se encuentra en tratamiento?
+                  </FormLabel>
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="MedicalInformation.treatmentName"
               render={({ field }) => (
-                <FormItem className="sm:col-span-5 lg:col-span-2">
-                  <FormLabel>Tratamiento</FormLabel>
+                <FormItem>
                   <FormControl>
-                    <Input disabled={isLoadingPage} placeholder="Tratamiento" {...field} />
+                    <Input
+                      placeholder="Nombre del tratamiento"
+                      disabled={isLoadingPage || !form.watch('MedicalInformation.inTreatment')}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-          )}
+          </div>
 
-          <FormField
-            control={form.control}
-            name="MedicalInformation.boneScan"
-            render={({ field }) => (
-              <FormItem className="flex flex-col justify-around">
-                <FormLabel className="h-[17px]" htmlFor="MedicalInformation.boneScan">
-                  ¿Se ha realizado una radiografía?
-                </FormLabel>
-                <Switch
-                  id="MedicalInformation.boneScan"
-                  checked={field.value}
-                  onCheckedChange={(boneScan: boolean) => {
-                    field.onChange(boneScan);
-                    clearBoneScanTypeValue(boneScan);
-                  }}
-                  className="mt-2 flex items-end"
-                  disabled={isLoadingPage}
-                />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {form.watch('MedicalInformation.boneScan') && (
+          <div className="flex flex-col gap-3">
+            <FormField
+              control={form.control}
+              name="MedicalInformation.boneScan"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center space-x-3 space-y-0 rounded-md">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={(value) => {
+                        field.onChange(value);
+                        clearBoneScanTypeValue(value);
+                      }}
+                      id="MedicalInformation.boneScan"
+                      disabled={isLoadingPage}
+                    />
+                  </FormControl>
+                  <FormLabel className="font-normal" htmlFor="MedicalInformation.boneScan">
+                    ¿Se ha realizado una radiografía?
+                  </FormLabel>
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="MedicalInformation.boneScanType"
               render={({ field }) => (
-                <FormItem className="sm:col-span-5 lg:col-span-2">
-                  <FormLabel>Tipo de radiografía</FormLabel>
+                <FormItem>
                   <FormControl>
-                    <Input disabled={isLoadingPage} placeholder="Tipo de radiografía" {...field} />
+                    <Input
+                      placeholder="Tipo de radiografía"
+                      disabled={isLoadingPage || !form.watch('MedicalInformation.boneScan')}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-          )}
+          </div>
         </div>
 
         <div className="flex flex-col gap-4">
