@@ -126,9 +126,9 @@ export function AuthForm({ className, isRegister, ...props }: Readonly<UserAuthF
     <div className="px-8">
       <div className="mx-auto flex w-full h-screen flex-col justify-center space-y-6 sm:w-[370px]">
         <div className="flex flex-col space-y-2 text-center">
-          <div className="flex justify-center items-center w-full mb-4">
+          <Link href="/" className="flex justify-center items-center w-full mb-4">
             <Image src="/logo1.svg" alt="logo1" width={100} height={100} />
-          </div>
+          </Link>
           <h1 className="text-2xl font-semibold tracking-tight">
             {isRegister ? 'Crea una cuenta en Moss' : 'Inicia sesión en Moss'}
           </h1>
