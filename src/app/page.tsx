@@ -36,12 +36,12 @@ export default function Home() {
 
   return (
     <>
-      <nav className="fixed top-0 w-full backdrop-blur-sm px-8">
+      <nav className="fixed top-0 w-full backdrop-blur-sm px-4 md:px-8">
         <section className="flex items-center justify-between py-4 h-20 max-w-6xl mx-auto">
           <Image src={logoImage} alt="logo1" width={100} />
 
           <div className="flex items-center justify-start gap-2">
-            <Button className="rounded-full" variant="ghost" asChild>
+            <Button className="hidden sm:inline-flex rounded-full" variant="ghost" asChild>
               <Link href="/login">Iniciar sesión</Link>
             </Button>
             <Button className="rounded-full bg-logo hover:bg-logo/80" asChild>
@@ -54,31 +54,35 @@ export default function Home() {
         </section>
       </nav>
 
-      <main className="max-w-6xl mx-auto px-8 pt-20">
+      <main className="max-w-6xl mx-auto px-4 md:px-8 pt-20">
         <section className="flex flex-col items-center justify-center text-center text-pretty gap-4 mt-16">
-          <h1 className="text-6xl font-medium mb-8 animate-fade-in-down">
+          <h1 className="text-5xl md:text-6xl font-medium mb-8 animate-fade-in-down">
             Moss es la nueva forma de llevar historias clínicas digitales.
           </h1>
 
-          <h2 className="text-2xl text-muted-foreground max-w-4xl mb-12 animate-fade-in-down delay-300">
+          <h2 className="text-xl md:text-2xl text-muted-foreground max-w-4xl mb-12 animate-fade-in-down delay-300">
             Conozca el nuevo estándar en historias clínicas digitales, diseñado para ayudar a los
             profesionales de la salud a brindar una mejor atención.
           </h2>
 
-          <Button className="rounded-full bg-logo hover:bg-logo/80 text-base" size="lg" asChild>
-            <Link href="/register">Registrate gratis</Link>
+          <Button
+            className="rounded-full bg-logo hover:bg-logo/80 text-base animate-fade-in-down delay-500"
+            size="lg"
+            asChild
+          >
+            <Link href="/register">Empieza gratis</Link>
           </Button>
         </section>
 
-        <section className="mt-24">
-          <Image src={mainImage} alt="Demo dashboard image" priority className="" />
+        <section className="mt-24 animate-inclined-fade-in-down delay-500">
+          <Image src={mainImage} alt="Demo dashboard image" priority />
         </section>
       </main>
 
       <div className="h-px bg-[#e4e4e7] mt-32"></div>
 
-      <footer className="w-full px-8">
-        <section className="grid grid-cols-[1.5fr_1fr_1fr_1fr] gap-8 min-h-40 py-16 max-w-6xl mx-auto">
+      <footer className="w-full px-4 md:px-8">
+        <section className="grid sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr] gap-8 min-h-40 py-16 max-w-6xl mx-auto">
           <section className="flex flex-col items-start justify-start gap-6">
             <Image src={logoImage} alt="logo1" width={100} />
 
