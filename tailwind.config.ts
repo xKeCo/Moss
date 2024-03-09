@@ -88,11 +88,23 @@ module.exports = {
             transform: 'translateY(0)',
           },
         },
+        'inclined-fade-in-down': {
+          '0%': {
+            opacity: '0',
+            transform: 'translateY(-100px) rotate(-5deg)',
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateY(0) rotate(0)',
+          },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'fade-in-down': 'fade-in-down 1000ms ease 0s 1 normal backwards running',
+        'inclined-fade-in-down':
+          'inclined-fade-in-down 1000ms ease 0.2s 1 normal backwards running',
       },
       transitionProperty: {
         width: 'width',
