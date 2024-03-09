@@ -1,4 +1,4 @@
-export const formatMaritalStatus = (status: string) => {
+export const formatMaritalStatus = (status?: string | null) => {
   switch (status) {
     case 'S':
       return 'Soltero';

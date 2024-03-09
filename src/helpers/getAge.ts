@@ -1,4 +1,4 @@
-export const getAge = (dateString: string) => {
+export const getAge = (dateString?: string | Date | null) => {
   if (!dateString) {
     return 'N/A';
   }

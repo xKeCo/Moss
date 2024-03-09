@@ -1,8 +1,5 @@
 'use client';
-import Link from 'next/link';
-import { ChevronLeftIcon } from '@radix-ui/react-icons';
-import { Odontogram, TreatmentForm } from '@/components';
-import { Button } from '@/components/ui';
+import { HeaderSectionTitle, Odontogram, TreatmentForm } from '@/components';
 import type { IToothState } from '@/interfaces';
 
 interface INewTreatmentPageProps {
@@ -17,17 +14,11 @@ export default function NewTreatmentPage({ params }: Readonly<INewTreatmentPageP
 
   return (
     <>
-      <div className="flex items-center justify-start gap-4 mb-3">
-        <Button size="icon" asChild>
-          <Link href={`/dashboard/${params.workspaceID}/patient/${params.patientID}`}>
-            <ChevronLeftIcon className="h-5 w-5" />
-          </Link>
-        </Button>
+      <HeaderSectionTitle
+        href={`/dashboard/${params.workspaceID}/patient/${params.patientID}`}
+        title="Odontograma"
+      />
 
-        <h1 className="text-2xl xl:text-3xl font-semibold">Odontograma</h1>
-      </div>
-
-      <div className="h-[2px] bg-secondary"></div>
       <Odontogram odontogramState={initialOdontogram} />
 
       <h1 className="text-2xl xl:text-3xl font-semibold mb-3">Información del tratamiento</h1>

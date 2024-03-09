@@ -6,4 +6,5 @@ export * from './formatDniType';
 export * from './formatGender';
 export * from './formatMaritalStatus';
 export * from './formatPhone';
+export * from './formatDoctorType';
 export * from './getAge';
