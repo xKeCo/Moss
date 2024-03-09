@@ -1,13 +1,3 @@
-// export interface IUser {
-//   id: string;
-//   name: string;
-//   username: string;
-//   email: string;
-//   password: string;
-//   role: 'A' | 'U';
-//   photoURL: string;
-// }
-
 interface IWorkspace {
   id: string;
   name: string;

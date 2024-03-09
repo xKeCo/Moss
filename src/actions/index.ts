@@ -4,6 +4,7 @@ export * from './navigate';
 export * from './patients/createHealthInfo';
 export * from './patients/createPatient';
 export * from './patients/patientsByWorkspace';
+export * from './patients/getPatientInfo';
 export * from './register';
 export * from './treatments/createTreatment';
 export * from './treatments/treatmentByPatients';

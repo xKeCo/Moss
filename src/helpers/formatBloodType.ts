@@ -1,4 +1,4 @@
-export const formatBloodType = (bloodType: string) => {
+export const formatBloodType = (bloodType?: string | null) => {
   if (!bloodType) {
     return 'N/A';
   }

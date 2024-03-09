@@ -8,8 +8,9 @@ import {
   formatPhone,
   getAge,
 } from '@/helpers';
-import { Skeleton } from '@/components/ui';
+import { Button, Skeleton } from '@/components/ui';
 import type { IPatient } from '@/interfaces';
+import Link from 'next/link';
 
 interface IInformationValues {
   label: string;
@@ -64,7 +65,6 @@ export const PatientInformation = ({ patientInfo }: IPatientInformationProps) =>
       label: 'EPS',
       value: patientInfo?.MedicalInformation?.EPSName?.toUpperCase()!,
       show: true,
-      className: 'uppercase',
     },
     {
       label: 'Dirección',
@@ -100,11 +100,11 @@ export const PatientInformation = ({ patientInfo }: IPatientInformationProps) =>
       value: formatPhone(patientInfo?.ContactInformation?.emergencyContactPhone!),
       show: true,
     },
-    {
-      label: 'E. Telefono 2',
-      value: formatPhone(patientInfo?.ContactInformation?.emergencyContactPhone2!),
-      show: true,
-    },
+    // {
+    //   label: 'E. Telefono 2',
+    //   value: formatPhone(patientInfo?.ContactInformation?.emergencyContactPhone2!),
+    //   show: true,
+    // },
   ];
 
   return (
@@ -121,12 +121,12 @@ export const PatientInformation = ({ patientInfo }: IPatientInformationProps) =>
           )}
         </Fragment>
       ))}
-      {/* <div className="flex flex-col gap-1 items-start justify-start">
+      <div className="flex flex-col gap-1 items-start justify-start">
         <h1 className="text-sm font-medium text-muted-foreground">Toda la información</h1>
-        <Button type="button" className="w-full">
-          Ver más
+        <Button type="button" className="w-full" asChild>
+          <Link href={`${patientInfo?.dniNumber}/all-information`}>Ver más</Link>
         </Button>
-      </div> */}
+      </div>
     </div>
   );
 };

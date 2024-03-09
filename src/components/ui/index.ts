@@ -18,3 +18,4 @@ export * from './switch';
 export * from './textarea';
 export * from './tooltip';
 export * from './scroll-area';
+export * from './tabs';

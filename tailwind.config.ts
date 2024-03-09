@@ -110,6 +110,9 @@ module.exports = {
         width: 'width',
         spacing: 'margin, padding',
       },
+      minHeight: {
+        screenwithoutheader: 'calc(100vh - 70px)',
+      },
     },
   },
   plugins: [require('tailwindcss-animate')],

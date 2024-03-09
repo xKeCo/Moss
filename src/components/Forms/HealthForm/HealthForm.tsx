@@ -170,7 +170,7 @@ export const HealthForm = ({
         </div>
 
         <div>
-          <h1 className="font-semibold">Antecedentes medicos familiares</h1>
+          <h1 className="font-semibold">Antecedentes médicos familiares</h1>
           <div className="h-[2px] bg-secondary mt-2"></div>
         </div>
 
@@ -217,7 +217,7 @@ export const HealthForm = ({
         </div>
 
         <div>
-          <h1 className="font-semibold">Antecedentes medicos personales</h1>
+          <h1 className="font-semibold">Antecedentes médicos personales</h1>
           <div className="h-[2px] bg-secondary mt-2"></div>
         </div>
 
@@ -579,7 +579,7 @@ export const HealthForm = ({
                       placeholder={item.placeholder}
                       disabled={isLoadingPage}
                       {...field}
-                      endDecorator={item.endDecorator && 'Milimetros'}
+                      endDecorator={item.endDecorator && 'Milímetros'}
                     />
                   </FormControl>
                   <FormMessage />

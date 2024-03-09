@@ -1,4 +1,4 @@
-export const formatGender = (gender: string) => {
+export const formatGender = (gender?: string | null) => {
   switch (gender) {
     case 'O':
       return 'Otro';

@@ -1,33 +1,15 @@
-import { Skeleton } from '@/components/ui';
-
 interface PatientInfoItemProps {
   label: string;
   value: string;
   colSpan?: number;
-  loading?: boolean;
   className?: string;
 }
 
-export const PatientInfoItem = ({
-  label,
-  value,
-  colSpan = 1,
-  loading,
-  className,
-}: PatientInfoItemProps) => {
+export const PatientInfoItem = ({ label, value, colSpan = 1, className }: PatientInfoItemProps) => {
   return (
     <div className={`flex flex-col gap-1 items-start justify-start col-span-${colSpan}`}>
-      {loading ? (
-        <>
-          <Skeleton className="h-5 w-[100px]" />
-          <Skeleton className="h-6 w-full" />
-        </>
-      ) : (
-        <>
-          <h1 className="text-sm font-medium text-muted-foreground">{label}</h1>
-          <p className={className}>{value}</p>
-        </>
-      )}
+      <h1 className="text-sm font-medium text-muted-foreground">{label}</h1>
+      <p className={className}>{value}</p>
     </div>
   );
 };

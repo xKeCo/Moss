@@ -14,3 +14,4 @@ export * from './Patients/components/PatientCard';
 export * from './Patients/PatientsList';
 export * from './Providers/Providers';
 export * from './Providers/theme-provider';
+export * from './HeaderSectionTitle/HeaderSectionTitle';
