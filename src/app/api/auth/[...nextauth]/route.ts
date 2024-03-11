@@ -55,17 +55,16 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
-    jwt({
-      token,
-      session,
-      trigger,
-      user,
-    }: {
-      token: any;
-      user: any;
-      session?: any;
-      trigger?: any;
-    }) {
+    async jwt({ token, session, trigger }: { token: any; session?: any; trigger?: any }) {
+      const user = await prisma.user.findUnique({
+        where: {
+          email: token.email.toLowerCase(),
+        },
+        include: {
+          workspaces: true,
+        },
+      });
+
       if (user) token.user = user;
 
       if (trigger === 'update') {
@@ -75,7 +74,7 @@ const handler = NextAuth({
       return token;
     },
 
-    session({ session, token, trigger }: { session: any; token: any; trigger?: any }) {
+    session({ session, token }: { session: any; token: any }) {
       session.user = token.user;
 
       if (!cookies().get('activeWorkspace')?.value) {
