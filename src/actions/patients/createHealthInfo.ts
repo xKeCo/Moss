@@ -43,7 +43,7 @@ export const createHealthInfo = async (
 
     await prisma.patient.update({
       where: {
-        dniNumber: patientID,
+        id: patientID,
       },
       data: {
         hasExtraInfo: true,

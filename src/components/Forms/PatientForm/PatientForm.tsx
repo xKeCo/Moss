@@ -35,7 +35,13 @@ import { Icons } from '@/components/Icons/Icons';
 
 type PatientFormData = z.infer<typeof patientFormSchema>;
 
-export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean }) => {
+export const PatientForm = ({
+  isLoadingPage = false,
+  workspaceID = '',
+}: {
+  isLoadingPage?: boolean;
+  workspaceID?: string;
+}) => {
   const [age, setAge] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -83,7 +89,7 @@ export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean
   async function onSubmit(values: PatientFormData) {
     setIsLoading(true);
 
-    const patient = await createPatient({ ...values, Treatment: null });
+    const patient = await createPatient({ ...values, Treatment: null }, workspaceID);
 
     setIsLoading(false);
 

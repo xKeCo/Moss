@@ -55,7 +55,7 @@ model BasicInformation {
   maritalStatus MaritalStatus
   occupation    String
 
-  Patient       Patient @relation(fields: [patientId], references: [dniNumber])
+  Patient       Patient @relation(fields: [patientId], references: [id])
   patientId     String   @unique
 
   createdAt     DateTime @default(now())
@@ -71,7 +71,7 @@ model ContactInformation {
   emergencyContactPhone  String
   emergencyContactPhone2 String?
 
-  Patient                Patient @relation(fields: [patientId], references: [dniNumber])
+  Patient                Patient @relation(fields: [patientId], references: [id])
   patientId              String   @unique
 
   createdAt              DateTime @default(now())
@@ -89,7 +89,7 @@ model MedicalInformation {
   boneScan           Boolean
   boneScanType       String?
 
-  Patient            Patient @relation(fields: [patientId], references: [dniNumber])
+  Patient            Patient @relation(fields: [patientId], references: [id])
   patientId          String   @unique
 
   createdAt          DateTime @default(now())
@@ -303,7 +303,7 @@ model HealthInformation {
   PersonalBackground PersonalBackground?
   OralSystemReview   OralSystemReview?
 
-  Patient            Patient @relation(fields: [patientId], references: [dniNumber])
+  Patient            Patient @relation(fields: [patientId], references: [id])
   patientId          String   @unique
 
   createdAt          DateTime @default(now())
@@ -345,7 +345,7 @@ model Files {
   size         Int
   fileKey      String
 
-  Patient      Patient @relation(fields: [patientId], references: [dniNumber])
+  Patient      Patient @relation(fields: [patientId], references: [id])
   patientId    String
 
   createdAt    DateTime @default(now())
@@ -356,7 +356,7 @@ model Patient {
   id                    String     @id     @default(uuid())
   name                  String
   dniType               DniType            @default(CC)
-  dniNumber             String             @unique
+  dniNumber             String             
   email                 String
   reasonForConsultation String             @default("")
   currentIllness        String             @default("")
@@ -455,7 +455,7 @@ model Treatment {
   diagnosis           String
   prognosis           String
 
-  Patient             Patient?          @relation(fields: [patientId], references: [dniNumber])
+  Patient             Patient?          @relation(fields: [patientId], references: [id])
   patientId           String            @unique
   InitialOdontogram   InitialOdontogram?
   RealTxPlan          RealTxPlan[]

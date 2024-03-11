@@ -28,7 +28,7 @@ export const PatientInformation = ({ patientInfo }: IPatientInformationProps) =>
   const informationValues: IInformationValues[] = [
     {
       label: 'Género',
-      value: formatGender(patientInfo?.BasicInformation?.gender!),
+      value: formatGender(patientInfo?.BasicInformation?.gender),
       show: true,
     },
     {
@@ -48,17 +48,17 @@ export const PatientInformation = ({ patientInfo }: IPatientInformationProps) =>
     },
     {
       label: 'Altura',
-      value: patientInfo?.BasicInformation?.height! + ' cm',
+      value: `${patientInfo?.BasicInformation?.height} cm`,
       show: true,
     },
     {
       label: 'Peso',
-      value: patientInfo?.BasicInformation?.weight! + ' kg',
+      value: `${patientInfo?.BasicInformation?.weight} kg`,
       show: true,
     },
     {
       label: 'Tipo de sangre',
-      value: formatBloodType(patientInfo?.BasicInformation?.bloodType!),
+      value: formatBloodType(patientInfo?.BasicInformation?.bloodType),
       show: true,
     },
     {
@@ -75,17 +75,17 @@ export const PatientInformation = ({ patientInfo }: IPatientInformationProps) =>
     },
     {
       label: 'Telefono',
-      value: formatPhone(patientInfo?.ContactInformation?.phone1!),
+      value: formatPhone(patientInfo?.ContactInformation?.phone1),
       show: true,
     },
     {
       label: 'Telefono 2',
-      value: formatPhone(patientInfo?.ContactInformation?.phone2!),
+      value: formatPhone(patientInfo?.ContactInformation?.phone2),
       show: patientInfo?.ContactInformation?.phone2 !== '',
     },
     {
       label: 'Estado civil',
-      value: formatMaritalStatus(patientInfo?.BasicInformation?.maritalStatus!),
+      value: formatMaritalStatus(patientInfo?.BasicInformation?.maritalStatus),
       show: patientInfo?.ContactInformation?.phone2 === '',
     },
     {
@@ -97,7 +97,7 @@ export const PatientInformation = ({ patientInfo }: IPatientInformationProps) =>
     },
     {
       label: 'E. Telefono',
-      value: formatPhone(patientInfo?.ContactInformation?.emergencyContactPhone!),
+      value: formatPhone(patientInfo?.ContactInformation?.emergencyContactPhone),
       show: true,
     },
     // {
@@ -124,7 +124,7 @@ export const PatientInformation = ({ patientInfo }: IPatientInformationProps) =>
       <div className="flex flex-col gap-1 items-start justify-start">
         <h1 className="text-sm font-medium text-muted-foreground">Toda la información</h1>
         <Button type="button" className="w-full" asChild>
-          <Link href={`${patientInfo?.dniNumber}/all-information`}>Ver más</Link>
+          <Link href={`${patientInfo?.id}/all-information`}>Ver más</Link>
         </Button>
       </div>
     </div>
