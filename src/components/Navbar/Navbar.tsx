@@ -2,11 +2,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Input } from '../ui';
 import { UserNav, WorkspaceSwitcher } from '..';
-import { getActiveWorkspace } from '@/actions';
 
-export const Navbar = async () => {
-  const activeWorkspaceID = await getActiveWorkspace();
-
+export const Navbar = ({ activeWorkspaceID }: { activeWorkspaceID: string }) => {
   return (
     <div className="w-full p-4 px-8 border-b border-secondary flex items-center dark:bg-[#0e0e0f]">
       <div className="flex justify-start items-center gap-6">
@@ -22,7 +19,7 @@ export const Navbar = async () => {
         />
       </div>
       <div className="ml-auto flex items-center gap-6">
-        <WorkspaceSwitcher activeWorkspaceID={activeWorkspaceID!} />
+        <WorkspaceSwitcher activeWorkspaceID={activeWorkspaceID} />
         <UserNav />
       </div>
     </div>
