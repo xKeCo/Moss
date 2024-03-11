@@ -1,12 +1,12 @@
 'use server';
 import prisma from '@/lib/prisma';
-import { cookies } from 'next/headers';
 
-export const createPatient = async (patientData: any) => {
+export const createPatient = async (patientData: any, workspaceID: string) => {
   try {
     const existingPatient = await prisma.patient.findFirst({
       where: {
         dniNumber: patientData.dniNumber,
+        workspaceId: workspaceID,
       },
     });
 
@@ -27,7 +27,7 @@ export const createPatient = async (patientData: any) => {
         email: patientData.email,
         name: patientData.name,
         photoURL: `https://source.boringavatars.com/marble/50/${patientData.dniNumber}`,
-        workspaceId: cookies().get('activeWorkspace')?.value!,
+        workspaceId: workspaceID,
         currentIllness: patientData.currentIllness,
         reasonForConsultation: patientData.reasonForConsultation,
         BasicInformation: {

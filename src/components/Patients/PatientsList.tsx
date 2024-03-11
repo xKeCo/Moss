@@ -15,12 +15,12 @@ export const PatientsList = async ({ workspaceID }: { workspaceID: string }) => 
           <InfoCircledIcon className="h-4 w-4" />
           <AlertTitle>Oops!</AlertTitle>
           <AlertDescription>
-            You don&apos;t have any patients yet.{' '}
+            Aún no tiene pacientes registrados.{' '}
             <Link
               href={`/dashboard/${workspaceID}/patient/new`}
               className="font-bold hover:text-primary/80"
             >
-              Add one!
+              Añadir uno!
             </Link>
           </AlertDescription>
         </Alert>
@@ -28,8 +28,8 @@ export const PatientsList = async ({ workspaceID }: { workspaceID: string }) => 
         <div className="grid sm:grid-cols-2 gap-8 lg:grid-cols-4">
           {patients?.map((patient) => (
             <Link
-              key={patient?.dniNumber}
-              href={`/dashboard/${workspaceID}/patient/${patient?.dniNumber}`}
+              key={patient?.id}
+              href={`/dashboard/${workspaceID}/patient/${patient?.id}`}
               className="flex items-center justify-between"
             >
               <PatientCard patient={patient} />

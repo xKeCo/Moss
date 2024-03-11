@@ -1,24 +1,6 @@
 'use server';
 import prisma from '@/lib/prisma';
 
-export const getPatientsByWorkspace = async (workspaceId: string) => {
-  try {
-    const patients = await prisma.workspace.findUnique({
-      where: { id: workspaceId },
-      include: {
-        patients: {
-          select: {
-            name: true,
-            email: true,
-            dniNumber: true,
-            photoURL: true,
-          },
-        },
-      },
-    });
-  } catch (error) {}
-};
-
 export const getPatientsByWorkspaceThatNotHaveExtraInfo = async (workspaceId: string) => {
   try {
     const workspaceInfo = await prisma.workspace.findUnique({
@@ -26,6 +8,7 @@ export const getPatientsByWorkspaceThatNotHaveExtraInfo = async (workspaceId: st
       include: {
         patients: {
           select: {
+            id: true,
             name: true,
             email: true,
             dniNumber: true,

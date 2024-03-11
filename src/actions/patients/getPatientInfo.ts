@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma';
 export const getPatientById = async (patientId: string) => {
   try {
     const patient = await prisma.patient.findUnique({
-      where: { dniNumber: patientId },
+      where: { id: patientId },
       include: {
         BasicInformation: true,
         ContactInformation: true,
@@ -46,7 +46,7 @@ export const getPatientById = async (patientId: string) => {
 export const getPatientAllPersonalInformation = async (patientId: string) => {
   try {
     const patient = await prisma.patient.findUnique({
-      where: { dniNumber: patientId },
+      where: { id: patientId },
       include: {
         BasicInformation: true,
         ContactInformation: true,
