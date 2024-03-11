@@ -122,7 +122,7 @@ export const PatientInformation = ({ patientInfo }: IPatientInformationProps) =>
         </Fragment>
       ))}
       <div className="flex flex-col gap-1 items-start justify-start">
-        <h1 className="text-sm font-medium text-muted-foreground">Toda la información</h1>
+        <div className="h-4"></div>
         <Button type="button" className="w-full" asChild>
           <Link href={`${patientInfo?.id}/all-information`}>Ver más</Link>
         </Button>
