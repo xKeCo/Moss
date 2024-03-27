@@ -19,6 +19,7 @@ export const getPatientById = async (patientId: string) => {
         },
         Files: true,
         Treatment: true,
+        Appointments: true,
       },
     });
 

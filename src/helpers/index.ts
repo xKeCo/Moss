@@ -8,3 +8,4 @@ export * from './formatMaritalStatus';
 export * from './formatPhone';
 export * from './formatDoctorType';
 export * from './getAge';
+export * from './timeOptions';
