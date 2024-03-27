@@ -335,7 +335,7 @@ model Workspace {
   updatedAt DateTime @updatedAt
 }
 
-model Files {
+model File {
   id           String   @id @default(uuid())
   ETag         String
   name         String
@@ -369,7 +369,8 @@ model Patient {
   MedicalInformation    MedicalInformation?
   Treatment             Treatment?         
   HealthInformation     HealthInformation?
-  Files                 Files[]
+  Files                 File[]
+  Appointments          Appointment[]
 
   termsAndConditions    Boolean            @default(true)
   hasExtraInfo          Boolean            @default(false)   
@@ -466,4 +467,24 @@ model Treatment {
   totalPending        Float              @default(0)
   createdAt           DateTime           @default(now())
   updatedAt           DateTime           @updatedAt
+}
+
+
+model Appointment {
+  id           String    @id @default(uuid())
+  date         DateTime
+  startTime    String
+  endTime      String
+  treatment    String
+  description  String
+  status       String
+  doctor       String
+  office       String
+  emailSent    Boolean? @default(false)
+  SMSsent      Boolean? @default(false)
+  WhatsAppSent Boolean? @default(false)
+  Patient      Patient  @relation(fields: [patientId], references: [id])
+  patientId    String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 }

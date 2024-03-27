@@ -23,7 +23,7 @@ const createFileRecord = async (
   ETag: string,
   patientId: string
 ): Promise<void> => {
-  await prisma.files.create({
+  await prisma.file.create({
     data: {
       name: file.name,
       url: `${endpoint}/${process.env.DO_BUCKET_NAME}/${fileKey}`,

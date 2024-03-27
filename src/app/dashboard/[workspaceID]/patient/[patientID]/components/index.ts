@@ -1,5 +1,6 @@
-export * from './FilesInformation/FilesInformation';
+export * from './Appointments/AppointmentInformation';
 export * from './FilesInformation/FileCard';
+export * from './FilesInformation/FilesInformation';
 export * from './PatientAlert';
 export * from './PatientCard';
 export * from './PatientCard';

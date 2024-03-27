@@ -1,5 +1,6 @@
 import { Breadcrumb } from '@/components';
 import {
+  AppointmentInformation,
   FilesInformation,
   PatientAlert,
   PatientCard,
@@ -41,6 +42,9 @@ export default async function PatientInfoPage({ params }: Readonly<IPatientInfoP
           patientName={patientInfo?.name!}
           params={params}
         />
+
+        <AppointmentInformation appointments={patientInfo?.Appointments!} />
+
         <FilesInformation files={patientInfo?.Files!} params={params} />
       </div>
     </div>

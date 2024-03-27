@@ -1,5 +1,6 @@
 export * from './Breadcrumb/Breadcrumb';
 export * from './Forms/AuthForm/AuthForm';
+export * from './Forms/AppointmentForm/AppointmentForm';
 export * from './Forms/PatientForm/PatientForm';
 export * from './Forms/TreatmentForm/components';
 export * from './Forms/TreatmentForm/TreatmentForm';

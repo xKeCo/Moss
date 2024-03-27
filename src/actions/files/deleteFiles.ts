@@ -5,7 +5,7 @@ import prisma from '@/lib/prisma';
 
 export const deleteFiles = async (fileId: string) => {
   try {
-    const file = await prisma.files.findUnique({
+    const file = await prisma.file.findUnique({
       where: {
         id: fileId,
       },
@@ -19,7 +19,7 @@ export const deleteFiles = async (fileId: string) => {
       };
     }
 
-    await prisma.files.delete({
+    await prisma.file.delete({
       where: {
         id: fileId,
       },

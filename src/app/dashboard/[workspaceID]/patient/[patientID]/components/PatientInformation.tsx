@@ -122,7 +122,7 @@ export const PatientInformation = ({ patientInfo }: IPatientInformationProps) =>
         </Fragment>
       ))}
       <div className="flex flex-col gap-1 items-start justify-start">
-        <div className="h-4"></div>
+        <div className="h-2"></div>
         <Button type="button" className="w-full" asChild>
           <Link href={`${patientInfo?.id}/all-information`}>Ver más</Link>
         </Button>
@@ -187,10 +187,6 @@ PatientInformation.Skeleton = function PatientInformationSkeleton() {
       label: 'E. Telefono',
       show: true,
     },
-    {
-      label: 'E. Telefono 2',
-      show: true,
-    },
   ];
 
   return (
@@ -204,6 +200,10 @@ PatientInformation.Skeleton = function PatientInformationSkeleton() {
           <Skeleton className="h-6 w-full" />
         </div>
       ))}
+      <div className="flex flex-col gap-1 items-start justify-start">
+        <div className="h-2"></div>
+        <Skeleton className="h-9 w-full" />
+      </div>
     </div>
   );
 };
