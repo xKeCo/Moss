@@ -13,6 +13,7 @@ export interface IAppointment {
   emailSent: boolean;
   SMSsent: boolean;
   WhatsAppSent: boolean;
+  Patient: any;
   patientId?: string;
   createdAt?: string | Date;
   updatedAt?: string | Date;

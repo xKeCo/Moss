@@ -37,6 +37,15 @@ export const getPatientById = async (patientId: string) => {
               gte: new Date(new Date().setDate(new Date().getDate() - 1)),
             },
           },
+
+          include: {
+            Patient: {
+              select: {
+                name: true,
+                email: true,
+              },
+            },
+          },
         },
       },
     });

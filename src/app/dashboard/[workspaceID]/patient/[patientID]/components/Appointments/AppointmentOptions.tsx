@@ -22,7 +22,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui';
 import { Icons } from '@/components';
-import { deleteAppointment, sendEmail } from '@/actions';
+import { deleteAppointment, sendConfirmationEmail } from '@/actions';
 
 interface IAppointmentOptionsProps {
   appointment: any;
@@ -59,7 +59,7 @@ export const AppointmentOptions = ({ appointment }: IAppointmentOptionsProps) =>
 
     setLoadingEmail(true);
 
-    const emailSent = await sendEmail(appointment);
+    const emailSent = await sendConfirmationEmail(appointment);
 
     setLoadingEmail(false);
 

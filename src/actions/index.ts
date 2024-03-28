@@ -1,7 +1,7 @@
 export { deleteFiles } from './files/deleteFiles';
 export { uploadFiles } from './files/uploadFiles';
 export { navigate } from './navigate';
-export { sendEmail } from './emails/sendEmail';
+export { sendConfirmationEmail } from './emails/sendConfirmationEmail';
 export { createHealthInfo } from './patients/createHealthInfo';
 export { createPatient } from './patients/createPatient';
 export { getPatientsByWorkspaceThatNotHaveExtraInfo } from './patients/patientsByWorkspace';
