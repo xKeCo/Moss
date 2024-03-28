@@ -2,9 +2,10 @@ import { ScrollArea, Skeleton } from '@/components/ui';
 import { cn } from '@/lib/utils';
 import { AppointmentCard } from './AppointmentCard';
 import { AppointmentCreateModal } from './AppointmentCreateModal';
+import type { IAppointment } from '@/interfaces';
 
 interface IAppointmentInformationProps {
-  appointments: any[];
+  appointments: IAppointment[];
 }
 
 export const AppointmentInformation = ({ appointments }: IAppointmentInformationProps) => {

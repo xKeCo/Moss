@@ -22,22 +22,15 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui';
 import { Icons } from '@/components';
-import { deleteAppointment } from '@/actions';
+import { deleteAppointment, sendEmail } from '@/actions';
 
 interface IAppointmentOptionsProps {
-  id: string;
-  emailSent: boolean;
-  SMSsent: boolean;
-  WhatsAppSent: boolean;
+  appointment: any;
 }
 
-export const AppointmentOptions = ({
-  id: appointmentId,
-  emailSent,
-  SMSsent,
-  WhatsAppSent,
-}: IAppointmentOptionsProps) => {
+export const AppointmentOptions = ({ appointment }: IAppointmentOptionsProps) => {
   const [loading, setLoading] = useState<boolean>(false);
+  const [loadingEmail, setLoadingEmail] = useState<boolean>(false);
   const router = useRouter();
 
   const handleDelete = async (e: any) => {
@@ -45,7 +38,7 @@ export const AppointmentOptions = ({
 
     setLoading(true);
 
-    const deletedFile = await deleteAppointment(appointmentId);
+    const deletedFile = await deleteAppointment(appointment.id);
 
     setLoading(false);
 
@@ -56,6 +49,27 @@ export const AppointmentOptions = ({
 
     if (deletedFile.ok) {
       toast.success(deletedFile.message);
+    }
+
+    router.refresh();
+  };
+
+  const handleSendEmail = async (e: any) => {
+    e.preventDefault();
+
+    setLoadingEmail(true);
+
+    const emailSent = await sendEmail(appointment);
+
+    setLoadingEmail(false);
+
+    if (!emailSent.ok) {
+      toast.error(emailSent.errorMessage);
+      return;
+    }
+
+    if (emailSent.ok) {
+      toast.success(emailSent.message);
     }
 
     router.refresh();
@@ -74,19 +88,29 @@ export const AppointmentOptions = ({
           </DropdownMenuSubTrigger>
           <DropdownMenuPortal>
             <DropdownMenuSubContent>
-              <DropdownMenuItem disabled={emailSent}>
-                <EnvelopeClosedIcon className="mr-2 h-4 w-4" />
-                {emailSent ? 'Correo enviado' : 'Enviar correo'}
+              <DropdownMenuItem
+                disabled={
+                  appointment.emailSent ||
+                  new Date(appointment.date).getTime() - new Date().getTime() > 172800000
+                }
+                onClick={handleSendEmail}
+              >
+                {loadingEmail ? (
+                  <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <EnvelopeClosedIcon className="mr-2 h-4 w-4" />
+                )}
+                {appointment.emailSent ? 'Correo enviado' : 'Enviar correo'}
               </DropdownMenuItem>
 
-              <DropdownMenuItem disabled={WhatsAppSent}>
+              <DropdownMenuItem disabled={appointment.WhatsAppSent}>
                 <ChatBubbleIcon className="mr-2 h-4 w-4" />
-                {WhatsAppSent ? 'Whatsapp enviado' : 'Enviar Whatsapp'}
+                {appointment.WhatsAppSent ? 'Whatsapp enviado' : 'Enviar Whatsapp'}
               </DropdownMenuItem>
 
-              <DropdownMenuItem disabled={SMSsent}>
+              <DropdownMenuItem disabled={appointment.SMSsent}>
                 <PaperPlaneIcon className="mr-2 h-4 w-4" />
-                {SMSsent ? 'SMS enviado' : 'Enviar SMS'}
+                {appointment.SMSsent ? 'SMS enviado' : 'Enviar SMS'}
               </DropdownMenuItem>
             </DropdownMenuSubContent>
           </DropdownMenuPortal>
