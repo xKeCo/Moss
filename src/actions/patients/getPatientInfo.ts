@@ -34,7 +34,7 @@ export const getPatientById = async (patientId: string) => {
 
           where: {
             date: {
-              gte: new Date(new Date().setHours(0, 0, 0, 0)),
+              gte: new Date(new Date().setDate(new Date().getDate() - 1)),
             },
           },
         },
