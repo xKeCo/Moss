@@ -1,27 +1,17 @@
 'use server';
 import prisma from '@/lib/prisma';
+import type { IAppointment } from '@/interfaces';
 
-export const sendEmail = async (appointment: any) => {
+export const sendConfirmationEmail = async (appointment: IAppointment) => {
   try {
-    // get patient email from appointment patientId
-    const patient = await prisma.patient.findUnique({
-      where: {
-        id: appointment.patientId,
-      },
-      select: {
-        email: true,
-        name: true,
-      },
-    });
-
     await fetch(`${process.env.ENVIRONMENT_URL}/api/send`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        email: patient?.email,
-        patientName: patient?.name,
+        email: appointment?.Patient.email,
+        patientName: appointment?.Patient.name,
         appointmentDate: appointment.date,
         appointmentStartTime: appointment.startTime,
         appointmentStartTimeAMPM: appointment.startTimeAMPM,
@@ -30,7 +20,7 @@ export const sendEmail = async (appointment: any) => {
       }),
     });
 
-    const emailSent = await prisma.appointment.update({
+    await prisma.appointment.update({
       where: {
         id: appointment.id,
       },
@@ -41,7 +31,6 @@ export const sendEmail = async (appointment: any) => {
 
     return {
       ok: true,
-      emailSent,
       message: 'Email enviado correctamente',
     };
   } catch (error) {
