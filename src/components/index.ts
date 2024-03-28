@@ -1,4 +1,5 @@
 export * from './Breadcrumb/Breadcrumb';
+export * from './EmailTemplates/email-template';
 export * from './Forms/AuthForm/AuthForm';
 export * from './Forms/AppointmentForm/AppointmentForm';
 export * from './Forms/PatientForm/PatientForm';

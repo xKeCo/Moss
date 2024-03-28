@@ -41,7 +41,7 @@ export const AppointmentCard = ({ appointment }: IAppointmentCardProps) => {
               {appointment.status}
             </Badge>
 
-            <AppointmentOptions {...appointment} />
+            <AppointmentOptions appointment={appointment} />
           </div>
         </div>
 
