@@ -16,6 +16,10 @@ export const sendConfirmationEmail = async (appointment: IAppointment) => {
 
     await fetch(`${process.env.ENVIRONMENT_URL}/api/send`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(body).toString(),
+      },
       body,
     });
 
