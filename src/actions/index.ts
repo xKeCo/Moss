@@ -6,6 +6,7 @@ export * from './patients/createPatient';
 export * from './patients/patientsByWorkspace';
 export * from './patients/getPatientInfo';
 export * from './appointments/createAppointment';
+export * from './appointments/deleteAppointment';
 export * from './register';
 export * from './treatments/createTreatment';
 export * from './treatments/treatmentByPatients';

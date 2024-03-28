@@ -1,3 +1,16 @@
+'use client';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import {
+  BellIcon,
+  ChatBubbleIcon,
+  DotsVerticalIcon,
+  EnvelopeClosedIcon,
+  PaperPlaneIcon,
+  ReloadIcon,
+  TrashIcon,
+} from '@radix-ui/react-icons';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,28 +21,46 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui';
-import {
-  BellIcon,
-  ChatBubbleIcon,
-  DotsVerticalIcon,
-  EnvelopeClosedIcon,
-  PaperPlaneIcon,
-  ReloadIcon,
-  TrashIcon,
-} from '@radix-ui/react-icons';
+import { Icons } from '@/components';
+import { deleteAppointment } from '@/actions';
 
 interface IAppointmentOptionsProps {
-  id: any;
+  id: string;
   emailSent: boolean;
   SMSsent: boolean;
   WhatsAppSent: boolean;
 }
 
 export const AppointmentOptions = ({
+  id: appointmentId,
   emailSent,
   SMSsent,
   WhatsAppSent,
 }: IAppointmentOptionsProps) => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
+
+  const handleDelete = async (e: any) => {
+    e.preventDefault();
+
+    setLoading(true);
+
+    const deletedFile = await deleteAppointment(appointmentId);
+
+    setLoading(false);
+
+    if (!deletedFile.ok) {
+      toast.error(deletedFile.errorMessage);
+      return;
+    }
+
+    if (deletedFile.ok) {
+      toast.success(deletedFile.message);
+    }
+
+    router.refresh();
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -66,8 +97,12 @@ export const AppointmentOptions = ({
           Reagendar
         </DropdownMenuItem>
 
-        <DropdownMenuItem>
-          <TrashIcon className="mr-2 h-4 w-4" />
+        <DropdownMenuItem onClick={handleDelete}>
+          {loading ? (
+            <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            <TrashIcon className="mr-2 h-4 w-4" />
+          )}
           Eliminar
         </DropdownMenuItem>
       </DropdownMenuContent>

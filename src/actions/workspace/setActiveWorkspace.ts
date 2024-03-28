@@ -2,7 +2,7 @@
 
 import { cookies } from 'next/headers';
 
-export const setActiveWorkspace = async (workspaceId: string) => {
+export const setActiveWorkspace = (workspaceId: string) => {
   cookies().set('activeWorkspace', workspaceId);
 };
 
