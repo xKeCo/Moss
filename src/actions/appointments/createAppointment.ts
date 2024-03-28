@@ -6,6 +6,10 @@ export const createAppointment = async (appointmentData: any, patientId: string)
     const newAppointment = await prisma.appointment.create({
       data: {
         ...appointmentData,
+        startTime: appointmentData.startTime.slice(0, 5),
+        startTimeAMPM: appointmentData.startTime.slice(-2),
+        endTime: appointmentData.endTime.slice(0, 5),
+        endTimeAMPM: appointmentData.endTime.slice(-2),
         patientId,
       },
       select: {

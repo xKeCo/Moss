@@ -1,4 +1,4 @@
-import { IFile, ITreatment } from '.';
+import type { IAppointment, IFile, ITreatment } from '.';
 
 export interface IPatient {
   id?: string;
@@ -22,6 +22,7 @@ export interface IPatient {
   Treatment: ITreatment | null;
   HealthInformation: IHealthInformation | null;
   Files: IFile[] | null;
+  Appointments: IAppointment[] | null;
 }
 
 export interface IBasicInformation {

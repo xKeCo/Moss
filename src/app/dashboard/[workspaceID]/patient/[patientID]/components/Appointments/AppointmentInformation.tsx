@@ -11,21 +11,21 @@ export const AppointmentInformation = ({ appointments }: IAppointmentInformation
   return (
     <div
       className={cn(
-        'flex flex-col items-start justify-start col-span-4 md:col-span-3 lg:col-span-4 xl:col-span-3 border rounded-2xl gap-3 w-full p-6 min-h-[306px] overflow-hidden dark:bg-zinc-900',
-        appointments.length > 2 && 'pr-2'
+        'flex flex-col items-start justify-start col-span-4 md:col-span-3 lg:col-span-4 xl:col-span-3 border rounded-2xl gap-3 w-full p-6 min-h-[382px] overflow-hidden dark:bg-zinc-900',
+        appointments?.length > 2 && 'pr-2'
       )}
     >
       <div
         className={cn(
           'flex items-center justify-between w-full mb-2',
-          appointments.length > 2 && 'pr-4'
+          appointments?.length > 2 && 'pr-4'
         )}
       >
         <h1 className="text-xl font-semibold">Citas médicas</h1>
         <AppointmentCreateModal />
       </div>
 
-      {appointments.length === 0 ? (
+      {appointments?.length === 0 ? (
         <div className="flex items-center justify-center h-full w-full">
           <h1 className="text-lg text-center text-balance">
             Aún no hay citas médicas programadas.
@@ -36,10 +36,10 @@ export const AppointmentInformation = ({ appointments }: IAppointmentInformation
           <div
             className={cn(
               'flex flex-col justify-start items-start gap-3 w-full max-h-[276px]',
-              appointments.length > 2 && 'pr-4'
+              appointments?.length > 2 && 'pr-4'
             )}
           >
-            {appointments.map((appointment) => (
+            {appointments?.map((appointment) => (
               <AppointmentCard appointment={appointment} key={appointment.id} />
             ))}
           </div>

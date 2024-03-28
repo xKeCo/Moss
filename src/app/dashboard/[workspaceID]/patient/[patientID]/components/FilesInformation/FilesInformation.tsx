@@ -20,19 +20,19 @@ export const FilesInformation = ({ files, params }: IFilesInformationProps) => {
         </h1>
         <FileUploadModal params={params} />
       </div>
-      {files.length === 0 ? (
+      {files?.length === 0 ? (
         <div className="flex items-center justify-center h-full w-full">
           <h1 className="text-lg text-center text-balance">Aún no hay archivos o documentos.</h1>
         </div>
       ) : (
         <div className="flex flex-col justify-start items-start gap-2 w-full ">
-          {files.slice(0, 4).map((file) => (
+          {files?.slice(0, 4).map((file) => (
             <FileCard file={file} key={file.id} />
           ))}
         </div>
       )}
 
-      {files.length > 4 && <FilesViewAll files={files} />}
+      {files?.length > 4 && <FilesViewAll files={files} />}
     </div>
   );
 };
