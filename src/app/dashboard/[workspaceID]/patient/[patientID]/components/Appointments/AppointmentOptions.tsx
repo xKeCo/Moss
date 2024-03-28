@@ -19,6 +19,7 @@ import {
 } from '@radix-ui/react-icons';
 
 interface IAppointmentOptionsProps {
+  id: any;
   emailSent: boolean;
   SMSsent: boolean;
   WhatsAppSent: boolean;

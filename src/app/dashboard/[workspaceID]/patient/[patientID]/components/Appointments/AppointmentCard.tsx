@@ -1,30 +1,18 @@
-import { Badge, Skeleton } from '@/components/ui';
+import {
+  Badge,
+  Skeleton,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui';
 import { AppointmentOptions } from './AppointmentOptions';
 import { formatDate } from '@/helpers';
+import type { IAppointment } from '@/interfaces';
+import { InfoCircledIcon } from '@radix-ui/react-icons';
 
 interface IAppointmentCardProps {
-  appointment: {
-    id: string;
-    date: string;
-    startTime: string;
-    endTime: string;
-    treatment: string;
-    doctor: string;
-    office: string;
-    status:
-      | 'default'
-      | 'secondary'
-      | 'destructive'
-      | 'outline'
-      | 'pendiente'
-      | 'nueva'
-      | 'confirmada'
-      | null
-      | undefined;
-    emailSent: boolean;
-    SMSsent: boolean;
-    WhatsAppSent: boolean;
-  };
+  appointment: IAppointment;
 }
 
 export const AppointmentCard = ({ appointment }: IAppointmentCardProps) => {
@@ -33,7 +21,9 @@ export const AppointmentCard = ({ appointment }: IAppointmentCardProps) => {
       <div className="flex md:hidden lg:flex flex-col items-start justify-between gap-4 w-[92px]">
         <h1 className="text-base font-bold capitalize">{formatDate(appointment.date, true)}</h1>
         <p className="text-xs text-muted-foreground font-medium">
-          {appointment.startTime} - {appointment.endTime}
+          {appointment.startTime}
+          {appointment.startTimeAMPM} - {appointment.endTime}
+          {appointment.endTimeAMPM}
         </p>
       </div>
 
@@ -55,12 +45,29 @@ export const AppointmentCard = ({ appointment }: IAppointmentCardProps) => {
           </div>
         </div>
 
-        <h1 className="text-base font-semibold mb-2 capitalize">{appointment.treatment}</h1>
+        <div className="flex items-center justify-start gap-1 mb-2">
+          <h1 className="text-base font-semibold capitalize">{appointment.treatment}</h1>
+
+          {appointment.description && (
+            <TooltipProvider>
+              <Tooltip delayDuration={350}>
+                <TooltipTrigger asChild>
+                  <InfoCircledIcon className="w-4 h-4 text-muted-foreground" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{appointment.description}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
+        </div>
 
         <div className="hidden md:flex lg:hidden items-center justify-between gap-4 w-full">
           <h1 className="text-base font-bold capitalize">{formatDate(appointment.date, true)}</h1>
           <p className="text-xs text-muted-foreground font-medium">
-            {appointment.startTime} - {appointment.endTime}
+            {appointment.startTime}
+            {appointment.startTimeAMPM}- {appointment.endTime}
+            {appointment.endTimeAMPM}
           </p>
         </div>
 

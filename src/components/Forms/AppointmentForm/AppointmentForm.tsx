@@ -85,6 +85,8 @@ export const AppointmentForm = ({
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     setLoading(true);
+    // Set date to 00:00:00
+    data.date.setHours(0, 0, 0, 0);
 
     const appointment = await createAppointment(data, params.patientID as string);
 

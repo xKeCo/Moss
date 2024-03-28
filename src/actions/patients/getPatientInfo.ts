@@ -19,7 +19,25 @@ export const getPatientById = async (patientId: string) => {
         },
         Files: true,
         Treatment: true,
-        Appointments: true,
+        Appointments: {
+          orderBy: [
+            {
+              date: 'asc',
+            },
+            {
+              startTimeAMPM: 'asc',
+            },
+            {
+              startTime: 'asc',
+            },
+          ],
+
+          where: {
+            date: {
+              gte: new Date(new Date().setHours(0, 0, 0, 0)),
+            },
+          },
+        },
       },
     });
 
