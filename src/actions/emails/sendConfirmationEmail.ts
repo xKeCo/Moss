@@ -14,13 +14,14 @@ export const sendConfirmationEmail = async (appointment: IAppointment) => {
       appointmentEndTimeAMPM: appointment.endTimeAMPM,
     });
 
+    const bodyBuffer = Buffer.from(body, 'utf-8');
+
     await fetch(`${process.env.ENVIRONMENT_URL}/api/send`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(body).toString(),
       },
-      body,
+      body: bodyBuffer,
     });
 
     await prisma.appointment.update({
