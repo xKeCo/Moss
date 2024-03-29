@@ -20,7 +20,6 @@ export const sendConfirmationEmail = async (appointment: IAppointment) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Content-Length': bodyBuffer.byteLength.toString(),
       },
       body: bodyBuffer,
     });
