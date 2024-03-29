@@ -143,7 +143,7 @@ export const PatientForm = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" autoComplete="off">
         <div className="grid sm:grid-cols-4 gap-4 mt-6">
           <FormField
             control={form.control}
@@ -180,9 +180,9 @@ export const PatientForm = ({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="M">Male</SelectItem>
-                    <SelectItem value="F">Female</SelectItem>
-                    <SelectItem value="O">Other</SelectItem>
+                    <SelectItem value="M">Hombre</SelectItem>
+                    <SelectItem value="F">Mujer</SelectItem>
+                    <SelectItem value="O">Otro</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />

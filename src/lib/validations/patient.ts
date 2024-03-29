@@ -10,7 +10,7 @@ export const patientFormSchema = z.object({
     message: 'El número de documento debe tener al menos 8 caracteres.',
   }),
   email: z.string().email({
-    message: 'Email inválido.',
+    message: 'Correo electrónico inválido.',
   }),
   reasonForConsultation: z.string().min(4, {
     message: 'Motivo de consulta  debe tener al menos 4 caracteres.',
@@ -127,7 +127,7 @@ export const patientFormSchema = z.object({
       },
       {
         message: 'Nombre del tratamiento es requerido si está en tratamiento.',
-        path: ['treatment'],
+        path: ['treatmentName'],
       }
     )
     .refine(

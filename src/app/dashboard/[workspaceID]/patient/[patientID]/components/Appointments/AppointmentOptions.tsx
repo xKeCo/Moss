@@ -88,20 +88,22 @@ export const AppointmentOptions = ({ appointment }: IAppointmentOptionsProps) =>
           </DropdownMenuSubTrigger>
           <DropdownMenuPortal>
             <DropdownMenuSubContent>
-              <DropdownMenuItem
-                disabled={
-                  appointment.emailSent ||
-                  new Date(appointment.date).getTime() - new Date().getTime() > 172800000
-                }
-                onClick={handleSendEmail}
-              >
-                {loadingEmail ? (
-                  <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                  <EnvelopeClosedIcon className="mr-2 h-4 w-4" />
-                )}
-                {appointment.emailSent ? 'Correo enviado' : 'Enviar correo'}
-              </DropdownMenuItem>
+              {appointment.Patient.email && (
+                <DropdownMenuItem
+                  disabled={
+                    appointment.emailSent ||
+                    new Date(appointment.date).getTime() - new Date().getTime() > 172800000
+                  }
+                  onClick={handleSendEmail}
+                >
+                  {loadingEmail ? (
+                    <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    <EnvelopeClosedIcon className="mr-2 h-4 w-4" />
+                  )}
+                  {appointment.emailSent ? 'Correo enviado' : 'Enviar correo'}
+                </DropdownMenuItem>
+              )}
 
               <DropdownMenuItem disabled={appointment.WhatsAppSent}>
                 <ChatBubbleIcon className="mr-2 h-4 w-4" />
