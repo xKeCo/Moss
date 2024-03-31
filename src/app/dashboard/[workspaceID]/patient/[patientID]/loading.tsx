@@ -10,7 +10,7 @@ import { Breadcrumb } from '@/components';
 
 export default function PatientLoadingPage() {
   return (
-    <div className="py-5 px-8 flex flex-col gap-4">
+    <div className="pt-5 pb-12 px-8 flex flex-col gap-4">
       <Breadcrumb.Skeleton />
 
       <PatientAlert.Skeleton />

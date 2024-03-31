@@ -75,7 +75,8 @@ export const Odontogram = ({ odontogramState = [], readOnly = false }: IOdontogr
   };
 
   return (
-    <svg className="my-6 mx-auto h-[180px] w-[486px] sm:h-[226px] sm:w-[607px] md:h-[256px] md:w-[688px] lg:h-[310px] lg:w-[810px]">
+    // <svg className="my-6 mx-auto h-[180px] w-[486px] sm:h-[226px] sm:w-[607px] md:h-[256px] md:w-[688px] lg:h-[310px] lg:w-[810px]">
+    <svg className="my-6 mx-auto h-[256px] w-[688px] lg:h-[310px] lg:w-[810px]">
       {teethGroup.map(({ start, end, x, y }) => (
         <Teeth
           key={start}

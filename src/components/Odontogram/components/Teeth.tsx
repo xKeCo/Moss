@@ -31,7 +31,8 @@ export const Teeth = ({
   const tooths = getArray(start, end);
 
   return (
-    <g className="scale-[1.2] sm:scale-[1.5] md:scale-[1.7] lg:scale-[2]">
+    // <g className="scale-[1.2] sm:scale-[1.5] md:scale-[1.7] lg:scale-[2]">
+    <g className="scale-[1.7] lg:scale-[2]">
       {tooths.map((i) => (
         <Tooth
           onChange={handleChange}

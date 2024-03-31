@@ -22,7 +22,7 @@ export const AppointmentCreateModal = () => {
           <PlusIcon className="h-4 w-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-h-screen overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-xl">Crear nueva cita</DialogTitle>
           <DialogDescription>

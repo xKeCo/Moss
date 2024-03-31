@@ -1,13 +1,11 @@
-import { OdontogramSkeleton } from '@/components';
+import { HeaderSectionTitle, OdontogramSkeleton } from '@/components';
 import { Skeleton } from '@/components/ui';
 import { TreatmentBasicInfoSkeleton } from './components/TreatmentBasicInfoSkeleton';
 
 export default function TreatmentInformationLoadingPage() {
   return (
     <>
-      <Skeleton className="h-9 w-1/2 mb-3" />
-
-      <div className="h-[2px] bg-secondary"></div>
+      <HeaderSectionTitle.Skeleton containerClassName="mb-6" />
 
       <h1 className="text-xl xl:text-xl font-semibold mt-2">Odontograma</h1>
 
