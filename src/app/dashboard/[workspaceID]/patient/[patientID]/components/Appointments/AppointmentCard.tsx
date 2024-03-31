@@ -18,7 +18,7 @@ interface IAppointmentCardProps {
 export const AppointmentCard = ({ appointment }: IAppointmentCardProps) => {
   return (
     <div className="flex items-center border p-4 rounded-lg w-full gap-2 dark:bg-[#0e0e0f]">
-      <div className="flex md:hidden lg:flex flex-col items-start justify-between gap-4 w-[92px]">
+      <div className="hidden lg:flex flex-col items-start justify-between gap-4 w-[92px]">
         <h1 className="text-base font-bold capitalize">{formatDate(appointment.date, true)}</h1>
         <p className="text-xs text-muted-foreground font-medium">
           {appointment.startTime}
@@ -27,7 +27,7 @@ export const AppointmentCard = ({ appointment }: IAppointmentCardProps) => {
         </p>
       </div>
 
-      <div className="block md:hidden lg:block h-[96px] bg-zinc-200 w-px mx-2"></div>
+      <div className="hidden lg:block h-[96px] bg-zinc-200 w-px mx-2"></div>
 
       <div className="flex flex-col justify-center w-full">
         <div className="flex items-start justify-between mb-1">
@@ -35,7 +35,7 @@ export const AppointmentCard = ({ appointment }: IAppointmentCardProps) => {
 
           <div className="flex items-center gap-2">
             <Badge
-              className="md:hidden lg:inline-flex text-xs capitalize"
+              className="hidden lg:inline-flex text-xs capitalize"
               variant={appointment.status}
             >
               {appointment.status}
@@ -62,7 +62,7 @@ export const AppointmentCard = ({ appointment }: IAppointmentCardProps) => {
           )}
         </div>
 
-        <div className="hidden md:flex lg:hidden items-center justify-between gap-4 w-full">
+        <div className="flex lg:hidden items-center justify-between gap-4 w-full">
           <h1 className="text-base font-bold capitalize">{formatDate(appointment.date, true)}</h1>
           <p className="text-xs text-muted-foreground font-medium">
             {appointment.startTime}
@@ -71,7 +71,7 @@ export const AppointmentCard = ({ appointment }: IAppointmentCardProps) => {
           </p>
         </div>
 
-        <div className="flex md:hidden lg:flex items-center justify-start gap-4">
+        <div className=" hidden lg:flex items-center justify-start gap-4">
           <div className="flex flex-col gap-1">
             <p className="text-xs text-muted-foreground font-medium">Doctor</p>
             <h1 className="text-sm font-medium capitalize">{appointment.doctor}</h1>
@@ -89,31 +89,31 @@ export const AppointmentCard = ({ appointment }: IAppointmentCardProps) => {
 AppointmentCard.Skeleton = function AppointmentCardSkeleton() {
   return (
     <div className="flex items-center border p-4 rounded-lg w-full gap-2 dark:bg-[#0e0e0f]">
-      <div className="flex md:hidden lg:flex flex-col items-start justify-between gap-3 w-[92px]">
+      <div className="hidden lg:flex flex-col items-start justify-between gap-3 w-[92px]">
         <Skeleton className="h-12 w-16" />
         <Skeleton className="h-8 w-16" />
       </div>
 
-      <div className="block md:hidden lg:block h-[96px] bg-zinc-200 w-px mx-2"></div>
+      <div className="hidden lg:block h-[96px] bg-zinc-200 w-px mx-2"></div>
 
       <div className="flex flex-col justify-center w-full">
         <div className="flex items-start justify-between mb-1">
           <Skeleton className="h-6 w-24" />
 
           <div className="flex items-center gap-2">
-            <Skeleton className="md:hidden lg:inline-flex h-6 w-20" />
+            <Skeleton className="hidden lg:inline-flex h-6 w-20" />
             <Skeleton className="h-6 w-6" />
           </div>
         </div>
 
         <Skeleton className="h-5 w-full mb-2" />
 
-        <div className="hidden md:flex lg:hidden items-center justify-between gap-4 w-full">
+        <div className="flex lg:hidden items-center justify-between gap-4 w-full">
           <Skeleton className="h-6 w-24" />
           <Skeleton className="h-4 w-24" />
         </div>
 
-        <div className="flex md:hidden lg:flex items-center justify-start gap-4">
+        <div className="hidden lg:flex items-center justify-start gap-4">
           <div className="flex flex-col gap-1">
             <Skeleton className="h-4 w-24" />
             <Skeleton className="h-5 w-32" />

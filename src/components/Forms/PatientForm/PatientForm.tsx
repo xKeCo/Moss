@@ -763,9 +763,9 @@ export const PatientForm = ({
                 />
               </FormControl>
               <TermsAndConditionsModal
-                fullName={form.getValues('name')}
-                dniType={form.getValues('dniType')}
-                dniNumber={form.getValues('dniNumber')}
+                fullName={form.watch('name')}
+                dniType={form.watch('dniType')}
+                dniNumber={form.watch('dniNumber')}
               />
             </FormItem>
           )}

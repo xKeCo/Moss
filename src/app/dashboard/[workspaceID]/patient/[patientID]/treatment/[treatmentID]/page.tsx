@@ -60,7 +60,7 @@ export default async function TreatmentInformation({
                 {basicInfo.map((item) => (
                   <div key={item.label}>
                     <p className="text-base font-medium text-muted-foreground">{item.label}</p>
-                    <p className="text-base mt-2">{item.value}</p>
+                    <p className="text-base font-medium mt-2">{item.value}</p>
                   </div>
                 ))}
               </div>

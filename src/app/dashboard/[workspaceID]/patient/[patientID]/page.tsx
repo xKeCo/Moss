@@ -25,7 +25,7 @@ export default async function PatientInfoPage({ params }: Readonly<IPatientInfoP
   ];
 
   return (
-    <div className="pt-5 pb-12 px-8 flex flex-col gap-4">
+    <div className="pt-5 pb-12 px-4 sm:px-8 flex flex-col gap-4">
       <Breadcrumb values={breadcrumbValues} />
 
       <PatientAlert
