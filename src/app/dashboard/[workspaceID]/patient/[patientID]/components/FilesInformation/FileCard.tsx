@@ -1,4 +1,4 @@
-import { ReaderIcon, ImageIcon, PinBottomIcon, FileIcon } from '@radix-ui/react-icons';
+import { ReaderIcon, ImageIcon, FileIcon, EyeOpenIcon } from '@radix-ui/react-icons';
 import {
   Skeleton,
   Tooltip,
@@ -42,8 +42,8 @@ export const FileCard = ({ file }: { file: IFileProps }) => {
   };
 
   return (
-    <div className="flex items-center justify-between gap-2 w-full">
-      <div className="flex items-center justify-start gap-2 overflow-hidden">
+    <div className="grid grid-cols-[minmax(100px,_1fr)_120px] gap-2 w-full">
+      <div className="flex items-center justify-start gap-2">
         {generateFileIcon()}
 
         <TooltipProvider>
@@ -58,20 +58,20 @@ export const FileCard = ({ file }: { file: IFileProps }) => {
         </TooltipProvider>
       </div>
 
-      <div className="flex items-center justify-between gap-2">
-        <p className="text-muted-foreground text-xs truncate">({formatByte(file.size)})</p>
+      <div className="flex items-center justify-end gap-2">
+        <p className="text-muted-foreground text-xs whitespace-nowrap">({formatByte(file.size)})</p>
 
         <TooltipProvider>
           <Tooltip delayDuration={350}>
             <TooltipTrigger asChild>
-              <a href={file.url}>
+              <a href={file.url} target="_blank" rel="noreferrer">
                 <div className="hover:text-muted-foreground transition-colors">
-                  <PinBottomIcon className="h-4 w-4 cursor-pointer" />
+                  <EyeOpenIcon className="h-[18px] w-[18px] cursor-pointer" />
                 </div>
               </a>
             </TooltipTrigger>
             <TooltipContent>
-              <p>Descargar documento ({formatByte(file.size)})</p>
+              <p>Ver documento ({formatByte(file.size)})</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>

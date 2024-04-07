@@ -24,7 +24,7 @@ export const FilesViewAll = ({ files }: IFilesViewAllProps) => {
           Ver todos los archivos
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="flex flex-col max-w-screen-sm">
         <DialogHeader>
           <DialogTitle className="text-xl">Subir archivo</DialogTitle>
           <DialogDescription>
@@ -32,13 +32,10 @@ export const FilesViewAll = ({ files }: IFilesViewAllProps) => {
           </DialogDescription>
         </DialogHeader>
 
-        <ScrollArea className="max-h-96 flex">
-          <div className="flex flex-col justify-start items-start gap-2 w-full pr-4">
+        <ScrollArea className="max-h-96">
+          <div className="flex flex-col justify-start items-start gap-2 pr-4 w-full">
             {files.map((file) => (
-              <>
-                <FileCard file={file} key={file.id} />
-                <FileCard file={file} key={file.id} />
-              </>
+              <FileCard file={file} key={file.id} />
             ))}
           </div>
         </ScrollArea>

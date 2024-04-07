@@ -59,6 +59,7 @@ const uploadFileToS3 = async (file: File, patientId: string): Promise<FileUpload
         Key: fileKey,
         Body: buffer,
         ACL: 'public-read',
+        ContentType: file.type,
       })
     );
 
