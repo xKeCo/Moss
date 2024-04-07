@@ -45,7 +45,7 @@ export default async function PatientInfoPage({ params }: Readonly<IPatientInfoP
 
         <AppointmentInformation appointments={patientInfo?.Appointments!} />
 
-        <FilesInformation files={patientInfo?.Files!} params={params} />
+        <FilesInformation files={patientInfo?.Files!} />
       </div>
     </div>
   );
