@@ -3,6 +3,7 @@ import { DeleteObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
 import { v4 as uuid } from 'uuid';
 import { endpoint, s3Client } from '@/lib/s3Client';
 import prisma from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
 
 interface FileUploadResult {
   ok: boolean;
@@ -95,13 +96,16 @@ const uploadFileToS3 = async (file: File, patientId: string): Promise<FileUpload
 
 export const uploadFiles = async (
   formData: FormData,
-  patientId: string
+  patientId: string,
+  pathname: string
 ): Promise<FileUploadResult[]> => {
   const files = formData.getAll('files') as File[];
 
   if (!files.length) return [];
 
   const filesPromises = files.map((file) => uploadFileToS3(file, patientId));
+
+  revalidatePath(pathname);
 
   return await Promise.all(filesPromises);
 };

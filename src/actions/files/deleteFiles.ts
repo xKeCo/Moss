@@ -2,12 +2,16 @@
 import { DeleteObjectCommand } from '@aws-sdk/client-s3';
 import { s3Client } from '@/lib/s3Client';
 import prisma from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
 
-export const deleteFiles = async (fileId: string) => {
+export const deleteFiles = async (fileId: string, pathname: string) => {
   try {
     const file = await prisma.file.findUnique({
       where: {
         id: fileId,
+      },
+      select: {
+        fileKey: true,
       },
     });
 
@@ -31,6 +35,8 @@ export const deleteFiles = async (fileId: string) => {
         Key: file.fileKey,
       })
     );
+
+    revalidatePath(pathname);
 
     return {
       ok: true,

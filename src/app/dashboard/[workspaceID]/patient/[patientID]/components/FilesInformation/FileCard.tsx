@@ -8,22 +8,14 @@ import {
 } from '@/components/ui';
 import { FileDeleteButton } from './FileDeleteButton';
 import { formatByte } from '@/helpers';
+import type { IFile } from '@/interfaces';
 
-export interface IFileProps {
-  id: string;
-  name: string;
-  extension: string;
-  size: number;
-  ETag: string;
-  url: string;
-  type: string;
-  fileKey: string;
-  patientId: string;
-  createdAt: Date;
-  updatedAt: Date;
+interface IFileCardProps {
+  file: IFile;
+  deleteOptimisticFile: (fileID: string) => void;
 }
 
-export const FileCard = ({ file }: { file: IFileProps }) => {
+export const FileCard = ({ file, deleteOptimisticFile }: IFileCardProps) => {
   const generateFileIcon = () => {
     switch (file.extension) {
       case 'pdf':
@@ -65,7 +57,7 @@ export const FileCard = ({ file }: { file: IFileProps }) => {
           <Tooltip delayDuration={350}>
             <TooltipTrigger asChild>
               <a href={file.url} target="_blank" rel="noreferrer">
-                <div className="hover:text-muted-foreground transition-colors">
+                <div className=" hover:text-blue-500 transition-colors">
                   <EyeOpenIcon className="h-[18px] w-[18px] cursor-pointer" />
                 </div>
               </a>
@@ -76,7 +68,7 @@ export const FileCard = ({ file }: { file: IFileProps }) => {
           </Tooltip>
         </TooltipProvider>
 
-        <FileDeleteButton fileId={file.id} />
+        <FileDeleteButton fileId={file.id!} deleteOptimisticFile={deleteOptimisticFile} />
       </div>
     </div>
   );

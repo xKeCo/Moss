@@ -1,3 +1,4 @@
+'use client';
 import {
   Button,
   Dialog,
@@ -10,17 +11,23 @@ import {
   DialogTrigger,
   ScrollArea,
 } from '@/components/ui';
-import { FileCard, type IFileProps } from './FileCard';
+import { FileCard } from './FileCard';
+import type { IFile } from '@/interfaces';
+import { cn } from '@/lib/utils';
 
 interface IFilesViewAllProps {
-  files: IFileProps[];
+  files: IFile[];
+  deleteOptimisticFile: (fileID: string) => void;
 }
 
-export const FilesViewAll = ({ files }: IFilesViewAllProps) => {
+export const FilesViewAll = ({ files, deleteOptimisticFile }: IFilesViewAllProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="secondary" className="w-full">
+        <Button
+          variant="secondary"
+          className={cn('w-full hidden', files.length > 7 && 'inline-flex')}
+        >
           Ver todos los archivos
         </Button>
       </DialogTrigger>
@@ -35,7 +42,11 @@ export const FilesViewAll = ({ files }: IFilesViewAllProps) => {
         <ScrollArea className="max-h-96">
           <div className="flex flex-col justify-start items-start gap-2 pr-4 w-full">
             {files.map((file) => (
-              <FileCard file={file} key={file.id} />
+              <FileCard
+                key={file.fileKey}
+                file={file}
+                deleteOptimisticFile={deleteOptimisticFile}
+              />
             ))}
           </div>
         </ScrollArea>
