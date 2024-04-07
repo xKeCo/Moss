@@ -26,13 +26,13 @@ export const FilesInformation = ({ files, params }: IFilesInformationProps) => {
         </div>
       ) : (
         <div className="flex flex-col justify-start items-start gap-2 w-full ">
-          {files?.slice(0, 4).map((file) => (
+          {files?.slice(0, 7).map((file) => (
             <FileCard file={file} key={file.id} />
           ))}
         </div>
       )}
 
-      {files?.length > 4 && <FilesViewAll files={files} />}
+      {files?.length > 7 && <FilesViewAll files={files} />}
     </div>
   );
 };

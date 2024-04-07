@@ -40,7 +40,7 @@ export const FileDeleteButton = ({ fileId }: { fileId: string }) => {
               <Icons.Spinner className="h-4 w-4 animate-spin" />
             ) : (
               <TrashIcon
-                className="h-4 w-4 cursor-pointer hover:text-muted-foreground transition-colors"
+                className="min-h-[18px] min-w-[18px] cursor-pointer hover:text-muted-foreground transition-colors"
                 onClick={handleDelete}
               />
             )}
