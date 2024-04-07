@@ -1,6 +1,7 @@
 'use client';
-import { FormEvent, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { FormEvent, startTransition, useRef, useState } from 'react';
+import { usePathname } from 'next/navigation';
+import { toast } from 'sonner';
 import { EyeOpenIcon, PinTopIcon, TrashIcon } from '@radix-ui/react-icons';
 import {
   Button,
@@ -16,22 +17,20 @@ import {
 } from '@/components/ui';
 import { uploadFiles } from '@/actions';
 import { Icons } from '@/components';
-import { toast } from 'sonner';
+import type { IFile } from '@/interfaces';
 
 interface IFileUploadModalProps {
-  params: {
-    workspaceID: string;
-    patientID: string;
-  };
+  patientID: string;
+  addOptimisticFiles: (action: IFile[]) => void;
 }
 
-export const FileUploadModal = ({ params }: IFileUploadModalProps) => {
+export const FileUploadModal = ({ patientID, addOptimisticFiles }: IFileUploadModalProps) => {
   const [filesUpload, setFilesUpload] = useState<File[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const fileInput = useRef<HTMLInputElement>(null);
 
-  const router = useRouter();
+  const pathname = usePathname();
 
   const onFileInputChange = async (e: FormEvent<HTMLInputElement>) => {
     const { files } = e.currentTarget;
@@ -67,7 +66,7 @@ export const FileUploadModal = ({ params }: IFileUploadModalProps) => {
 
     setLoading(true);
 
-    const fileRes = await uploadFiles(formData, params.patientID);
+    const fileRes = await uploadFiles(formData, patientID, pathname);
 
     setLoading(false);
 
@@ -79,10 +78,10 @@ export const FileUploadModal = ({ params }: IFileUploadModalProps) => {
       }
     });
 
+    startTransition(() => addOptimisticFiles(fileRes.filter((file) => file.ok) as IFile[]));
+
     setFilesUpload([]);
     setOpen(false);
-
-    router.refresh();
   };
 
   return (
