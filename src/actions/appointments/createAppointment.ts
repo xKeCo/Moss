@@ -5,25 +5,43 @@ import { revalidatePath } from 'next/cache';
 export const createAppointment = async (
   appointmentData: any,
   patientId: string,
-  pathname: string
+  pathname: string,
+  activeAppointmentId?: string
 ) => {
   try {
-    const newAppointment = await prisma.appointment.create({
-      data: {
-        ...appointmentData,
-        startTime: appointmentData.startTime.slice(0, 5),
-        startTimeAMPM: appointmentData.startTime.slice(-2),
-        endTime: appointmentData.endTime.slice(0, 5),
-        endTimeAMPM: appointmentData.endTime.slice(-2),
-        patientId,
-      },
-    });
+    let appointment = null;
+
+    if (activeAppointmentId) {
+      appointment = await prisma.appointment.update({
+        where: {
+          id: activeAppointmentId,
+        },
+        data: {
+          ...appointmentData,
+          startTime: appointmentData.startTime.slice(0, 5),
+          startTimeAMPM: appointmentData.startTime.slice(-2),
+          endTime: appointmentData.endTime.slice(0, 5),
+          endTimeAMPM: appointmentData.endTime.slice(-2),
+        },
+      });
+    } else {
+      appointment = await prisma.appointment.create({
+        data: {
+          ...appointmentData,
+          startTime: appointmentData.startTime.slice(0, 5),
+          startTimeAMPM: appointmentData.startTime.slice(-2),
+          endTime: appointmentData.endTime.slice(0, 5),
+          endTimeAMPM: appointmentData.endTime.slice(-2),
+          patientId,
+        },
+      });
+    }
 
     revalidatePath(pathname);
 
     return {
       ok: true,
-      appointment: newAppointment,
+      appointment,
     };
   } catch (error) {
     console.log(error);

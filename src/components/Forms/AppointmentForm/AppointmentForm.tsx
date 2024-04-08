@@ -30,6 +30,7 @@ import {
 import { timeOptions } from '@/helpers';
 import { Icons } from '@/components';
 import { createAppointment } from '@/actions';
+import type { IAppointment } from '@/interfaces';
 
 const FormSchema = z.object({
   doctor: z.string().min(1, {
@@ -58,11 +59,16 @@ const FormSchema = z.object({
 });
 
 interface IAppointmentFormProps {
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpen: (open: boolean) => void;
   addOptimisticAppointments: (newAppointments: any) => void;
+  activeAppointment: IAppointment | null;
 }
 
-export const AppointmentForm = ({ setOpen, addOptimisticAppointments }: IAppointmentFormProps) => {
+export const AppointmentForm = ({
+  setOpen,
+  addOptimisticAppointments,
+  activeAppointment = null,
+}: IAppointmentFormProps) => {
   const pathname = usePathname();
   const { patientID } = useParams();
 
@@ -70,15 +76,19 @@ export const AppointmentForm = ({ setOpen, addOptimisticAppointments }: IAppoint
     resolver: zodResolver(FormSchema),
     defaultValues: {
       doctor: 'Dra. Sandra Peña',
-      office: '',
-      date: new Date(),
-      startTime: '',
-      endTime: '',
-      treatment: '',
-      status: 'pendiente',
-      emailSent: false,
-      SMSsent: false,
-      WhatsAppSent: false,
+      office: activeAppointment ? activeAppointment.office : '',
+      date: activeAppointment ? new Date(activeAppointment.date) : new Date(),
+      startTime: activeAppointment
+        ? `${activeAppointment.startTime}${activeAppointment.startTimeAMPM}`
+        : '',
+      endTime: activeAppointment
+        ? `${activeAppointment.endTime}${activeAppointment.endTimeAMPM}`
+        : '',
+      treatment: activeAppointment ? activeAppointment.treatment : '',
+      status: activeAppointment ? activeAppointment.status : 'pendiente',
+      emailSent: activeAppointment ? activeAppointment.emailSent : false,
+      SMSsent: activeAppointment ? activeAppointment.SMSsent : false,
+      WhatsAppSent: activeAppointment ? activeAppointment.WhatsAppSent : false,
     },
   });
 
@@ -187,7 +197,12 @@ export const AppointmentForm = ({ setOpen, addOptimisticAppointments }: IAppoint
     setLoading(true);
     data.date.setHours(0, 0, 0, 0);
 
-    const appointment = await createAppointment(data, patientID as string, pathname);
+    const appointment = await createAppointment(
+      data,
+      patientID as string,
+      pathname,
+      activeAppointment?.id
+    );
 
     setLoading(false);
 

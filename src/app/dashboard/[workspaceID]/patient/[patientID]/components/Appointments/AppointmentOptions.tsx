@@ -23,16 +23,22 @@ import {
 } from '@/components/ui';
 import { Icons } from '@/components';
 import { deleteAppointment, sendConfirmationEmail } from '@/actions';
+import type { IAppointment } from '@/interfaces';
 
 interface IAppointmentOptionsProps {
   appointment: any;
   deleteOptimisticAppointment: (appointmentID: string) => void;
+  setActiveAppointment: (appointment: IAppointment) => void;
+  setOpen: (open: boolean) => void;
 }
 
 export const AppointmentOptions = ({
   appointment,
   deleteOptimisticAppointment,
+  setActiveAppointment,
+  setOpen,
 }: IAppointmentOptionsProps) => {
+  const FORTYEIGHTHOURS = new Date(appointment.date).getTime() - new Date().getTime() < 172800000;
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingEmail, setLoadingEmail] = useState<boolean>(false);
   const [sendEmail, setSendEmail] = useOptimistic<boolean, boolean>(
@@ -86,42 +92,43 @@ export const AppointmentOptions = ({
         <DotsVerticalIcon className="w-4 h-4 text-muted-foreground" />
       </DropdownMenuTrigger>
       <DropdownMenuContent side="bottom" align="end">
-        <DropdownMenuSub>
-          <DropdownMenuSubTrigger>
-            <BellIcon className="mr-2 h-4 w-4" />
-            <span>Notificar</span>
-          </DropdownMenuSubTrigger>
-          <DropdownMenuPortal>
-            <DropdownMenuSubContent>
-              <DropdownMenuItem
-                disabled={
-                  sendEmail ||
-                  new Date(appointment.date).getTime() - new Date().getTime() > 172800000
-                }
-                onClick={handleSendEmail}
-              >
-                {loadingEmail ? (
-                  <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                  <EnvelopeClosedIcon className="mr-2 h-4 w-4" />
-                )}
-                {sendEmail ? 'Correo enviado' : 'Enviar correo'}
-              </DropdownMenuItem>
+        {FORTYEIGHTHOURS && (
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>
+              <BellIcon className="mr-2 h-4 w-4" />
+              <span>Notificar</span>
+            </DropdownMenuSubTrigger>
+            <DropdownMenuPortal>
+              <DropdownMenuSubContent>
+                <DropdownMenuItem disabled={sendEmail} onClick={handleSendEmail}>
+                  {loadingEmail ? (
+                    <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    <EnvelopeClosedIcon className="mr-2 h-4 w-4" />
+                  )}
+                  {sendEmail ? 'Correo enviado' : 'Enviar correo'}
+                </DropdownMenuItem>
 
-              <DropdownMenuItem disabled={appointment.WhatsAppSent}>
-                <ChatBubbleIcon className="mr-2 h-4 w-4" />
-                {appointment.WhatsAppSent ? 'Whatsapp enviado' : 'Enviar Whatsapp'}
-              </DropdownMenuItem>
+                <DropdownMenuItem disabled={appointment.WhatsAppSent}>
+                  <ChatBubbleIcon className="mr-2 h-4 w-4" />
+                  {appointment.WhatsAppSent ? 'Whatsapp enviado' : 'Enviar Whatsapp'}
+                </DropdownMenuItem>
 
-              <DropdownMenuItem disabled={appointment.SMSsent}>
-                <PaperPlaneIcon className="mr-2 h-4 w-4" />
-                {appointment.SMSsent ? 'SMS enviado' : 'Enviar SMS'}
-              </DropdownMenuItem>
-            </DropdownMenuSubContent>
-          </DropdownMenuPortal>
-        </DropdownMenuSub>
+                <DropdownMenuItem disabled={appointment.SMSsent}>
+                  <PaperPlaneIcon className="mr-2 h-4 w-4" />
+                  {appointment.SMSsent ? 'SMS enviado' : 'Enviar SMS'}
+                </DropdownMenuItem>
+              </DropdownMenuSubContent>
+            </DropdownMenuPortal>
+          </DropdownMenuSub>
+        )}
 
-        <DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => {
+            setActiveAppointment(appointment);
+            setOpen(true);
+          }}
+        >
           <ReloadIcon className="mr-2 h-4 w-4" />
           Reagendar
         </DropdownMenuItem>
