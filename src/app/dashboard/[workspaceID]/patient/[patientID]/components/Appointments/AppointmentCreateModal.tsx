@@ -1,5 +1,4 @@
 'use client';
-import { useState } from 'react';
 import { PlusIcon } from '@radix-ui/react-icons';
 import {
   Button,
@@ -11,18 +10,31 @@ import {
   DialogTrigger,
 } from '@/components/ui';
 import { AppointmentForm } from '@/components';
+import type { IAppointment } from '@/interfaces';
 
 interface IAppointmentCreateModalProps {
+  activeAppointment: IAppointment | null;
+  setActiveAppointment: (appointment: IAppointment | null) => void;
   addOptimisticAppointments: (newAppointments: any) => void;
+  open: boolean;
+  setOpen: (open: boolean) => void;
 }
 
 export const AppointmentCreateModal = ({
+  activeAppointment = null,
+  setActiveAppointment,
   addOptimisticAppointments,
+  open,
+  setOpen,
 }: IAppointmentCreateModalProps) => {
-  const [open, setOpen] = useState<boolean>(false);
-
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={() => {
+        setOpen(!open);
+        setActiveAppointment(null);
+      }}
+    >
       <DialogTrigger asChild>
         <Button size="icon">
           <PlusIcon className="h-4 w-4" />
@@ -35,7 +47,11 @@ export const AppointmentCreateModal = ({
             Complete los campos para crear una nueva cita para el paciente seleccionado
           </DialogDescription>
         </DialogHeader>
-        <AppointmentForm setOpen={setOpen} addOptimisticAppointments={addOptimisticAppointments} />
+        <AppointmentForm
+          setOpen={setOpen}
+          addOptimisticAppointments={addOptimisticAppointments}
+          activeAppointment={activeAppointment}
+        />
       </DialogContent>
     </Dialog>
   );

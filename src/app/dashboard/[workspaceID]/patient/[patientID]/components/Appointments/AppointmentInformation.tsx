@@ -1,5 +1,5 @@
 'use client';
-import { useOptimistic } from 'react';
+import { useOptimistic, useState } from 'react';
 import { ScrollArea, Skeleton } from '@/components/ui';
 import { cn } from '@/lib/utils';
 import { AppointmentCard } from './AppointmentCard';
@@ -15,7 +15,11 @@ export const AppointmentInformation = ({ appointments }: IAppointmentInformation
     IAppointment[],
     IAppointment
   >(appointments, (state, appointment) => {
-    return [...state, appointment].sort((a, b) => {
+    const filteredAppointments = state.filter(
+      (stateAppointment) => stateAppointment.id !== appointment.id
+    );
+
+    const newAppointments = [...filteredAppointments, appointment].sort((a, b) => {
       const dateComparison = new Date(a.date).getTime() - new Date(b.date).getTime();
       if (dateComparison !== 0) return dateComparison;
 
@@ -25,12 +29,17 @@ export const AppointmentInformation = ({ appointments }: IAppointmentInformation
       const startTimeComparison = a.startTime.localeCompare(b.startTime);
       return startTimeComparison;
     });
+
+    return newAppointments;
   });
 
   const [optimisticAppointments, deleteOptimisticAppointment] = useOptimistic(
     optimisticCreatedAppointments,
     (state, appointmentID) => state.filter((appointment) => appointment.id !== appointmentID)
   );
+
+  const [activeAppointment, setActiveAppointment] = useState<IAppointment | null>(null);
+  const [open, setOpen] = useState<boolean>(false);
 
   return (
     <div
@@ -45,8 +54,19 @@ export const AppointmentInformation = ({ appointments }: IAppointmentInformation
           optimisticAppointments?.length > 2 && 'pr-4'
         )}
       >
-        <h1 className="text-xl font-semibold">Citas médicas</h1>
-        <AppointmentCreateModal addOptimisticAppointments={addOptimisticAppointments} />
+        <div className="flex flex-col gap-1 items-start justify-center">
+          <h1 className="text-xl font-semibold">Citas médicas</h1>
+          <p className="text-muted-foreground text-xs font-medium">
+            Las notificaciones se activan 48 horas antes de la cita.
+          </p>
+        </div>
+        <AppointmentCreateModal
+          open={open}
+          setOpen={setOpen}
+          activeAppointment={activeAppointment}
+          setActiveAppointment={setActiveAppointment}
+          addOptimisticAppointments={addOptimisticAppointments}
+        />
       </div>
 
       {optimisticAppointments?.length === 0 ? (
@@ -68,6 +88,8 @@ export const AppointmentInformation = ({ appointments }: IAppointmentInformation
                 key={appointment.id}
                 appointment={appointment}
                 deleteOptimisticAppointment={deleteOptimisticAppointment}
+                setActiveAppointment={setActiveAppointment}
+                setOpen={setOpen}
               />
             ))}
           </div>

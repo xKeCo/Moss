@@ -1,3 +1,4 @@
+import { InfoCircledIcon } from '@radix-ui/react-icons';
 import {
   Badge,
   Skeleton,
@@ -9,16 +10,19 @@ import {
 import { AppointmentOptions } from './AppointmentOptions';
 import { formatDate } from '@/helpers';
 import type { IAppointment } from '@/interfaces';
-import { InfoCircledIcon } from '@radix-ui/react-icons';
 
 interface IAppointmentCardProps {
   appointment: IAppointment;
   deleteOptimisticAppointment: (appointmentID: string) => void;
+  setActiveAppointment: (appointment: IAppointment) => void;
+  setOpen: (open: boolean) => void;
 }
 
 export const AppointmentCard = ({
   appointment,
   deleteOptimisticAppointment,
+  setActiveAppointment,
+  setOpen,
 }: IAppointmentCardProps) => {
   return (
     <div className="flex items-center border p-4 rounded-lg w-full gap-2 dark:bg-[#0e0e0f]">
@@ -48,6 +52,8 @@ export const AppointmentCard = ({
             <AppointmentOptions
               appointment={appointment}
               deleteOptimisticAppointment={deleteOptimisticAppointment}
+              setActiveAppointment={setActiveAppointment}
+              setOpen={setOpen}
             />
           </div>
         </div>
