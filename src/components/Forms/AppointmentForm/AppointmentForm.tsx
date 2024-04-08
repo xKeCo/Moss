@@ -1,5 +1,12 @@
 'use client';
-import { useState } from 'react';
+import { startTransition, useState } from 'react';
+import { useParams, usePathname } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { format } from 'date-fns';
+import { toast } from 'sonner';
+import { CalendarIcon } from '@radix-ui/react-icons';
 import {
   Button,
   Calendar,
@@ -20,16 +27,9 @@ import {
   SelectValue,
   Textarea,
 } from '@/components/ui';
-import { format } from 'date-fns';
-import { CalendarIcon } from '@radix-ui/react-icons';
 import { timeOptions } from '@/helpers';
 import { Icons } from '@/components';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { toast } from 'sonner';
 import { createAppointment } from '@/actions';
-import { useParams, useRouter } from 'next/navigation';
 
 const FormSchema = z.object({
   doctor: z.string().min(1, {
@@ -57,13 +57,14 @@ const FormSchema = z.object({
   WhatsAppSent: z.boolean(),
 });
 
-export const AppointmentForm = ({
-  setOpen,
-}: {
+interface IAppointmentFormProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
-  const router = useRouter();
-  const params = useParams();
+  addOptimisticAppointments: (newAppointments: any) => void;
+}
+
+export const AppointmentForm = ({ setOpen, addOptimisticAppointments }: IAppointmentFormProps) => {
+  const pathname = usePathname();
+  const { patientID } = useParams();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -186,7 +187,7 @@ export const AppointmentForm = ({
     setLoading(true);
     data.date.setHours(0, 0, 0, 0);
 
-    const appointment = await createAppointment(data, params.patientID as string);
+    const appointment = await createAppointment(data, patientID as string, pathname);
 
     setLoading(false);
 
@@ -194,9 +195,12 @@ export const AppointmentForm = ({
       return toast.error(appointment?.errorMessage);
     }
 
+    startTransition(() => {
+      addOptimisticAppointments(appointment.appointment);
+    });
+
     setOpen(false);
     toast.success('Cita creada exitosamente.');
-    router.refresh();
   }
 
   return (
