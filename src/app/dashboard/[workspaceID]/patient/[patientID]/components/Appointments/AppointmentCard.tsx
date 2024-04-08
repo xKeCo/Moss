@@ -13,9 +13,13 @@ import { InfoCircledIcon } from '@radix-ui/react-icons';
 
 interface IAppointmentCardProps {
   appointment: IAppointment;
+  deleteOptimisticAppointment: (appointmentID: string) => void;
 }
 
-export const AppointmentCard = ({ appointment }: IAppointmentCardProps) => {
+export const AppointmentCard = ({
+  appointment,
+  deleteOptimisticAppointment,
+}: IAppointmentCardProps) => {
   return (
     <div className="flex items-center border p-4 rounded-lg w-full gap-2 dark:bg-[#0e0e0f]">
       <div className="hidden lg:flex flex-col items-start justify-between gap-4 w-[92px]">
@@ -41,7 +45,10 @@ export const AppointmentCard = ({ appointment }: IAppointmentCardProps) => {
               {appointment.status}
             </Badge>
 
-            <AppointmentOptions appointment={appointment} />
+            <AppointmentOptions
+              appointment={appointment}
+              deleteOptimisticAppointment={deleteOptimisticAppointment}
+            />
           </div>
         </div>
 

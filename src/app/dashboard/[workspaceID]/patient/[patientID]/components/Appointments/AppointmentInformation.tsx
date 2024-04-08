@@ -1,3 +1,5 @@
+'use client';
+import { useOptimistic } from 'react';
 import { ScrollArea, Skeleton } from '@/components/ui';
 import { cn } from '@/lib/utils';
 import { AppointmentCard } from './AppointmentCard';
@@ -9,24 +11,45 @@ interface IAppointmentInformationProps {
 }
 
 export const AppointmentInformation = ({ appointments }: IAppointmentInformationProps) => {
+  const [optimisticCreatedAppointments, addOptimisticAppointments] = useOptimistic<
+    IAppointment[],
+    IAppointment
+  >(appointments, (state, appointment) => {
+    return [...state, appointment].sort((a, b) => {
+      const dateComparison = new Date(a.date).getTime() - new Date(b.date).getTime();
+      if (dateComparison !== 0) return dateComparison;
+
+      const amPmComparison = a.startTimeAMPM.localeCompare(b.startTimeAMPM);
+      if (amPmComparison !== 0) return amPmComparison;
+
+      const startTimeComparison = a.startTime.localeCompare(b.startTime);
+      return startTimeComparison;
+    });
+  });
+
+  const [optimisticAppointments, deleteOptimisticAppointment] = useOptimistic(
+    optimisticCreatedAppointments,
+    (state, appointmentID) => state.filter((appointment) => appointment.id !== appointmentID)
+  );
+
   return (
     <div
       className={cn(
         'flex flex-col items-start justify-start col-span-4 md:col-span-3 lg:col-span-4 xl:col-span-3 border rounded-2xl gap-3 w-full p-6 min-h-[382px] overflow-hidden dark:bg-zinc-900',
-        appointments?.length > 2 && 'pr-2'
+        optimisticAppointments?.length > 2 && 'pr-2'
       )}
     >
       <div
         className={cn(
           'flex items-center justify-between w-full mb-2',
-          appointments?.length > 2 && 'pr-4'
+          optimisticAppointments?.length > 2 && 'pr-4'
         )}
       >
         <h1 className="text-xl font-semibold">Citas médicas</h1>
-        <AppointmentCreateModal />
+        <AppointmentCreateModal addOptimisticAppointments={addOptimisticAppointments} />
       </div>
 
-      {appointments?.length === 0 ? (
+      {optimisticAppointments?.length === 0 ? (
         <div className="flex items-center justify-center h-full w-full">
           <h1 className="text-lg text-center text-balance">
             Aún no hay citas médicas programadas.
@@ -37,11 +60,15 @@ export const AppointmentInformation = ({ appointments }: IAppointmentInformation
           <div
             className={cn(
               'flex flex-col justify-start items-start gap-3 w-full max-h-[276px]',
-              appointments?.length > 2 && 'pr-4'
+              optimisticAppointments?.length > 2 && 'pr-4'
             )}
           >
-            {appointments?.map((appointment) => (
-              <AppointmentCard appointment={appointment} key={appointment.id} />
+            {optimisticAppointments?.map((appointment) => (
+              <AppointmentCard
+                key={appointment.id}
+                appointment={appointment}
+                deleteOptimisticAppointment={deleteOptimisticAppointment}
+              />
             ))}
           </div>
         </ScrollArea>
@@ -50,7 +77,7 @@ export const AppointmentInformation = ({ appointments }: IAppointmentInformation
   );
 };
 
-AppointmentInformation.Skeleton = function AppointmentInformationSkeleton() {
+export function AppointmentInformationSkeleton() {
   return (
     <div className="flex flex-col items-start justify-start col-span-4 md:col-span-3 lg:col-span-4 xl:col-span-3 border rounded-2xl gap-3 w-full p-6 min-h-[306px] overflow-hidden dark:bg-zinc-900 pr-2">
       <div className="flex items-center justify-between w-full mb-2 pr-4 gap-2">
@@ -67,4 +94,4 @@ AppointmentInformation.Skeleton = function AppointmentInformationSkeleton() {
       </ScrollArea>
     </div>
   );
-};
+}

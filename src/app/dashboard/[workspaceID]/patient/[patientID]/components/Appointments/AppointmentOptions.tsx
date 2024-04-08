@@ -1,6 +1,6 @@
 'use client';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { startTransition, useOptimistic, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { toast } from 'sonner';
 import {
   BellIcon,
@@ -26,32 +26,39 @@ import { deleteAppointment, sendConfirmationEmail } from '@/actions';
 
 interface IAppointmentOptionsProps {
   appointment: any;
+  deleteOptimisticAppointment: (appointmentID: string) => void;
 }
 
-export const AppointmentOptions = ({ appointment }: IAppointmentOptionsProps) => {
+export const AppointmentOptions = ({
+  appointment,
+  deleteOptimisticAppointment,
+}: IAppointmentOptionsProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingEmail, setLoadingEmail] = useState<boolean>(false);
-  const router = useRouter();
+  const [sendEmail, setSendEmail] = useOptimistic<boolean, boolean>(
+    appointment.emailSent,
+    () => true
+  );
+
+  const pathname = usePathname();
 
   const handleDelete = async (e: any) => {
     e.preventDefault();
 
     setLoading(true);
 
-    const deletedFile = await deleteAppointment(appointment.id);
+    const deletedAppointment = await deleteAppointment(appointment.id, pathname);
 
     setLoading(false);
 
-    if (!deletedFile.ok) {
-      toast.error(deletedFile.errorMessage);
+    if (!deletedAppointment.ok) {
+      toast.error(deletedAppointment.errorMessage);
       return;
     }
 
-    if (deletedFile.ok) {
-      toast.success(deletedFile.message);
-    }
+    toast.success(deletedAppointment.message);
 
-    router.refresh();
+    startTransition(() => deleteOptimisticAppointment(appointment.id));
   };
 
   const handleSendEmail = async (e: any) => {
@@ -59,7 +66,7 @@ export const AppointmentOptions = ({ appointment }: IAppointmentOptionsProps) =>
 
     setLoadingEmail(true);
 
-    const emailSent = await sendConfirmationEmail(appointment);
+    const emailSent = await sendConfirmationEmail(appointment, pathname);
 
     setLoadingEmail(false);
 
@@ -68,11 +75,9 @@ export const AppointmentOptions = ({ appointment }: IAppointmentOptionsProps) =>
       return;
     }
 
-    if (emailSent.ok) {
-      toast.success(emailSent.message);
-    }
+    toast.success(emailSent.message);
 
-    router.refresh();
+    startTransition(() => setSendEmail(true));
   };
 
   return (
@@ -88,22 +93,20 @@ export const AppointmentOptions = ({ appointment }: IAppointmentOptionsProps) =>
           </DropdownMenuSubTrigger>
           <DropdownMenuPortal>
             <DropdownMenuSubContent>
-              {appointment.Patient.email && (
-                <DropdownMenuItem
-                  disabled={
-                    appointment.emailSent ||
-                    new Date(appointment.date).getTime() - new Date().getTime() > 172800000
-                  }
-                  onClick={handleSendEmail}
-                >
-                  {loadingEmail ? (
-                    <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
-                  ) : (
-                    <EnvelopeClosedIcon className="mr-2 h-4 w-4" />
-                  )}
-                  {appointment.emailSent ? 'Correo enviado' : 'Enviar correo'}
-                </DropdownMenuItem>
-              )}
+              <DropdownMenuItem
+                disabled={
+                  sendEmail ||
+                  new Date(appointment.date).getTime() - new Date().getTime() > 172800000
+                }
+                onClick={handleSendEmail}
+              >
+                {loadingEmail ? (
+                  <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <EnvelopeClosedIcon className="mr-2 h-4 w-4" />
+                )}
+                {sendEmail ? 'Correo enviado' : 'Enviar correo'}
+              </DropdownMenuItem>
 
               <DropdownMenuItem disabled={appointment.WhatsAppSent}>
                 <ChatBubbleIcon className="mr-2 h-4 w-4" />

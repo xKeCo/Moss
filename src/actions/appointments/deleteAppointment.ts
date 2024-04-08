@@ -1,13 +1,16 @@
 'use server';
 import prisma from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
 
-export const deleteAppointment = async (appointmentId: string) => {
+export const deleteAppointment = async (appointmentId: string, pathname: string) => {
   try {
     await prisma.appointment.delete({
       where: {
         id: appointmentId,
       },
     });
+
+    revalidatePath(pathname);
 
     return {
       ok: true,

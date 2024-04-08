@@ -1,8 +1,9 @@
 'use server';
 import prisma from '@/lib/prisma';
 import type { IAppointment } from '@/interfaces';
+import { revalidatePath } from 'next/cache';
 
-export const sendConfirmationEmail = async (appointment: IAppointment) => {
+export const sendConfirmationEmail = async (appointment: IAppointment, pathname: string) => {
   try {
     const body = JSON.stringify({
       email: appointment?.Patient.email,
@@ -30,6 +31,8 @@ export const sendConfirmationEmail = async (appointment: IAppointment) => {
         emailSent: true,
       },
     });
+
+    revalidatePath(pathname);
 
     return {
       ok: true,

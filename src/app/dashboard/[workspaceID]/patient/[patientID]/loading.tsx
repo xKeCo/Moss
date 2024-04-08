@@ -1,5 +1,5 @@
 import {
-  AppointmentInformation,
+  AppointmentInformationSkeleton,
   FilesInformationSkeleton,
   PatientAlert,
   PatientCard,
@@ -19,7 +19,7 @@ export default function PatientLoadingPage() {
         <PatientCard.Skeleton />
         <PatientInformation.Skeleton />
         <PatientTreatment.Skeleton />
-        <AppointmentInformation.Skeleton />
+        <AppointmentInformationSkeleton />
         <FilesInformationSkeleton />
       </div>
     </div>

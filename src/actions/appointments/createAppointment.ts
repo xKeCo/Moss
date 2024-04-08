@@ -1,7 +1,12 @@
 'use server';
 import prisma from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
 
-export const createAppointment = async (appointmentData: any, patientId: string) => {
+export const createAppointment = async (
+  appointmentData: any,
+  patientId: string,
+  pathname: string
+) => {
   try {
     const newAppointment = await prisma.appointment.create({
       data: {
@@ -12,10 +17,9 @@ export const createAppointment = async (appointmentData: any, patientId: string)
         endTimeAMPM: appointmentData.endTime.slice(-2),
         patientId,
       },
-      select: {
-        id: true,
-      },
     });
+
+    revalidatePath(pathname);
 
     return {
       ok: true,

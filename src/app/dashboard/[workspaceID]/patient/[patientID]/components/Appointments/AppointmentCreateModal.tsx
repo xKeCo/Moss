@@ -12,7 +12,13 @@ import {
 } from '@/components/ui';
 import { AppointmentForm } from '@/components';
 
-export const AppointmentCreateModal = () => {
+interface IAppointmentCreateModalProps {
+  addOptimisticAppointments: (newAppointments: any) => void;
+}
+
+export const AppointmentCreateModal = ({
+  addOptimisticAppointments,
+}: IAppointmentCreateModalProps) => {
   const [open, setOpen] = useState<boolean>(false);
 
   return (
@@ -29,7 +35,7 @@ export const AppointmentCreateModal = () => {
             Complete los campos para crear una nueva cita para el paciente seleccionado
           </DialogDescription>
         </DialogHeader>
-        <AppointmentForm setOpen={setOpen} />
+        <AppointmentForm setOpen={setOpen} addOptimisticAppointments={addOptimisticAppointments} />
       </DialogContent>
     </Dialog>
   );
