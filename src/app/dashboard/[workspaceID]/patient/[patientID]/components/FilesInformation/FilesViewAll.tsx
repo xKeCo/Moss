@@ -26,7 +26,7 @@ export const FilesViewAll = ({ files, deleteOptimisticFile }: IFilesViewAllProps
       <DialogTrigger asChild>
         <Button
           variant="secondary"
-          className={cn('w-full hidden', files.length > 7 && 'inline-flex')}
+          className={cn('w-full hidden', files?.length > 7 && 'inline-flex')}
         >
           Ver todos los archivos
         </Button>
@@ -41,7 +41,7 @@ export const FilesViewAll = ({ files, deleteOptimisticFile }: IFilesViewAllProps
 
         <ScrollArea className="max-h-96">
           <div className="flex flex-col justify-start items-start gap-2 pr-4 w-full">
-            {files.map((file) => (
+            {files?.map((file) => (
               <FileCard
                 key={file.fileKey}
                 file={file}

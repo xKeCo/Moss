@@ -1,11 +1,13 @@
 'use client';
 import { useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
-import { createWorkspace, navigate } from '@/actions';
+import { createWorkspace } from '@/actions';
 import { workspaceFormSchema } from '@/lib/validations';
 import { Icons, UserNav } from '@/components';
 import {
@@ -24,7 +26,6 @@ import {
   FormControl,
   FormMessage,
 } from '@/components/ui';
-import Link from 'next/link';
 
 type PatientFormData = z.infer<typeof workspaceFormSchema>;
 
@@ -32,6 +33,7 @@ export default function WorkspacePage() {
   const { data: session, update, status } = useSession();
   const [isLoading, setIsLoading] = useState(false);
   const alreadyHasWorkspace = session?.user?.workspaces?.length! > 0;
+  const router = useRouter();
 
   const form = useForm<PatientFormData>({
     resolver: zodResolver(workspaceFormSchema),
@@ -82,7 +84,7 @@ export default function WorkspacePage() {
     });
 
     toast.success('Workspace created successfully!');
-    navigate(`/dashboard/${newWorkspace.workspace?.id}`);
+    router.push(`/dashboard/${newWorkspace.workspace?.id}`);
     form.reset();
   }
 

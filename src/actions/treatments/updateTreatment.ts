@@ -1,7 +1,7 @@
 'use server';
-
 import prisma from '@/lib/prisma';
 import type { IRealTxPlan, ITxEvolution } from '@/interfaces';
+import { revalidatePath } from 'next/cache';
 
 interface IUpdateTreatment {
   RealTxPlan: IRealTxPlan[];
@@ -13,7 +13,11 @@ interface IUpdateTreatment {
   createdAt: string | Date;
 }
 
-export const updateTreatment = async (treatmentData: IUpdateTreatment, treatmentId: string) => {
+export const updateTreatment = async (
+  treatmentData: IUpdateTreatment,
+  treatmentId: string,
+  validatePath: string
+) => {
   try {
     const totalPrice = treatmentData.RealTxPlan.reduce(
       (acc: number, curr: any) => acc + Number(curr.txPrice),
@@ -71,6 +75,8 @@ export const updateTreatment = async (treatmentData: IUpdateTreatment, treatment
         TxEvolutions: true,
       },
     });
+
+    revalidatePath(validatePath);
 
     return {
       ok: true,

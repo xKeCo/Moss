@@ -2,13 +2,14 @@
 import { HTMLAttributes, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
-import { navigate, registerUser } from '@/actions';
+import { registerUser } from '@/actions';
 import {
   Button,
   Input,
@@ -25,23 +26,26 @@ interface UserAuthFormProps extends HTMLAttributes<HTMLDivElement> {
   isRegister?: boolean;
 }
 
-const FormSchema = z.object({
-  email: z.string().email({
-    message: 'Please enter a valid email address.',
-  }),
-  username: z
-    .string()
-    .min(2, {
-      message: 'Username must be at least 2 characters.',
-    })
-    .optional(),
-  password: z.string().min(6, {
-    message: 'Password must be at least 6 characters.',
-  }),
-});
-
 export function AuthForm({ className, isRegister, ...props }: Readonly<UserAuthFormProps>) {
+  const FormSchema = z.object({
+    email: z.string().email({
+      message: 'Ingrese un correo electrónico válido.',
+    }),
+    username: z
+      .string()
+      .min(3, {
+        message: 'Nombre de usuario debe tener al menos 3 caracteres.',
+      })
+      .optional(),
+    password: z.string().min(6, {
+      message: isRegister
+        ? 'La contraseña debe tener al menos 6 caracteres.'
+        : 'La contraseña es requerida.',
+    }),
+  });
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -65,14 +69,14 @@ export function AuthForm({ className, isRegister, ...props }: Readonly<UserAuthF
       setIsLoading(false);
 
       if (!signInResult?.ok) {
-        return toast.error('Invalid credentials');
+        return toast.error('Credenciales inválidas');
       }
 
-      navigate('/dashboard');
+      router.replace('/dashboard');
     } catch (error) {
       setIsLoading(false);
       console.log('error', error);
-      toast.error('An error occurred during login');
+      toast.error('Ha ocurrido un error durante el inicio de sesión');
     }
   };
 
@@ -87,13 +91,13 @@ export function AuthForm({ className, isRegister, ...props }: Readonly<UserAuthF
       if (!user.ok) {
         if (user.error === 'emailExists') {
           form.setError('email', {
-            message: 'Email already exists.',
+            message: 'Este correo electrónico ya está en uso.',
           });
         }
 
         if (user.error === 'usernameExists') {
           form.setError('username', {
-            message: 'Username already exists.',
+            message: 'Este nombre de usuario ya está en uso.',
           });
         }
 
@@ -106,7 +110,7 @@ export function AuthForm({ className, isRegister, ...props }: Readonly<UserAuthF
     } catch (error) {
       setIsLoading(false);
       console.log('error', error);
-      toast.error('An error occurred during registration');
+      toast.error('Ha ocurrido un error durante el registro');
     }
   };
 
@@ -131,9 +135,7 @@ export function AuthForm({ className, isRegister, ...props }: Readonly<UserAuthF
             {isRegister ? 'Crea una cuenta en Moss' : 'Inicia sesión en Moss'}
           </h1>
           <p className="text-sm text-muted-foreground">
-            {isRegister
-              ? 'Ingresa tus datos para crear una cuenta en Moss'
-              : 'Ingresa tus datos para iniciar sesión en Moss'}
+            Ingresa tus datos para {isRegister ? 'crear una cuenta' : 'iniciar sesión'} en Moss
           </p>
         </div>
 

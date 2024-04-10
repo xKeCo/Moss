@@ -16,10 +16,7 @@ export default function HealthInfoPage({ params }: Readonly<IHealthInfoPageProps
           title={`Información de la salud del paciente`}
         />
 
-        <HealthForm
-          cancelUrl={`/dashboard/${params.workspaceID}/patient/${params.patientID}`}
-          patientID={params.patientID}
-        />
+        <HealthForm />
       </div>
     </div>
   );

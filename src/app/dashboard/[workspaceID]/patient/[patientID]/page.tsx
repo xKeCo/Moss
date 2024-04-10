@@ -1,4 +1,4 @@
-import { Breadcrumb } from '@/components';
+import { Breadcrumb, NotFound } from '@/components';
 import {
   AppointmentInformation,
   FilesInformation,
@@ -17,12 +17,16 @@ interface IPatientInfoPageProps {
 }
 
 export default async function PatientInfoPage({ params }: Readonly<IPatientInfoPageProps>) {
-  const { patientInfo } = await getPatientById(params.patientID);
+  const { patientInfo, ok, errorMessage } = await getPatientById(params.patientID);
 
   const breadcrumbValues = [
     { name: 'Pacientes', href: '/dashboard' },
     { name: patientInfo?.name ?? 'Loading..' },
   ];
+
+  if (!ok) {
+    return <NotFound errorMessage={errorMessage} />;
+  }
 
   return (
     <div className="pt-5 pb-12 px-4 sm:px-8 flex flex-col gap-4">

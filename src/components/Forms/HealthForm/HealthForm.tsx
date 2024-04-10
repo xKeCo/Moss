@@ -1,11 +1,11 @@
 'use client';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { createHealthInfo, navigate } from '@/actions';
+import { createHealthInfo } from '@/actions';
 import {
   FamilyBackgroundFields,
   HealthFormSchema,
@@ -32,23 +32,16 @@ import {
   Badge,
   Textarea,
 } from '@/components/ui';
-import { Icons } from '@/components/Icons/Icons';
+import { Icons } from '@/components';
 
 type HealthFormData = z.infer<typeof HealthFormSchema>;
 
-export const HealthForm = ({
-  isLoadingPage = false,
-  cancelUrl,
-  patientID,
-}: {
-  isLoadingPage?: boolean;
-  cancelUrl: string;
-  patientID: string;
-}) => {
+export const HealthForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [allergies, setAllergies] = useState([]);
   const [medications, setMedications] = useState([]);
   const router = useRouter();
+  const params = useParams();
 
   const form = useForm<HealthFormData>({
     resolver: zodResolver(HealthFormSchema),
@@ -124,7 +117,13 @@ export const HealthForm = ({
   async function onSubmit(values: HealthFormData) {
     setIsLoading(true);
 
-    const healtInfo = await createHealthInfo(values, allergies, medications, patientID);
+    const healtInfo = await createHealthInfo(
+      values,
+      allergies,
+      medications,
+      params.patientID as string,
+      `/dashboard/${params.workspaceID}/patient/${params.patientID}`
+    );
 
     setIsLoading(false);
 
@@ -132,14 +131,14 @@ export const HealthForm = ({
       return toast.error(healtInfo?.errorMessage);
     }
 
-    navigate(cancelUrl);
+    router.push(`/dashboard/${params.workspaceID}/patient/${params.patientID}`);
     toast.success('Información guardada con éxito!');
     form.reset();
   }
 
   const cancelSubmit = () => {
     form.reset();
-    router.push(cancelUrl);
+    router.push(`/dashboard/${params.workspaceID}/patient/${params.patientID}`);
   };
 
   return (
