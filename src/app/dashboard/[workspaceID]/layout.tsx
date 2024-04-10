@@ -2,15 +2,12 @@ import { Navbar } from '@/components';
 
 interface IDashboardLayoutProps {
   children: React.ReactNode;
-  params: {
-    workspaceID: string;
-  };
 }
 
-export default function DashboardLayout({ children, params }: Readonly<IDashboardLayoutProps>) {
+export default function DashboardLayout({ children }: Readonly<IDashboardLayoutProps>) {
   return (
     <main className="w-full overflow-x-hidden overflow-y-auto">
-      <Navbar activeWorkspaceID={params.workspaceID} />
+      <Navbar />
       {children}
     </main>
   );

@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { useParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import {
@@ -12,13 +13,15 @@ import {
   Skeleton,
 } from '@/components/ui';
 import { cn } from '@/lib/utils';
-import { navigate, setActiveWorkspace } from '@/actions';
+import { setActiveWorkspace } from '@/actions';
 
-export const WorkspaceSwitcher = ({ activeWorkspaceID }: { activeWorkspaceID: string }) => {
+export const WorkspaceSwitcher = () => {
   const { data: session } = useSession();
   const workspaces = session?.user?.workspaces;
 
-  const [selectedWorkspace, setSelectedWorkspace] = useState<string>(activeWorkspaceID);
+  const { workspaceID } = useParams();
+
+  const [selectedWorkspace, setSelectedWorkspace] = useState<string>(workspaceID as string);
 
   return (
     <>
@@ -26,11 +29,10 @@ export const WorkspaceSwitcher = ({ activeWorkspaceID }: { activeWorkspaceID: st
         <Skeleton className="w-32 h-8" />
       ) : (
         <Select
-          defaultValue={activeWorkspaceID}
+          defaultValue={workspaceID as string}
           onValueChange={(value) => {
             setSelectedWorkspace(value);
             setActiveWorkspace(value);
-            navigate(`/dashboard/${value}`);
           }}
         >
           <SelectTrigger

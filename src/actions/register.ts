@@ -15,7 +15,7 @@ export const registerUser = async (email: string, password: string, username: st
       if (existingUser.email === email.toLowerCase()) {
         return {
           ok: false,
-          errorMessage: 'An account with that email already exists.',
+          errorMessage: 'Ya existe una cuenta con ese correo electrónico.',
           error: 'emailExists',
         };
       }
@@ -23,7 +23,7 @@ export const registerUser = async (email: string, password: string, username: st
       if (existingUser.username === username.toLowerCase()) {
         return {
           ok: false,
-          errorMessage: 'An account with that username already exists.',
+          errorMessage: 'Ya existe una cuenta con ese nombre de usuario.',
           error: 'usernameExists',
         };
       }
@@ -57,7 +57,7 @@ export const registerUser = async (email: string, password: string, username: st
 
     return {
       ok: false,
-      errorMessage: 'There was an error creating your account, please try again.',
+      errorMessage: 'Ha ocurrido un error durante el registro.',
       error: 'serverError',
     };
   }

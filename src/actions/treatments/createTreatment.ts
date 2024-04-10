@@ -1,8 +1,13 @@
 'use server';
+import { revalidatePath } from 'next/cache';
 import prisma from '@/lib/prisma';
 import type { ICavities } from '@/interfaces';
 
-export const createTreatment = async (treatmentData: any, patientID: string) => {
+export const createTreatment = async (
+  treatmentData: any,
+  patientID: string,
+  validatePath: string
+) => {
   try {
     const totalPrice = treatmentData.RealTxPlan.reduce(
       (acc: number, curr: any) => acc + Number(curr.txPrice),
@@ -73,6 +78,8 @@ export const createTreatment = async (treatmentData: any, patientID: string) => 
     await prisma.cavities.createMany({
       data: newCavitiesWithToothId,
     });
+
+    revalidatePath(validatePath);
 
     return {
       ok: true,

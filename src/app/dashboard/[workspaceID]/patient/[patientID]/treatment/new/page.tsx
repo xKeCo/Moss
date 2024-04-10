@@ -24,11 +24,7 @@ export default function NewTreatmentPage({ params }: Readonly<INewTreatmentPageP
       <h1 className="text-2xl xl:text-3xl font-semibold mb-3">Información del tratamiento</h1>
       <div className="h-[2px] bg-secondary"></div>
 
-      <TreatmentForm
-        odontogramState={initialOdontogram}
-        patientID={params.patientID}
-        workspaceID={params.workspaceID}
-      />
+      <TreatmentForm odontogramState={initialOdontogram} />
     </>
   );
 }

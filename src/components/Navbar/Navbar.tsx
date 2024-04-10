@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Input } from '../ui';
 import { UserNav, WorkspaceSwitcher } from '..';
 
-export const Navbar = ({ activeWorkspaceID }: { activeWorkspaceID: string }) => {
+export const Navbar = () => {
   return (
     <div className="w-full p-4 px-4 sm:px-8 border-b border-secondary flex items-center dark:bg-[#0e0e0f]">
       <div className="flex justify-start items-center gap-6">
@@ -19,7 +19,7 @@ export const Navbar = ({ activeWorkspaceID }: { activeWorkspaceID: string }) => 
         />
       </div>
       <div className="ml-auto flex items-center gap-6">
-        <WorkspaceSwitcher activeWorkspaceID={activeWorkspaceID} />
+        <WorkspaceSwitcher />
         <UserNav />
       </div>
     </div>

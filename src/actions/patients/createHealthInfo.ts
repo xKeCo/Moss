@@ -1,11 +1,13 @@
 'use server';
+import { revalidatePath } from 'next/cache';
 import prisma from '@/lib/prisma';
 
 export const createHealthInfo = async (
   healthInfoData: any,
   allergies: any,
   medications: any,
-  patientID: string
+  patientID: string,
+  validatePath: string
 ) => {
   try {
     const { SystemReview, FamilyBackground, PersonalBackground, OralSystemReview } = healthInfoData;
@@ -49,6 +51,8 @@ export const createHealthInfo = async (
         hasExtraInfo: true,
       },
     });
+
+    revalidatePath(validatePath);
 
     return {
       ok: true,

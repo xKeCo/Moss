@@ -53,7 +53,7 @@ export const getPatientById = async (patientId: string) => {
     if (!patient) {
       return {
         ok: false,
-        errorMessage: 'There is no patient with that ID.',
+        errorMessage: 'No existe un paciente con ese ID.',
       };
     }
 
@@ -66,7 +66,7 @@ export const getPatientById = async (patientId: string) => {
 
     return {
       ok: false,
-      errorMessage: 'There was an error getting the patient, please try again.',
+      errorMessage: 'Hubo un error obteniendo el paciente, por favor intenta de nuevo.',
     };
   }
 };
@@ -94,7 +94,7 @@ export const getPatientAllPersonalInformation = async (patientId: string) => {
       return {
         ok: false,
         patientInfo: null,
-        errorMessage: 'There is no patient with that ID.',
+        errorMessage: 'No existe un paciente con ese ID.',
       };
     }
 
@@ -108,7 +108,7 @@ export const getPatientAllPersonalInformation = async (patientId: string) => {
     return {
       ok: false,
       patientInfo: null,
-      errorMessage: 'There was an error getting the patient, please try again.',
+      errorMessage: 'Hubo un error obteniendo el paciente, por favor intenta de nuevo.',
     };
   }
 };

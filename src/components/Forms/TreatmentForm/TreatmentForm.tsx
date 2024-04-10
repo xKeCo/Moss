@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -18,18 +18,16 @@ import {
 } from '@/components/ui';
 import { AddTreatmentItem, EmptyTreatmentItem, Icons, TreatmentItem } from '@/components';
 import { treatmentFormSchema } from '@/lib/validations';
-import { createTreatment, navigate } from '@/actions';
+import { createTreatment } from '@/actions';
 import type { IRealTxPlan, IToothState, ITxEvolution } from '@/interfaces';
 
 interface ITreatmentFormProps {
   odontogramState: IToothState[];
-  workspaceID: string;
-  patientID: string;
 }
 
 type TreatmentFormData = z.infer<typeof treatmentFormSchema>;
 
-export const TreatmentForm = ({ odontogramState, workspaceID, patientID }: ITreatmentFormProps) => {
+export const TreatmentForm = ({ odontogramState }: ITreatmentFormProps) => {
   const initialTreatment: IRealTxPlan = {
     id: uuidv4(),
     txPhase: `Fase 1`,
@@ -48,6 +46,7 @@ export const TreatmentForm = ({ odontogramState, workspaceID, patientID }: ITrea
     txEvolPayment: '',
   };
   const router = useRouter();
+  const { patientID, workspaceID } = useParams();
 
   const [openTreatmentModal, setOpenTreatmentModal] = useState(false);
   const [openTreatmentEvolModal, setOpenTreatmentEvolModal] = useState(false);
@@ -154,16 +153,18 @@ export const TreatmentForm = ({ odontogramState, workspaceID, patientID }: ITrea
         RealTxPlan: treatmentsPlan,
         TxEvolutions: treatmentsEvolutions,
       },
-      patientID
+      patientID as string,
+      `/dashboard/${workspaceID}/patient/${patientID}`
     );
+
     setIsLoading(false);
+
     if (!treatmentCreated.ok) {
       toast.error(treatmentCreated.errorMessage);
       return;
     }
 
-    navigate(`/dashboard/${workspaceID}/patient/${patientID}`);
-
+    router.push(`/dashboard/${workspaceID}/patient/${patientID}`);
     toast.success('Tratamiento creado con éxito.');
   }
 

@@ -1,13 +1,13 @@
 'use client';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CalendarIcon } from '@radix-ui/react-icons';
 import { z } from 'zod';
 import { format } from 'date-fns';
-import { createPatient, navigate } from '@/actions';
+import { createPatient } from '@/actions';
 import { patientFormSchema } from '@/lib/validations';
 import {
   Button,
@@ -31,20 +31,15 @@ import {
   Textarea,
 } from '@/components/ui';
 import { TermsAndConditionsModal } from './TermsAndConditionsModal';
-import { Icons } from '@/components/Icons/Icons';
+import { Icons } from '@/components';
 
 type PatientFormData = z.infer<typeof patientFormSchema>;
 
-export const PatientForm = ({
-  isLoadingPage = false,
-  workspaceID = '',
-}: {
-  isLoadingPage?: boolean;
-  workspaceID?: string;
-}) => {
+export const PatientForm = ({ isLoadingPage = false }: { isLoadingPage?: boolean }) => {
   const [age, setAge] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { workspaceID } = useParams();
 
   const form = useForm<PatientFormData>({
     resolver: zodResolver(patientFormSchema),
@@ -89,7 +84,7 @@ export const PatientForm = ({
   async function onSubmit(values: PatientFormData) {
     setIsLoading(true);
 
-    const patient = await createPatient({ ...values, Treatment: null }, workspaceID);
+    const patient = await createPatient({ ...values, Treatment: null }, workspaceID as string);
 
     setIsLoading(false);
 
@@ -104,7 +99,7 @@ export const PatientForm = ({
       return toast.error(patient?.errorMessage);
     }
 
-    navigate(`/dashboard`);
+    router.push(`/dashboard/${workspaceID}/patient/${patient?.patient?.id}`);
     toast.success('Paciente creado correctamente.');
     form.reset();
   }

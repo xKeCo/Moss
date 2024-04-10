@@ -1,20 +1,14 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'sonner';
 import { AddTreatmentItem, EmptyTreatmentItem, Icons, TreatmentItem } from '@/components';
 import { Button } from '@/components/ui';
 import type { IRealTxPlan, ITreatment, ITxEvolution } from '@/interfaces';
-import { navigate, updateTreatment } from '@/actions';
+import { updateTreatment } from '@/actions';
 
-export const TreatmentBasicInfo = ({
-  treatmentInfo,
-  params,
-}: {
-  treatmentInfo: ITreatment;
-  params?: { workspaceID: string; patientID: string; treatmentID: string };
-}) => {
+export const TreatmentBasicInfo = ({ treatmentInfo }: { treatmentInfo: ITreatment }) => {
   const initialTreatment: IRealTxPlan = {
     id: uuidv4(),
     txPhase: `Fase 1`,
@@ -33,6 +27,7 @@ export const TreatmentBasicInfo = ({
     txEvolPayment: '',
   };
   const router = useRouter();
+  const params = useParams();
 
   const [treatment, setTreatment] = useState<ITreatment>(treatmentInfo);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -88,7 +83,7 @@ export const TreatmentBasicInfo = ({
       treatmentsPlan.length !== treatmentInfo?.RealTxPlan?.length ||
       treatmentsEvolutions.length !== treatmentInfo?.TxEvolutions?.length
     ) {
-      navigate(`/dashboard/${params?.workspaceID}/patient/${params?.patientID}`);
+      router.push(`/dashboard/${params?.workspaceID}/patient/${params?.patientID}`);
       return;
     }
 
@@ -115,7 +110,11 @@ export const TreatmentBasicInfo = ({
         ...rest
       } = treatmentData;
 
-      const { ok, updatedTreatment, errorMessage } = await updateTreatment(rest, treatment?.id);
+      const { ok, updatedTreatment, errorMessage } = await updateTreatment(
+        rest,
+        treatment?.id,
+        `/dashboard/${params?.workspaceID}/patient/${params?.patientID}`
+      );
 
       setIsLoading(false);
 
@@ -128,7 +127,7 @@ export const TreatmentBasicInfo = ({
       setTreatmentsPlan(updatedTreatment?.RealTxPlan!);
       setTreatmentsEvolutions(updatedTreatment?.TxEvolutions!);
 
-      navigate(`/dashboard/${params?.workspaceID}/patient/${params?.patientID}`);
+      router.push(`/dashboard/${params?.workspaceID}/patient/${params?.patientID}`);
       toast.success('Tratamiento actualizado correctamente.');
     }
   };

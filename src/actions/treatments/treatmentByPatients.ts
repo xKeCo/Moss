@@ -24,7 +24,7 @@ export const getTreatmentById = async (treatmentId: string) => {
     if (!treatment) {
       return {
         ok: false,
-        errorMessage: 'There is not a treatment created for this patient.',
+        errorMessage: 'No existe información de tratamiento para este paciente.',
       };
     }
 
@@ -37,7 +37,8 @@ export const getTreatmentById = async (treatmentId: string) => {
 
     return {
       ok: false,
-      errorMessage: 'There was an error getting the treatment, please try again.',
+      errorMessage:
+        'Hubo un error obteniendo la información del tratamiento, por favor intenta de nuevo.',
     };
   }
 };
