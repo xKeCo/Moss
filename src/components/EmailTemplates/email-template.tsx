@@ -25,7 +25,7 @@ interface ConfirmationEmailTemplateProps {
   appointmentEndTimeAMPM: string;
 }
 
-const baseUrl = `https://${process.env.ENVIRONMENT_URL}` || 'http://localhost:3000';
+const baseUrl = process.env.ENVIRONMENT_URL ?? 'http://localhost:3000';
 
 export const ConfirmationEmailTemplate = ({
   patientName,
