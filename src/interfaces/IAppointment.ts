@@ -15,11 +15,11 @@ export interface IAppointment {
   SMSsent: boolean;
   WhatsAppSent: boolean;
 
-  suggestedDate?: string | Date;
-  suggestedStartTime?: string;
-  suggestedStartTimeAMPM?: string;
-  suggestedEndTime?: string;
-  suggestedEndTimeAMPM?: string;
+  suggestedDate?: string | Date | null;
+  suggestedStartTime?: string | null;
+  suggestedStartTimeAMPM?: string | null;
+  suggestedEndTime?: string | null;
+  suggestedEndTimeAMPM?: string | null;
 
   Patient: any;
   patientId?: string;
