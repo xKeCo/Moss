@@ -8,6 +8,7 @@ export async function POST(req: Request, res: Response) {
       email,
       patientName,
       appointmentDate,
+      appointmentID,
       appointmentStartTime,
       appointmentStartTimeAMPM,
       appointmentEndTime,
@@ -24,6 +25,7 @@ export async function POST(req: Request, res: Response) {
       react: ConfirmationEmailTemplate({
         patientName,
         appointmentDate,
+        appointmentID,
         appointmentStartTime,
         appointmentStartTimeAMPM,
         appointmentEndTime,

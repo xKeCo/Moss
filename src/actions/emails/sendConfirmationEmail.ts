@@ -8,6 +8,7 @@ export const sendConfirmationEmail = async (appointment: IAppointment, pathname:
     const body = JSON.stringify({
       email: appointment?.Patient.email,
       patientName: appointment?.Patient.name,
+      appointmentID: appointment.id,
       appointmentDate: appointment.date,
       appointmentStartTime: appointment.startTime,
       appointmentStartTimeAMPM: appointment.startTimeAMPM,

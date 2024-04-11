@@ -22,6 +22,17 @@ export const createAppointment = async (
           startTimeAMPM: appointmentData.startTime.slice(-2),
           endTime: appointmentData.endTime.slice(0, 5),
           endTimeAMPM: appointmentData.endTime.slice(-2),
+
+          suggestedDate: null,
+          suggestedStartTime: null,
+          suggestedStartTimeAMPM: null,
+          suggestedEndTime: null,
+          suggestedEndTimeAMPM: null,
+          status: 'pendiente',
+          statusChanged: false,
+          emailSent: false,
+          SMSsent: false,
+          WhatsAppSent: false,
         },
       });
     } else {
