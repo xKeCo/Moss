@@ -14,9 +14,9 @@ const badgeVariants = cva(
         destructive:
           'border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80',
         outline: 'text-foreground',
-        pendiente:
+        modificar:
           'text-orange-500 border-orange-500 bg-orange-50 [&>svg]:text-orange-500 dark:text-[#ff9705] dark:bg-[#331b00] dark:border-[#331b00] dark:[&>svg]:text-[#ff9705]',
-        nueva:
+        pendiente:
           'text-blue-600 bg-sky-50 border-blue-600 [&>svg]:text-blue-600 dark:text-[#4ca8f9] dark:bg-[#10233d] dark:border-[#10233d] dark:[&>svg]:text-[#4ca8f9]',
         confirmada:
           'text-green-600 bg-green-50 border-green-600 [&>svg]:text-green-600 dark:text-[#4ca8f9] dark:bg-[#10233d] dark:border-[#10233d] dark:[&>svg]:text-[#4ca8f9]',

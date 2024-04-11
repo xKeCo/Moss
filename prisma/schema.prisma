@@ -471,22 +471,30 @@ model Treatment {
 
 
 model Appointment {
-  id            String    @id @default(uuid())
-  date          DateTime
-  startTime     String
-  startTimeAMPM String
-  endTime       String
-  endTimeAMPM   String
-  treatment     String
-  description   String?
-  status        String
-  doctor        String
-  office        String
-  emailSent     Boolean @default(false)
-  SMSsent       Boolean @default(false)
-  WhatsAppSent  Boolean @default(false)
-  Patient       Patient  @relation(fields: [patientId], references: [id])
-  patientId     String
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id                     String    @id @default(uuid())
+  date                   DateTime
+  startTime              String
+  startTimeAMPM          String
+  endTime                String
+  endTimeAMPM            String
+  treatment              String
+  description            String?
+  status                 String
+  doctor                 String
+  office                 String
+  statusChanged          Boolean @default(false)
+  emailSent              Boolean @default(false)
+  SMSsent                Boolean @default(false)
+  WhatsAppSent           Boolean @default(false)
+
+  suggestedDate          DateTime?
+  suggestedStartTime     String?
+  suggestedStartTimeAMPM String?
+  suggestedEndTime       String?
+  suggestedEndTimeAMPM   String?
+
+  Patient                Patient  @relation(fields: [patientId], references: [id])
+  patientId              String
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
 }

@@ -26,8 +26,12 @@ import {
   SelectTrigger,
   SelectValue,
   Textarea,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
 } from '@/components/ui';
-import { timeOptions } from '@/helpers';
+import { filteredTimeOptions, formatEmailDate, timeOptions, validateEndTime } from '@/helpers';
 import { Icons } from '@/components';
 import { createAppointment } from '@/actions';
 import type { IAppointment } from '@/interfaces';
@@ -94,105 +98,6 @@ export const AppointmentForm = ({
 
   const [loading, setLoading] = useState<boolean>(false);
 
-  const validateEndTime = () => {
-    const startTime = form.watch('startTime');
-    const endTime = form.watch('endTime');
-
-    const startTimePeriod = startTime?.slice(-2);
-    const endTimePeriod = endTime?.slice(-2);
-
-    const startTimeHour = parseInt(startTime?.slice(0, 2));
-    const endTimeHour = parseInt(endTime?.slice(0, 2));
-
-    const startTimeMinute = parseInt(startTime?.slice(3, 5));
-    const endTimeMinute = parseInt(endTime?.slice(3, 5));
-
-    if (startTimePeriod === 'AM' && endTimePeriod === 'PM') {
-      return true;
-    }
-
-    if (startTimePeriod === 'PM' && endTimePeriod === 'AM') {
-      return false;
-    }
-
-    if (startTimePeriod === 'AM' && endTimePeriod === 'AM') {
-      return (
-        endTimeHour < startTimeHour ||
-        (endTimeHour === startTimeHour && endTimeMinute <= startTimeMinute)
-      );
-    }
-
-    if (startTimePeriod === 'PM' && endTimePeriod === 'PM') {
-      return (
-        endTimeHour < startTimeHour ||
-        (endTimeHour === startTimeHour && endTimeMinute <= startTimeMinute)
-      );
-    }
-
-    return false;
-  };
-
-  const filteredTimeOptions = () => {
-    const startTime = form.watch('startTime');
-    const startTimePeriod = startTime?.slice(-2);
-    const startTimeHour = parseInt(startTime?.slice(0, 2));
-    const startTimeMinute = parseInt(startTime?.slice(3, 5));
-
-    return timeOptions().filter((time) =>
-      filterTimeOptionsHelper(time, startTimePeriod, startTimeHour, startTimeMinute)
-    );
-  };
-
-  function filterTimeOptionsHelper(
-    time: string,
-    startTimePeriod: string,
-    startTimeHour: number,
-    startTimeMinute: number
-  ) {
-    const timePeriod = time.slice(-2);
-    const timeHour = parseInt(time.slice(0, 2));
-    const timeMinute = parseInt(time.slice(3, 5));
-
-    if (startTimePeriod === 'AM' && timePeriod === 'AM') {
-      return (
-        timeHour > startTimeHour || (timeHour === startTimeHour && timeMinute > startTimeMinute)
-      );
-    }
-
-    if (startTimePeriod === 'PM' && timePeriod === 'PM') {
-      return handlePMTimeOptions(timeHour, timeMinute, startTimeHour, startTimeMinute, timePeriod);
-    }
-
-    if (startTimePeriod === 'AM' && timePeriod === 'PM') {
-      return true;
-    }
-
-    return false;
-  }
-
-  function handlePMTimeOptions(
-    timeHour: number,
-    timeMinute: number,
-    startTimeHour: number,
-    startTimeMinute: number,
-    timePeriod: string
-  ) {
-    if (startTimeHour === 12) {
-      if (timePeriod === 'PM') {
-        const twelvesOption =
-          timeHour > startTimeHour || (timeHour === startTimeHour && timeMinute > startTimeMinute);
-
-        const restOptions = timeHour >= 1 && timeHour !== 12;
-
-        return [twelvesOption, restOptions].some(Boolean);
-      }
-    } else {
-      return (
-        (timeHour !== 12 && timeHour > startTimeHour) ||
-        (timeHour === startTimeHour && timeMinute > startTimeMinute)
-      );
-    }
-  }
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     setLoading(true);
     data.date.setHours(0, 0, 0, 0);
@@ -217,6 +122,20 @@ export const AppointmentForm = ({
     setOpen(false);
     toast.success('Cita creada exitosamente.');
   }
+
+  const acceptSuggestedDate = () => {
+    if (!activeAppointment) return;
+
+    form.setValue('date', new Date(activeAppointment.suggestedDate!));
+    form.setValue(
+      'startTime',
+      `${activeAppointment.suggestedStartTime}${activeAppointment.suggestedStartTimeAMPM}`
+    );
+    form.setValue(
+      'endTime',
+      `${activeAppointment.suggestedEndTime}${activeAppointment.suggestedEndTimeAMPM}`
+    );
+  };
 
   return (
     <Form {...form}>
@@ -266,6 +185,30 @@ export const AppointmentForm = ({
         </div>
 
         <div className="grid sm:grid-cols-3 gap-4">
+          {activeAppointment?.suggestedDate && (
+            <TooltipProvider>
+              <Tooltip delayDuration={350}>
+                <TooltipTrigger asChild onClick={acceptSuggestedDate}>
+                  <div className="flex flex-col items-start justify-center gap-2 sm:col-span-3 bg-zinc-100 hover:bg-muted-foreground/20 transition-colors p-2 rounded-lg cursor-pointer">
+                    <p className="text-sm text-muted-foreground font-medium">
+                      Fecha y hora sugerida por el paciente:
+                    </p>
+                    <p className="text-sm text-muted-foreground capitalize font-semibold">
+                      {formatEmailDate(activeAppointment.suggestedDate)}.{' '}
+                      {activeAppointment.suggestedStartTime}
+                      {activeAppointment.suggestedStartTimeAMPM} -{' '}
+                      {activeAppointment.suggestedEndTime}
+                      {activeAppointment.suggestedEndTimeAMPM}
+                    </p>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>De click para aceptar la fecha y hora sugerida por el paciente.</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
+
           <FormField
             control={form.control}
             name="date"
@@ -308,11 +251,12 @@ export const AppointmentForm = ({
                 <Select
                   onValueChange={(value) => {
                     field.onChange(value);
-                    if (validateEndTime()) {
+                    if (validateEndTime(form.watch('startTime'), form.watch('endTime'))) {
                       form.setValue('endTime', '');
                     }
                   }}
                   defaultValue={field.value}
+                  value={field.value}
                 >
                   <FormControl>
                     <SelectTrigger>
@@ -350,7 +294,7 @@ export const AppointmentForm = ({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {filteredTimeOptions().map((time) => (
+                    {filteredTimeOptions(form.watch('startTime')).map((time) => (
                       <SelectItem key={time} value={time}>
                         {time}
                       </SelectItem>

@@ -18,17 +18,19 @@ import { formatEmailDate } from '@/helpers';
 interface ConfirmationEmailTemplateProps {
   patientName: string;
   appointmentDate: string;
+  appointmentID: string;
   appointmentStartTime: string;
   appointmentStartTimeAMPM: string;
   appointmentEndTime: string;
   appointmentEndTimeAMPM: string;
 }
 
-const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '';
+const baseUrl = `https://${process.env.ENVIRONMENT_URL}` || 'http://localhost:3000';
 
 export const ConfirmationEmailTemplate = ({
   patientName,
   appointmentDate,
+  appointmentID,
   appointmentStartTime,
   appointmentStartTimeAMPM,
   appointmentEndTime,
@@ -44,8 +46,8 @@ export const ConfirmationEmailTemplate = ({
       <Container style={container}>
         <Img
           src="https://mossdental.vercel.app/logo11.png"
-          width="42"
-          height="42"
+          width="48px"
+          height="42px"
           alt="MOSS"
           style={logo}
         />
@@ -62,14 +64,15 @@ export const ConfirmationEmailTemplate = ({
         </code>
 
         <Section style={buttonContainer}>
-          <Button style={button} href="https://wa.link/88sczk">
+          {/* <Button style={button} href="https://wa.link/88sczk"> */}
+          <Button style={button} href={`${baseUrl}/confirmation/appointment/${appointmentID}`}>
             Confirmar cita
           </Button>
         </Section>
 
         <Hr style={hr} />
 
-        <Link href="https://mossdental.vercel.app/" style={reportLink}>
+        <Link href={baseUrl} style={reportLink}>
           MOSS
         </Link>
       </Container>
