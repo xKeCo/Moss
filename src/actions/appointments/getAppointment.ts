@@ -36,3 +36,36 @@ export const getAppointment = async (appointmentId: string) => {
     };
   }
 };
+
+export const getCalendarAppointments = async (workspaceId: string, date: any) => {
+  try {
+    const appointments = await prisma.appointment.findMany({
+      where: {
+        workspaceId,
+        date: {
+          gte: new Date(date),
+          lte: new Date(new Date(date).setDate(new Date(date).getDate() + 1)),
+        },
+      },
+      include: {
+        Patient: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+
+    return {
+      ok: true,
+      appointments,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      ok: false,
+      errorMessage: 'No se pudo obtener las citas. Por favor, inténtelo de nuevo mas tarde.',
+      error: 'unknownError',
+    };
+  }
+};

@@ -2,8 +2,7 @@
 import { useOptimistic, useState } from 'react';
 import { ScrollArea, Skeleton } from '@/components/ui';
 import { cn } from '@/lib/utils';
-import { AppointmentCard } from './AppointmentCard';
-import { AppointmentCreateModal } from './AppointmentCreateModal';
+import { AppointmentCard, AppointmentCreateModal } from '@/components';
 import type { IAppointment } from '@/interfaces';
 
 interface IAppointmentInformationProps {

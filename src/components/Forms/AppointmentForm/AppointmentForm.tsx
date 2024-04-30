@@ -55,7 +55,7 @@ const FormSchema = z.object({
   treatment: z.string().min(4, {
     message: 'Tratamiento debe tener al menos 4 caracteres.',
   }),
-  description: z.string().optional(),
+  description: z.string().nullish(),
   status: z.string(),
   emailSent: z.boolean(),
   SMSsent: z.boolean(),
@@ -74,7 +74,7 @@ export const AppointmentForm = ({
   activeAppointment = null,
 }: IAppointmentFormProps) => {
   const pathname = usePathname();
-  const { patientID } = useParams();
+  const { patientID, workspaceID } = useParams();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -89,6 +89,7 @@ export const AppointmentForm = ({
         ? `${activeAppointment.endTime}${activeAppointment.endTimeAMPM}`
         : '',
       treatment: activeAppointment ? activeAppointment.treatment : '',
+      description: activeAppointment ? activeAppointment.description : undefined,
       status: activeAppointment ? activeAppointment.status : 'pendiente',
       emailSent: activeAppointment ? activeAppointment.emailSent : false,
       SMSsent: activeAppointment ? activeAppointment.SMSsent : false,
@@ -105,6 +106,7 @@ export const AppointmentForm = ({
     const appointment = await createAppointment(
       data,
       patientID as string,
+      workspaceID as string,
       pathname,
       activeAppointment?.id
     );
@@ -331,7 +333,11 @@ export const AppointmentForm = ({
                 <span className="text-xs text-muted-foreground">(Opcional)</span>
               </FormLabel>
               <FormControl>
-                <Textarea placeholder="Ingrese una descripción" {...field} />
+                <Textarea
+                  placeholder="Ingrese una descripción"
+                  {...field}
+                  value={field.value ?? undefined}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

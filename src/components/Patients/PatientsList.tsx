@@ -27,7 +27,7 @@ export const PatientsList = async ({ workspaceID }: { workspaceID: string }) => 
   }
 
   return (
-    <div className="grid sm:grid-cols-2 gap-8 lg:grid-cols-4">
+    <div className="flex flex-wrap gap-4 justify-start items-start">
       {patients?.map((patient) => (
         <Link
           key={patient?.id}

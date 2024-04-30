@@ -1,6 +1,5 @@
-import Link from 'next/link';
-import { PatientsList, Icons } from '@/components';
-import { Button } from '@/components/ui';
+import { getCalendarAppointments } from '@/actions';
+import { AppointmentsHomeList, PatientsList } from '@/components';
 
 interface IDashboardProps {
   params: {
@@ -8,24 +7,19 @@ interface IDashboardProps {
   };
 }
 
-export default function Dashboard({ params }: Readonly<IDashboardProps>) {
+export default async function Dashboard({ params }: Readonly<IDashboardProps>) {
+  // const appointmentsInfo = await getCalendarAppointments(params.workspaceID);
+
   return (
-    <main className="py-5 px-8">
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-4xl font-semibold">Dashboard</h1>
+    <main className="py-5 px-4 sm:px-8">
+      <div className="grid md:grid-cols-6 xl:grid-cols-8 gap-4 h-[calc(100vh-109px)]">
+        <AppointmentsHomeList
+        // appointments={appointmentsInfo?.appointments!}
+        />
 
-        <Button className="text-sm" asChild>
-          <Link href={`/dashboard/${params.workspaceID}/patient/new`}>
-            <Icons.Add className="mr-2 h-4 w-4" />
-            Añadir paciente
-          </Link>
-        </Button>
-      </div>
-
-      <div className="mt-8 space-y-4">
-        <h2 className="text-2xl font-semibold">Patients</h2>
-
-        <PatientsList workspaceID={params.workspaceID} />
+        <div className="flex flex-col gap-4 flex-wrap rounded-2xl p-5 border col-span-3 items-start dark:border-[#29292f] dark:bg-zinc-900">
+          <PatientsList workspaceID={params.workspaceID} />
+        </div>
       </div>
     </main>
   );
