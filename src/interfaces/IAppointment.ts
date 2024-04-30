@@ -21,8 +21,12 @@ export interface IAppointment {
   suggestedEndTime?: string | null;
   suggestedEndTimeAMPM?: string | null;
 
-  Patient: any;
+  Patient?: any;
   patientId?: string;
+
+  Workspace?: any;
+  workspaceId?: string;
+
   createdAt?: string | Date;
   updatedAt?: string | Date;
 }

@@ -1,12 +1,12 @@
-export { createAppointment } from './appointments/createAppointment';
 export { confirmAppointment, updateAppointment } from './appointments/appointmentActions';
+export { createAppointment } from './appointments/createAppointment';
 export { createHealthInfo } from './patients/createHealthInfo';
 export { createPatient } from './patients/createPatient';
 export { createTreatment } from './treatments/createTreatment';
 export { createWorkspace } from './workspace/createWorkspace';
 export { deleteAppointment } from './appointments/deleteAppointment';
 export { deleteFiles } from './files/deleteFiles';
-export { getAppointment } from './appointments/getAppointment';
+export { getAppointment, getCalendarAppointments } from './appointments/getAppointment';
 export { getPatientById, getPatientAllPersonalInformation } from './patients/getPatientInfo';
 export { getPatientsByWorkspaceThatNotHaveExtraInfo } from './patients/patientsByWorkspace';
 export { getTreatmentById } from './treatments/treatmentByPatients';

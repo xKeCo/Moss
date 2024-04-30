@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache';
 export const createAppointment = async (
   appointmentData: any,
   patientId: string,
+  workspaceId: string,
   pathname: string,
   activeAppointmentId?: string
 ) => {
@@ -44,6 +45,7 @@ export const createAppointment = async (
           endTime: appointmentData.endTime.slice(0, 5),
           endTimeAMPM: appointmentData.endTime.slice(-2),
           patientId,
+          workspaceId,
         },
       });
     }

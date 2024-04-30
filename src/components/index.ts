@@ -1,3 +1,7 @@
+export * from './Appointments/AppointmentCreateModal';
+export * from './Appointments/AppointmentCard';
+export * from './Appointments/AppointmentOptions';
+export * from './Appointments/AppointmentsHomeList';
 export * from './Breadcrumb/Breadcrumb';
 export * from './EmailTemplates/email-template';
 export * from './Forms/AppointmentForm/AppointmentForm';
