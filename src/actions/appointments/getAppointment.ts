@@ -50,6 +50,7 @@ export const getCalendarAppointments = async (workspaceId: string, date: any) =>
       include: {
         Patient: {
           select: {
+            id: true,
             name: true,
           },
         },
