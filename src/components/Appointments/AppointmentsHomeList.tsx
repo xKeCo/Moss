@@ -3,13 +3,13 @@
 import { useEffect, useOptimistic, useState } from 'react';
 import { CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 import { AppointmentCreateModal } from './AppointmentCreateModal';
-import { AppointmentCard } from './AppointmentCard';
 import { Button, Calendar, Popover, PopoverContent, PopoverTrigger, ScrollArea } from '../ui';
 import { cn } from '@/lib/utils';
 import type { IAppointment } from '@/interfaces';
 import { getCalendarAppointments } from '@/actions';
 import { useParams } from 'next/navigation';
 import { formatDate } from '@/helpers';
+import { AppointmentDashboardCard } from './AppointmentDashboardCard';
 
 export const AppointmentsHomeList = () =>
   // { appointments }: { appointments: IAppointment[] }
@@ -95,7 +95,7 @@ export const AppointmentsHomeList = () =>
     return (
       <div
         className={cn(
-          'flex flex-col items-start justify-start col-span-3 border rounded-2xl gap-3 w-full p-6 min-h-full overflow-hidden dark:bg-zinc-900',
+          'flex flex-col items-start justify-start col-span-3 border rounded-2xl gap-3 w-full p-6 min-h-[540px] h-full overflow-hidden dark:bg-zinc-900',
           optimisticAppointments?.length > 2 && 'pr-2'
         )}
       >
@@ -136,20 +136,21 @@ export const AppointmentsHomeList = () =>
               </PopoverContent>
             </Popover>
 
-            <AppointmentCreateModal
+            {/* TODO */}
+            {/* <AppointmentCreateModal
               open={open}
               setOpen={setOpen}
               activeAppointment={activeAppointment}
               setActiveAppointment={setActiveAppointment}
               addOptimisticAppointments={addOptimisticAppointments}
-            />
+            /> */}
           </div>
         </div>
 
         {isLoading && (
           <div className="flex flex-col gap-3 h-full w-full">
-            <AppointmentCard.Skeleton />
-            <AppointmentCard.Skeleton />
+            <AppointmentDashboardCard.Skeleton />
+            <AppointmentDashboardCard.Skeleton />
           </div>
         )}
 
@@ -168,10 +169,9 @@ export const AppointmentsHomeList = () =>
               )}
             >
               {optimisticAppointments?.map((appointment) => (
-                <AppointmentCard
+                <AppointmentDashboardCard
                   key={appointment.id}
                   appointment={appointment}
-                  isAppointmentList
                   deleteOptimisticAppointment={deleteOptimisticAppointment}
                   setActiveAppointment={setActiveAppointment}
                   setOpen={setOpen}

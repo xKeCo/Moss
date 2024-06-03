@@ -1,5 +1,7 @@
 export * from './Appointments/AppointmentCreateModal';
 export * from './Appointments/AppointmentCard';
+export * from './Appointments/AppointmentDashboardCard';
+export * from './Appointments/AppointmentDashboardOptions';
 export * from './Appointments/AppointmentOptions';
 export * from './Appointments/AppointmentsHomeList';
 export * from './Breadcrumb/Breadcrumb';
