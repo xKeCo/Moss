@@ -11,21 +11,12 @@ import { formatDate } from '@/helpers';
 import type { IAppointment } from '@/interfaces';
 import Link from 'next/link';
 import { ExternalLink } from 'lucide-react';
-import { AppointmentDashboardOptions } from './AppointmentDashboardOptions';
 
 interface IAppointmentDashboardCardProps {
   appointment: IAppointment;
-  deleteOptimisticAppointment: (appointmentID: string) => void;
-  setActiveAppointment: (appointment: IAppointment) => void;
-  setOpen: (open: boolean) => void;
 }
 
-export const AppointmentDashboardCard = ({
-  appointment,
-  deleteOptimisticAppointment,
-  setActiveAppointment,
-  setOpen,
-}: IAppointmentDashboardCardProps) => {
+export const AppointmentDashboardCard = ({ appointment }: IAppointmentDashboardCardProps) => {
   return (
     <div className="flex items-center border p-4 rounded-lg w-full gap-2 dark:bg-[#0e0e0f]">
       <div className="hidden lg:flex flex-col items-start justify-between gap-4 w-[92px]">
@@ -50,14 +41,6 @@ export const AppointmentDashboardCard = ({
             >
               {appointment.status}
             </Badge>
-
-            {/* TODO */}
-            {/* <AppointmentDashboardOptions
-              appointment={appointment}
-              deleteOptimisticAppointment={deleteOptimisticAppointment}
-              setActiveAppointment={setActiveAppointment}
-              setOpen={setOpen}
-            /> */}
           </div>
         </div>
 
@@ -80,7 +63,7 @@ export const AppointmentDashboardCard = ({
           </div>
         </div>
 
-        <div className="flex mt-2 lg:hidden items-center justify-between gap-4 w-full">
+        <div className="flex mt-2 lg:hidden items-end justify-between gap-4 w-full">
           <h1 className="text-base font-bold capitalize">{formatDate(appointment.date, true)}</h1>
           <p className="text-xs text-muted-foreground font-medium">
             {appointment.startTime}
