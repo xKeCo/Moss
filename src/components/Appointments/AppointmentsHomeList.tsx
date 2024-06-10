@@ -143,3 +143,18 @@ export const AppointmentsHomeList = () => {
     </div>
   );
 };
+
+export const AppointmentsHomeListSkeleton = () => {
+  return (
+    <div className="flex flex-col items-start justify-start col-span-3 border rounded-2xl gap-3 w-full p-6 min-h-[540px] h-full overflow-hidden dark:bg-zinc-900">
+      <div className="flex items-center justify-between w-full mb-2 min-h-9">
+        <h1 className="text-xl font-semibold">Citas programadas</h1>
+      </div>
+
+      <div className="flex flex-col gap-3 h-full w-full">
+        <AppointmentDashboardCard.Skeleton />
+        <AppointmentDashboardCard.Skeleton />
+      </div>
+    </div>
+  );
+};

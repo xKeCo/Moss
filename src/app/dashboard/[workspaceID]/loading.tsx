@@ -1,9 +1,6 @@
 import React from 'react';
+import { DashboardSkeleton } from './page';
 
 export default function DashboardLoadingPage() {
-  return (
-    <div>
-      <h1>DashboardLoadingPage...</h1>
-    </div>
-  );
+  return <DashboardSkeleton />;
 }

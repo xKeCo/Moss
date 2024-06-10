@@ -40,3 +40,13 @@ export const PatientsList = async ({ workspaceID }: { workspaceID: string }) => 
     </div>
   );
 };
+
+PatientsList.Skeleton = function PatientsListSkeleton() {
+  return (
+    <div className="flex flex-wrap gap-4 justify-start items-start">
+      {Array.from({ length: 4 }).map((_, index) => (
+        <PatientCard.Skeleton key={index} />
+      ))}
+    </div>
+  );
+};
