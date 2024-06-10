@@ -26,3 +26,18 @@ export const PatientCard = ({ patient }: IPatientGridProps) => {
     </div>
   );
 };
+
+PatientCard.Skeleton = function PatientCardSkeleton() {
+  return (
+    <div className="flex items-center gap-4">
+      <Avatar>
+        <AvatarFallback>S</AvatarFallback>
+      </Avatar>
+
+      <div>
+        <h3 className="text-lg font-semibold">Sergio</h3>
+        <p className="text-sm text-gray-500">posada@posada.com</p>
+      </div>
+    </div>
+  );
+};
