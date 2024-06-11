@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma';
 export const getPatientsByWorkspaceThatNotHaveExtraInfo = async (workspaceId: string) => {
   try {
     const workspaceInfo = await prisma.workspace.findUnique({
-      where: { id: workspaceId },
+      where: { key: workspaceId },
       include: {
         patients: {
           select: {

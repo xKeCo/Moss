@@ -326,8 +326,8 @@ model User {
 
 model Workspace {
   id        String   @id @default(uuid())
-  name      String   @unique
-  
+  name      String
+  key       String   @unique
   users     User[]
   patients  Patient[]
   Appointments Appointment[]
@@ -362,7 +362,7 @@ model Patient {
   reasonForConsultation String             @default("")
   currentIllness        String             @default("")
   photoURL              String?            @default("https://source.boringavatars.com/marble/50/${dniNumber}")
-  workspace             Workspace          @relation(fields: [workspaceId], references: [id])
+  workspace             Workspace          @relation(fields: [workspaceId], references: [key])
   workspaceId           String             
 
   BasicInformation      BasicInformation? 
@@ -372,6 +372,7 @@ model Patient {
   HealthInformation     HealthInformation?
   Files                 File[]
   Appointments          Appointment[]
+
 
   termsAndConditions    Boolean            @default(true)
   hasExtraInfo          Boolean            @default(false)   
@@ -497,7 +498,7 @@ model Appointment {
   Patient                Patient  @relation(fields: [patientId], references: [id])
   patientId              String
   
-  Workspace              Workspace @relation(fields: [workspaceId], references: [id])
+  Workspace              Workspace @relation(fields: [workspaceId], references: [key])
   workspaceId            String
 
   createdAt              DateTime  @default(now())

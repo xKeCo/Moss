@@ -43,16 +43,16 @@ export const WorkspaceSwitcher = () => {
           >
             <SelectValue placeholder="Select a workspace">
               <span className="text-white bg-black dark:text-black dark:bg-white px-[6px] ml-1 rounded font-semibold">
-                {workspaces?.findIndex((workspace) => workspace.id === selectedWorkspace)! + 1}
+                {workspaces?.findIndex((workspace) => workspace.key === selectedWorkspace)! + 1}
               </span>
               <span className="text-sm ml-1 capitalize">
-                {workspaces?.find((workspace) => workspace.id === selectedWorkspace)?.name}
+                {workspaces?.find((workspace) => workspace.key === selectedWorkspace)?.name}
               </span>
             </SelectValue>
           </SelectTrigger>
           <SelectContent>
             {session?.user?.workspaces?.map((workspace, index) => (
-              <SelectItem key={workspace.id} value={workspace.id}>
+              <SelectItem key={workspace.key} value={workspace.key}>
                 <div className="flex items-center gap-3 [&_svg]:h-4 [&_svg]:w-4 [&_svg]:shrink-0 [&_svg]:text-foreground">
                   <p className="text-white bg-black px-[6px] ml-1 rounded font-semibold">
                     {index + 1}

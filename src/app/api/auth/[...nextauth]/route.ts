@@ -42,11 +42,11 @@ const handler = NextAuth({
 
         if (rest.workspaces.length > 0) {
           const validWorkspace = rest.workspaces.find(
-            (workspace) => workspace.id === cookies().get('activeWorkspace')?.value
+            (workspace) => workspace.key === cookies().get('activeWorkspace')?.value
           );
 
           if (!validWorkspace) {
-            cookies().set('activeWorkspace', rest.workspaces[0].id);
+            cookies().set('activeWorkspace', rest.workspaces[0].key);
           }
         }
 
@@ -78,7 +78,7 @@ const handler = NextAuth({
       session.user = token.user;
 
       if (!cookies().get('activeWorkspace')?.value) {
-        cookies().set('activeWorkspace', session.user.workspaces[0].id);
+        cookies().set('activeWorkspace', session.user.workspaces[0].key);
       }
 
       return session;

@@ -1,6 +1,7 @@
 interface IWorkspace {
   id: string;
   name: string;
+  key: string;
   createdAt: Date;
   updatedAt: Date;
   users: IUser[];

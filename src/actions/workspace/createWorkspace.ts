@@ -2,25 +2,26 @@
 import prisma from '@/lib/prisma';
 import { cookies } from 'next/headers';
 
-export const createWorkspace = async (workspaceName: string, userId: any) => {
+export const createWorkspace = async (workspaceName: string, workspaceKey: string, userId: any) => {
   try {
-    const existingWorkspace = await prisma.workspace.findFirst({
+    const existingWorkspaceKey = await prisma.workspace.findFirst({
       where: {
-        name: workspaceName,
+        key: workspaceKey,
       },
     });
 
-    if (existingWorkspace) {
+    if (existingWorkspaceKey) {
       return {
         ok: false,
-        errorMessage: 'A workspace with that name already exists. Please select another name.',
-        error: 'workspaceExists',
+        errorMessage: 'Ya existe una sucursal con esa URL. Por favor selecciona otra clave.',
+        error: 'workspaceKeyExists',
       };
     }
 
     const newWorkspace = await prisma.workspace.create({
       data: {
         name: workspaceName,
+        key: workspaceKey,
 
         users: {
           connect: {
@@ -31,13 +32,14 @@ export const createWorkspace = async (workspaceName: string, userId: any) => {
       select: {
         id: true,
         name: true,
+        key: true,
         users: true,
         createdAt: true,
         updatedAt: true,
       },
     });
 
-    cookies().set('activeWorkspace', newWorkspace.id);
+    cookies().set('activeWorkspace', newWorkspace.key);
 
     return {
       ok: true,

@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useTheme } from 'next-themes';
 import { signOut, useSession } from 'next-auth/react';
-// import { GearIcon } from '@radix-ui/react-icons';
+import { GearIcon } from '@radix-ui/react-icons';
 import {
   Button,
   Avatar,
@@ -45,11 +45,11 @@ export const UserNav = ({
     //   href: `/profile/${session?.user?.username}`,
     //   shortcut: <PersonIcon className="h-[18px] w-[18px]" />,
     // },
-    // {
-    //   label: 'Settings',
-    //   href: '/settings',
-    //   shortcut: <GearIcon className="h-[18px] w-[18px]" />,
-    // },
+    {
+      label: 'Settings',
+      href: '/settings',
+      shortcut: <GearIcon className="h-[18px] w-[18px]" />,
+    },
   ];
 
   const onLogOut = () => {

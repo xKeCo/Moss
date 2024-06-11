@@ -27,7 +27,7 @@ import {
   FormMessage,
 } from '@/components/ui';
 
-type PatientFormData = z.infer<typeof workspaceFormSchema>;
+type WorkspaceFormData = z.infer<typeof workspaceFormSchema>;
 
 export default function WorkspacePage() {
   const { data: session, update, status } = useSession();
@@ -35,10 +35,11 @@ export default function WorkspacePage() {
   const alreadyHasWorkspace = session?.user?.workspaces?.length! > 0;
   const router = useRouter();
 
-  const form = useForm<PatientFormData>({
+  const form = useForm<WorkspaceFormData>({
     resolver: zodResolver(workspaceFormSchema),
     defaultValues: {
       workspaceName: '',
+      workspaceKey: '',
     },
   });
 
@@ -50,19 +51,19 @@ export default function WorkspacePage() {
     signOut({ callbackUrl: `/login` });
   };
 
-  async function onSubmit(data: PatientFormData) {
+  async function onSubmit(data: WorkspaceFormData) {
     setIsLoading(true);
-    const { workspaceName } = data;
+    const { workspaceName, workspaceKey } = data;
 
-    const newWorkspace = await createWorkspace(workspaceName, session?.user?.id);
+    const newWorkspace = await createWorkspace(workspaceName, workspaceKey, session?.user?.id);
 
     setIsLoading(false);
 
     if (!newWorkspace?.ok) {
-      if (newWorkspace?.error === 'workspaceExists') {
-        form.setError('workspaceName', {
+      if (newWorkspace?.error === 'workspaceKeyExists') {
+        form.setError('workspaceKey', {
           type: 'manual',
-          message: 'Un workspace con ese nombre ya existe. Por favor selecciona otro nombre.',
+          message: 'Una sucursal con esta URL ya existe. Por favor selecciona otra clave.',
         });
       }
 
@@ -78,13 +79,14 @@ export default function WorkspacePage() {
           {
             id: newWorkspace.workspace?.id,
             name: newWorkspace.workspace?.name,
+            key: newWorkspace.workspace?.key,
           },
         ],
       },
     });
 
     toast.success('Workspace created successfully!');
-    router.push(`/dashboard/${newWorkspace.workspace?.id}`);
+    router.push(`/dashboard/${newWorkspace.workspace?.key}`);
     form.reset();
   }
 
@@ -114,7 +116,7 @@ export default function WorkspacePage() {
       <Card>
         <CardHeader>
           <CardTitle>Crea un nueva sucursal</CardTitle>
-          <CardDescription className="max-w-lg">
+          <CardDescription className="max-w-xl">
             Las sucursales son espacios de trabajo independientes para organizar todo lo relacionado
             con tu pacientes.
           </CardDescription>
@@ -127,10 +129,43 @@ export default function WorkspacePage() {
                 control={form.control}
                 name="workspaceName"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="mb-5">
                     <FormLabel htmlFor="workspaceName">Nombre de la sucursal</FormLabel>
                     <FormControl>
-                      <Input id="workspaceName" autoFocus autoComplete="off" {...field} />
+                      <Input
+                        id="workspaceName"
+                        autoFocus
+                        autoComplete="off"
+                        onChange={(e) => {
+                          field.onChange(e);
+                          form.setValue(
+                            'workspaceKey',
+                            e.target.value
+                              .toLowerCase()
+                              .replace(/[^a-zA-Z0-9]/g, '-')
+                              .replace(/-+/g, '-')
+                          );
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="workspaceKey"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor="workspaceKey">URL de la sucursal</FormLabel>
+                    <FormControl>
+                      <Input
+                        id="workspaceKey"
+                        autoFocus
+                        autoComplete="off"
+                        startDecorator="moss.com/"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
