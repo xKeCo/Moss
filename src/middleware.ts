@@ -6,9 +6,9 @@ export default withAuth(
   async function middleware(req) {
     const token: any = await getToken({ req });
 
-    const workspaceId = token?.user?.workspaces?.[0]?.id;
+    const workspaceId = token?.user?.workspaces?.[0]?.key;
 
-    const availableWorkspaces = token?.user?.workspaces?.map((workspace: any) => workspace.id);
+    const availableWorkspaces = token?.user?.workspaces?.map((workspace: any) => workspace.key);
 
     const isAuth = !!token;
     const emptyWorkspace = (token?.user?.workspaces?.length ?? 0) === 0;
