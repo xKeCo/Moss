@@ -1,12 +1,19 @@
 'use server';
 import prisma from '@/lib/prisma';
-import { cookies } from 'next/headers';
+import { revalidatePath } from 'next/cache';
 
-export const createWorkspace = async (workspaceName: string, workspaceKey: string, userId: any) => {
+export const updateWorkspace = async (
+  workspaceId: string,
+  workspaceName: string,
+  workspaceKey: string
+) => {
   try {
     const existingWorkspaceKey = await prisma.workspace.findFirst({
       where: {
         key: workspaceKey,
+        NOT: {
+          id: workspaceId,
+        },
       },
     });
 
@@ -18,40 +25,37 @@ export const createWorkspace = async (workspaceName: string, workspaceKey: strin
       };
     }
 
-    const newWorkspace = await prisma.workspace.create({
+    const updatedWorkspace = await prisma.workspace.update({
+      where: {
+        id: workspaceId,
+      },
       data: {
         name: workspaceName,
         key: workspaceKey,
-        logoURL: `https://source.boringavatars.com/marble/50/${workspaceKey}?square=true`,
-
-        users: {
-          connect: {
-            id: userId,
-          },
-        },
+        logoURL: `https://source.boringavatars.com/marble/256/${workspaceKey}?square=true`,
       },
       select: {
         id: true,
         name: true,
         key: true,
-        users: true,
+        logoURL: true,
         createdAt: true,
         updatedAt: true,
       },
     });
 
-    cookies().set('activeWorkspace', newWorkspace.key);
+    revalidatePath(`/settings/${workspaceKey}/workspace`);
 
     return {
       ok: true,
-      workspace: newWorkspace,
+      workspace: updatedWorkspace,
     };
   } catch (error) {
     console.log(error);
 
     return {
       ok: false,
-      errorMessage: 'There was an error creating your workspace, please try again.',
+      errorMessage: 'There was an error updating your workspace, please try again.',
       error: 'serverError',
     };
   }

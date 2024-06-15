@@ -10,10 +10,10 @@ interface ISettingsLayoutProps {
 export default function SettingsLayout({ params, children }: Readonly<ISettingsLayoutProps>) {
   return (
     <main className="w-full overflow-x-hidden overflow-y-hidden">
-      <main className="flex gap-2 w-full py-4 px-4 ">
+      <main className="flex gap-2 w-full p-2 ">
         <Sidebar workspaceID={params.workspaceID} />
 
-        <div className="border border-[#e4e4e7] bg-white rounded-xl p-6 h-[calc(100vh-32px)] w-full overflow-y-auto dark:border-[#29292f] dark:bg-zinc-900">
+        <div className="border border-[#e4e4e7] bg-white rounded-md p-6 h-[calc(100vh-32px)] w-full overflow-y-auto dark:border-[#29292f] dark:bg-zinc-900">
           {children}
         </div>
       </main>

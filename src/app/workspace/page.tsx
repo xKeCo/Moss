@@ -136,6 +136,7 @@ export default function WorkspacePage() {
                         id="workspaceName"
                         autoFocus
                         autoComplete="off"
+                        maxLength={50}
                         onChange={(e) => {
                           field.onChange(e);
                           form.setValue(
@@ -161,9 +162,9 @@ export default function WorkspacePage() {
                     <FormControl>
                       <Input
                         id="workspaceKey"
-                        autoFocus
                         autoComplete="off"
                         startDecorator="moss.com/"
+                        maxLength={20}
                         {...field}
                       />
                     </FormControl>

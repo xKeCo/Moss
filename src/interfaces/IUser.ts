@@ -1,7 +1,8 @@
-interface IWorkspace {
+export interface IWorkspace {
   id: string;
   name: string;
   key: string;
+  logoURL: string;
   createdAt: Date;
   updatedAt: Date;
   users: IUser[];

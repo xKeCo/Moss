@@ -252,7 +252,7 @@ export const TreatmentForm = ({ odontogramState }: ITreatmentFormProps) => {
         <Button type="button" variant="secondary" className="mr-4" onClick={cancelSubmit}>
           Cancelar
         </Button>
-        <Button type="submit">
+        <Button type="submit" disabled={isLoading}>
           {isLoading && <Icons.Spinner className="animate-spin mr-2 h-5 w-5 text-white" />}
           Guardar tratamiento
         </Button>
