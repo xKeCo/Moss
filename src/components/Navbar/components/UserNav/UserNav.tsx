@@ -23,6 +23,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui';
 import { cn } from '@/lib/utils';
+import { useParams } from 'next/navigation';
 
 export const UserNav = ({
   isDropdown = true,
@@ -33,6 +34,7 @@ export const UserNav = ({
 }) => {
   const { data: session } = useSession();
   const { theme, setTheme } = useTheme();
+  const { workspaceID } = useParams();
 
   const dropdownMenuItems = [
     {
@@ -47,7 +49,7 @@ export const UserNav = ({
     // },
     {
       label: 'Settings',
-      href: '/settings',
+      href: `/settings/${workspaceID}/workspace`,
       shortcut: <GearIcon className="h-[18px] w-[18px]" />,
     },
   ];

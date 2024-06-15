@@ -50,7 +50,7 @@ export const WorkspaceSwitcher = () => {
               </span>
             </SelectValue>
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent align="end">
             {session?.user?.workspaces?.map((workspace, index) => (
               <SelectItem key={workspace.key} value={workspace.key}>
                 <div className="flex items-center gap-3 [&_svg]:h-4 [&_svg]:w-4 [&_svg]:shrink-0 [&_svg]:text-foreground">

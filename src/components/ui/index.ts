@@ -20,3 +20,5 @@ export * from './tooltip';
 export * from './scroll-area';
 export * from './tabs';
 export * from './command';
+export * from './separator';
+export * from './alert-dialog';

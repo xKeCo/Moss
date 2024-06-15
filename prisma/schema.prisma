@@ -328,6 +328,7 @@ model Workspace {
   id        String   @id @default(uuid())
   name      String
   key       String   @unique
+  logoURL   String?  @default("https://source.boringavatars.com/marble/50/default?square=true")
   users     User[]
   patients  Patient[]
   Appointments Appointment[]

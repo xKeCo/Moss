@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { ChevronLeft, Home, UserCircle } from 'lucide-react';
+import { Building, ChevronLeft, Home, User, UserCircle, UserCog } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { cn } from '../../lib/utils';
 
@@ -10,7 +10,7 @@ export const Sidebar = ({ workspaceID }: { workspaceID: string }) => {
   const sideBarItems = [
     {
       label: 'Sucursal',
-      icon: <Home size={16} />,
+      icon: <Building size={16} />,
       subItems: [
         {
           label: 'General',
@@ -74,7 +74,7 @@ export const Sidebar = ({ workspaceID }: { workspaceID: string }) => {
     // },
     {
       label: 'Mi Cuenta',
-      icon: <UserCircle size={16} />,
+      icon: <UserCog size={16} />,
       subItems: [
         {
           label: 'Perfil',
@@ -93,7 +93,7 @@ export const Sidebar = ({ workspaceID }: { workspaceID: string }) => {
   ];
 
   return (
-    <div className="flex flex-col gap-5 pl-4 py-2 min-w-56 max-w-64 w-full sticky top-0">
+    <div className="flex flex-col gap-5 pl-4 py-2 min-w-56 max-w-56 w-full sticky top-0">
       <Link
         href={`/dashboard/${workspaceID}`}
         className="text-lg font-semibold flex gap-2 items-center hover:text-black/80 hover:dark:text-white/80"
