@@ -28,7 +28,7 @@ export default withAuth(
         return NextResponse.redirect(new URL(`/settings/${workspaceId}/workspace`, req.url));
       }
 
-      if ((emptyWorkspace && req.nextUrl.pathname.startsWith('/dashboard')) || isRestrictedPage) {
+      if (emptyWorkspace && (req.nextUrl.pathname.startsWith('/dashboard') || isRestrictedPage)) {
         return NextResponse.redirect(new URL('/workspace', req.url));
       }
 
