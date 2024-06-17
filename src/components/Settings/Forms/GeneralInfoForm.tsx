@@ -15,6 +15,7 @@ import {
   FormLabel,
   FormMessage,
   Input,
+  Label,
 } from '@/components/ui';
 import { workspaceFormSchema } from '@/lib/validations';
 import { Icons } from '@/components/Icons/Icons';
@@ -58,8 +59,6 @@ export const GeneralInfoForm = ({
       data.workspaceKey
     );
 
-    setIsLoading(false);
-
     if (!ok) {
       if (error === 'workspaceKeyExists') {
         form.setError('workspaceKey', {
@@ -68,6 +67,7 @@ export const GeneralInfoForm = ({
         });
       }
 
+      setIsLoading(false);
       return toast.error(errorMessage);
     }
 
@@ -81,7 +81,9 @@ export const GeneralInfoForm = ({
       },
     });
 
-    toast.success('Workspace created successfully!');
+    setIsLoading(false);
+
+    toast.success('Workspace updated successfully!');
     router.replace(`/settings/${workspace?.key}/workspace`);
   }
 
@@ -98,7 +100,13 @@ export const GeneralInfoForm = ({
               <FormItem className="mb-6 max-w-96">
                 <FormLabel htmlFor="workspaceName">Nombre de la sucursal</FormLabel>
                 <FormControl>
-                  <Input id="workspaceName" autoComplete="off" maxLength={50} {...field} />
+                  <Input
+                    id="workspaceName"
+                    autoComplete="off"
+                    maxLength={50}
+                    disabled={isLoading}
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -116,6 +124,7 @@ export const GeneralInfoForm = ({
                     autoComplete="off"
                     startDecorator="moss.com/"
                     maxLength={20}
+                    disabled={isLoading}
                     {...field}
                   />
                 </FormControl>
@@ -130,6 +139,28 @@ export const GeneralInfoForm = ({
           </Button>
         </form>
       </Form>
+    </>
+  );
+};
+
+export const GeneralInfoFormSkeleton = () => {
+  return (
+    <>
+      <h1 className="text-base font-medium mb-4">General</h1>
+
+      <div className="flex flex-col w-full mb-6 max-w-96 justify-center gap-2.5 pt-0.5">
+        <Label className="text-sm ">Nombre de la sucursal</Label>
+        <Input disabled />
+      </div>
+
+      <div className="grid w-full mb-6 max-w-96 items-center gap-2.5 pt-0.5">
+        <Label className="text-sm pt-0.5">URL de la sucursal</Label>
+        <Input startDecorator="moss.com/" disabled />
+      </div>
+
+      <Button className="w-fit" disabled>
+        Actualizar
+      </Button>
     </>
   );
 };

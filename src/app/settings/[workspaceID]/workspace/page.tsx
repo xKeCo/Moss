@@ -11,16 +11,8 @@ interface IWorkspaceSettingsProps {
 }
 
 export default async function WorkspaceSettings({ params }: Readonly<IWorkspaceSettingsProps>) {
-  const { workspace, ok } = await getWorkspaceInfo(params.workspaceID);
-
-  if (!ok) {
-    return (
-      <div>
-        <h1>Error de servidor</h1>
-        <p>Hubo un error al cargar la información de tu sucursal. Por favor, intenta de nuevo.</p>
-      </div>
-    );
-  }
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+  const { workspace } = await getWorkspaceInfo(params.workspaceID);
 
   return (
     <main className="flex justify-center h-full">

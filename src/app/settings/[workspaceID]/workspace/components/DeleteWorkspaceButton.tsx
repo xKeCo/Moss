@@ -56,3 +56,20 @@ export const DeleteWorkspaceButton = () => {
     </>
   );
 };
+
+export const DeleteWorkspaceButtonSkeleton = () => {
+  return (
+    <>
+      <h1 className="text-base font-medium mb-4">Eliminar sucursal</h1>
+
+      <p className="text-sm mb-6 text-muted-foreground">
+        Si eliminas tu sucursal, perderás todos los datos asociados a ella, incluyendo pacientes,
+        citas, tratamientos, archivos y más. Esta acción es irreversible.
+      </p>
+
+      <Button className="w-fit" variant="destructive" disabled>
+        Eliminar sucursal
+      </Button>
+    </>
+  );
+};
