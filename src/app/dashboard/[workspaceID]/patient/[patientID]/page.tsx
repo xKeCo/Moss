@@ -17,7 +17,10 @@ interface IPatientInfoPageProps {
 }
 
 export default async function PatientInfoPage({ params }: Readonly<IPatientInfoPageProps>) {
-  const { patientInfo, ok, errorMessage } = await getPatientById(params.patientID);
+  const { patientInfo, ok, errorMessage } = await getPatientById(
+    params.patientID,
+    params.workspaceID
+  );
 
   const breadcrumbValues = [
     { name: 'Pacientes', href: '/dashboard' },

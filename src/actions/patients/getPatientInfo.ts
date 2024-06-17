@@ -1,10 +1,10 @@
 'use server';
 import prisma from '@/lib/prisma';
 
-export const getPatientById = async (patientId: string) => {
+export const getPatientById = async (patientId: string, workspaceId: string) => {
   try {
     const patient = await prisma.patient.findUnique({
-      where: { id: patientId },
+      where: { id: patientId, workspaceId: workspaceId },
       include: {
         BasicInformation: true,
         ContactInformation: true,
