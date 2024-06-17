@@ -11,7 +11,6 @@ interface IWorkspaceSettingsProps {
 }
 
 export default async function WorkspaceSettings({ params }: Readonly<IWorkspaceSettingsProps>) {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
   const { workspace } = await getWorkspaceInfo(params.workspaceID);
 
   return (
