@@ -22,7 +22,7 @@ export const createWorkspace = async (workspaceName: string, workspaceKey: strin
       data: {
         name: workspaceName,
         key: workspaceKey,
-        logoURL: `https://source.boringavatars.com/marble/50/${workspaceKey}?square=true`,
+        logoURL: `https://avatar.vercel.sh/${workspaceKey}`,
 
         users: {
           connect: {

@@ -26,7 +26,7 @@ export const createPatient = async (patientData: any, workspaceID: string) => {
         dniNumber: patientData.dniNumber,
         email: patientData.email,
         name: patientData.name,
-        photoURL: `https://source.boringavatars.com/marble/50/${workspaceID}${patientData.dniNumber}`,
+        photoURL: `https://avatar.vercel.sh/${workspaceID}${patientData.dniNumber}`,
         workspaceId: workspaceID,
         currentIllness: patientData.currentIllness,
         reasonForConsultation: patientData.reasonForConsultation,

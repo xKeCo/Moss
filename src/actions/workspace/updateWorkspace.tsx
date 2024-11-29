@@ -32,7 +32,7 @@ export const updateWorkspace = async (
       data: {
         name: workspaceName,
         key: workspaceKey,
-        logoURL: `https://source.boringavatars.com/marble/256/${workspaceKey}?square=true`,
+        logoURL: `https://avatar.vercel.sh/${workspaceKey}`,
       },
       select: {
         id: true,

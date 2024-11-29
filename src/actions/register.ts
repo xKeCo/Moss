@@ -37,7 +37,7 @@ export const registerUser = async (email: string, password: string, username: st
         password: hashedPassword,
         username: username.toLowerCase(),
         name: email.split('@')[0],
-        photoURL: `https://source.boringavatars.com/marble/50/${username.toLowerCase()}`,
+        photoURL: `https://avatar.vercel.sh/${username.toLowerCase()}`,
       },
       select: {
         id: true,
