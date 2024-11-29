@@ -16,7 +16,7 @@ export async function POST(req: Request, res: Response) {
     } = await req.json();
 
     const data = await resend.emails.send({
-      from: 'MOSS <no-reply@borealclinicadental.com>',
+      from: 'MOSS <no-reply@kevincollazos.com>',
       to: [email],
       subject: 'Recordatorio de cita odontológica',
       text: `Hola, te recordamos que tienes una cita programada para el día ${formatDate(

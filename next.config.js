@@ -7,9 +7,9 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'source.boringavatars.com',
+        hostname: 'avatar.vercel.sh',
         port: '',
-        pathname: '/marble/**',
+        pathname: '/**',
       },
     ],
     dangerouslyAllowSVG: true,
